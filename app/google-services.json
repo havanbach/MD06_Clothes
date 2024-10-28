@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "245208054466",
+    "project_id": "md06clothes",
+    "storage_bucket": "md06clothes.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:245208054466:android:901f3a46d1a7d8c5fd595b",
+        "android_client_info": {
+          "package_name": "com.example.md06_clothes"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBV6Gkj62oXj-Y8GkKXVqKFr79lZajash4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -50,7 +50,6 @@
 <!--        <activity android:name="com.example.djtmedoi.View.Admin.AdminChartBillActivity" />-->
 
 
-
 <!--        <activity-->
 <!--            android:name="com.example.djtmedoi.View.Admin.AdminBillMainActivity"-->
 <!--            android:exported="true" />-->
@@ -69,6 +68,9 @@
 <!--        <activity-->
 <!--            android:name="com.example.djtmedoi.View.SignUpActivity"-->
 <!--            android:exported="true" />-->
+        <activity
+            android:name="com.example.md06_clothes.SignInActivity"
+            android:exported="true" />
         <activity
             android:name="com.example.md06_clothes.SplashActivity"
             android:exported="true">

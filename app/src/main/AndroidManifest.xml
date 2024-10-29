@@ -34,6 +34,9 @@
             android:name="com.example.md06_clothes.MainActivity"
             android:exported="false" />
         <activity
+            android:name="com.example.md06_clothes.WelcomeScreen"
+            android:exported="true" />
+        <activity
             android:name="com.example.md06_clothes.SignInActivity"
             android:exported="false" />
         <activity

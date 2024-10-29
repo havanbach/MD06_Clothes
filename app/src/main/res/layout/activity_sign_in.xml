@@ -105,7 +105,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="end"
-        android:text="Forgot Password?"
+        android:text="Quên mật khẩu?"
         android:textColor="#795548"
         android:textStyle="bold"
         android:layout_margin="10dp"

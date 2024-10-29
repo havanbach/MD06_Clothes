@@ -26,9 +26,11 @@
         tools:replace="android:theme"
         tools:targetApi="34">
         <activity
-            android:name=".Welcome"
+            android:name=".SignUpActivity"
             android:exported="false" />
-        <!-- <activity android:name="com.example.djtmedoi.View.CartActivity"></activity> -->
+        <activity
+            android:name=".Welcome"
+            android:exported="false" /> <!-- <activity android:name="com.example.djtmedoi.View.CartActivity"></activity> -->
         <!-- <activity android:name="com.example.djtmedoi.View.OrderSuccessActivity" /> -->
         <!-- <activity -->
         <!-- android:name="com.example.md06_clothes.SplashActivity" -->

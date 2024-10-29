@@ -20,7 +20,7 @@
             android:layout_height="350dp"
             android:layout_weight="1"
             android:scaleType="centerCrop"
-            android:src="@drawable/banner3"
+            android:src="@drawable/img"
             android:layout_margin="8dp"
             android:background="@drawable/oval" />
 
@@ -36,7 +36,7 @@
                 android:layout_width="150dp"
                 android:layout_height="150dp"
                 android:scaleType="centerCrop"
-                android:src="@drawable/banner1"
+                android:src="@drawable/img"
                 android:layout_margin="8dp"
                 android:background="@drawable/circle" />
 
@@ -45,7 +45,7 @@
                 android:layout_width="150dp"
                 android:layout_height="150dp"
                 android:scaleType="centerCrop"
-                android:src="@drawable/banner2"
+                android:src="@drawable/img"
                 android:layout_margin="8dp"
                 android:background="@drawable/circle" />
         </LinearLayout>
@@ -55,7 +55,7 @@
         android:id="@+id/titleText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Ứng dụng thời trang giúp bạn trông tuyệt vời nhất"
+        android:text="The Fashion App That Makes You Look Your Best"
         android:textSize="26sp"
         android:textColor="#000"
         android:textAlignment="center"
@@ -67,7 +67,7 @@
         android:id="@+id/descriptionText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Khách hàng rất quan trọng, bởi vì khách hàng là thượng đế"
+        android:text="Lorem ipsum dolor sit amet, consectetur adipiscing elit."
         android:textSize="16sp"
         android:textColor="#888"
         android:textAlignment="center"
@@ -93,7 +93,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Bạn đã có tài khoản ?"
+            android:text="Already have an account? "
             android:textColor="#000"
             android:textSize="16dp"
             android:textAlignment="center"

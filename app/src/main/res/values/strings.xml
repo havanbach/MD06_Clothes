@@ -51,4 +51,19 @@
         vestibulum. Fusce dictum libero quis erat maximus, vitae volutpat diam dignissim.
     </string>
 
+    // Huỳnh xây dựng string cho Onboarding sc
+    <string name="screen1"> Shopping with our </string>
+    <string name="screen2"> Luxury </string>
+    <string name="screen3">/ Modern and cheap </string>
+    <string name="screen1desc"> Where can I find a pair of pants (shirts) that are as good in fabric and super
+        smooth seams as our shop? Hurry up and grab it now for a super cheap price.</string>
+    <string name="screen2desc"> Learn to love yourself, simply buy new clothes and
+        then enjoy the image of yourself beautiful, cool. Why not? Let us advise you! </string>
+    <string name="screen3desc">Selling clothes is selling beauty, but the seller will not be less
+        beautiful and the buyer will be more beautiful.</string>
+    <string name="startDesc">Warmth is not when you wrap yourself tightly in a blanket, but when
+        you go out and still feel warm. In this cold weather, a long down jacket is definitely
+        an item that everyone needs in their wardrobe!.</string>
+
+
 </resources>

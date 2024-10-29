@@ -12,23 +12,24 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Đăng nhập"
+        android:text="Đăng ký"
         android:textColor="@color/black"
         android:textSize="30sp"
         />
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Xin chào! Chào mừng bạn đã quay trở lại !!!"
+        android:text="Điền thông tin của bạn bên dưới hoặc đăng ký bằng tài khoản mạng xã hội của bạn !!!"
         android:textSize="16sp"
         android:layout_marginTop="12dp"
+        android:textAlignment="center"
         />
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
         android:padding="10dp"
-        android:layout_marginTop="40dp"
+        android:layout_marginTop="10dp"
         >
         <TextView
             android:layout_width="wrap_content"
@@ -46,7 +47,7 @@
                 android:layout_height="wrap_content">
 
                 <EditText
-                    android:id="@+id/edt_email_user"
+                    android:id="@+id/edt_sign_up_email"
                     android:hint="Nhập Email"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -67,7 +68,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="16sp"
-            android:text="Password"
+            android:text="Mật khẩu"
             android:layout_marginTop="30dp"/>
         <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"
@@ -79,8 +80,8 @@
                 android:layout_height="wrap_content">
 
                 <EditText
-                    android:id="@+id/edt_matkhau_user"
-                    android:hint="Nhập Pass"
+                    android:id="@+id/edt_sign_up_password"
+                    android:hint="Nhập mật khẩu"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:inputType="textPassword"
@@ -98,23 +99,52 @@
                     android:clickable="true"
                     android:focusable="true"/>
             </RelativeLayout>
+
         </com.google.android.material.textfield.TextInputLayout>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="16sp"
+            android:text="Nhập lại mật khẩu"
+            android:layout_marginTop="30dp"/>
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/rounded"
+            >
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <EditText
+                    android:id="@+id/textPassword"
+                    android:hint="Nhập lại mật khẩu"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="textPassword"
+                    android:background="@android:color/transparent" />
+
+                <ImageView
+                    android:id="@+id/hideinn"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:layout_alignParentEnd="true"
+                    android:layout_marginEnd="8dp"
+                    android:layout_centerVertical="true"
+                    android:src="@drawable/hide"
+                    android:contentDescription="Toggle password visibility"
+                    android:clickable="true"
+                    android:focusable="true"/>
+            </RelativeLayout>
+
+        </com.google.android.material.textfield.TextInputLayout>
+
     </LinearLayout>
-    <TextView
-        android:id="@+id/tv_forgot_password"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="end"
-        android:text="Quên mật khẩu?"
-        android:textColor="#795548"
-        android:textStyle="bold"
-        android:layout_margin="10dp"
-        />
     <Button
-        android:id="@+id/btn_signin"
+        android:id="@+id/btn_sign_up_dangky"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Đăng nhập"
+        android:text="Đăng ký"
         android:backgroundTint="#795548"
         android:textSize="20sp"
         android:textColor="#fff"
@@ -182,7 +212,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Bạn không có tài khoản? "
+            android:text="Bạn đã có tài khoản? "
             android:textColor="#000"
             android:textSize="16sp"
             android:textAlignment="center"
@@ -190,10 +220,10 @@
             />
 
         <TextView
-            android:id="@+id/txtSignup"
+            android:id="@+id/txtSignin"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Đăng ký"
+            android:text="Đăng nhập"
             android:textColor="#795548"
             android:textSize="16sp"
             android:textAlignment="center"

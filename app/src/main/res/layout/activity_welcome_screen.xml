@@ -104,7 +104,7 @@
             android:id="@+id/txtSigin"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Sign In"
+            android:text="Sign Up"
             android:textColor="#795548"
             android:textSize="16sp"
             android:textAlignment="center"

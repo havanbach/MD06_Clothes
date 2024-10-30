@@ -93,7 +93,7 @@ public class MainActivity extends AppCompatActivity {
                             selectedFragment = new BillFragment();
                             break;
                         case R.id.khac:
-
+//
                             break;
                         default:
                             // Xử lý trường hợp không xác định

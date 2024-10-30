@@ -105,14 +105,14 @@ public class MainActivity extends AppCompatActivity {
                                 .commit();
                     }
                     return true;
-                }////////
+                }
 
             });
         } else {
             Log.e("MainActivity", "BottomNavigationView is null!");
         }
 
-
+//
     }
 
     public void setProFile() {

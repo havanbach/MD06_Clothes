@@ -21,7 +21,7 @@
             android:layout_height="wrap_content"
             android:text="Clothes"
             android:textColor="@color/colorGray"
-            android:textSize="60dp"
+            android:textSize="60sp"
             android:textStyle="italic"
             android:layout_margin="10dp"
             android:layout_gravity="center"

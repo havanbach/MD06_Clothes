@@ -18,8 +18,6 @@ public class NavigationActivity extends AppCompatActivity {
     Button backButton, nextButton, skipButton;
     TextView[] dots;
     ViewPagerAdapter viewPagerAdapter;
-
-
     ViewPager.OnPageChangeListener viewPagerListener = new ViewPager.OnPageChangeListener() {
         @Override
         public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {

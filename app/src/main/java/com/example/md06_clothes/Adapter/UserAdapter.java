@@ -1,5 +1,6 @@
 package com.example.md06_clothes.Adapter;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,6 +11,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.example.md06_clothes.Models.User;
 import com.example.md06_clothes.R;
 import com.example.md06_clothes.my_interface.IClickCTHD;
@@ -39,14 +41,47 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.ViewHolder> {
     }
 
     @Override
-    public void onBindViewHolder(@NonNull UserAdapter.ViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull ViewHolder holder, @SuppressLint("RecyclerView") int position) {
+        User user = mListUser.get(position);
+        holder.tvItemUsername.setText(user.getName());
 
+
+        if (user.getAvatar().equals("default")) {
+            holder.imgItemUser.setImageResource(R.mipmap.ic_launcher);
+        } else {
+            Glide.with(context).load(user.getAvatar()).into(holder.imgItemUser);
+        }
+
+        if (ischat) {
+//            lastMessage(user.getIduser(), holder.tvLastMessage);
+        } else {
+            holder.tvLastMessage.setVisibility(View.GONE);
+        }
+        if (ischat) {
+            if (user.getStatus().equals("online")) {
+                holder.imgOn.setVisibility(View.VISIBLE);
+                holder.imgOff.setVisibility(View.GONE);
+            } else {
+                holder.imgOn.setVisibility(View.GONE);
+                holder.imgOff.setVisibility(View.VISIBLE);
+            }
+        } else {
+            holder.imgOn.setVisibility(View.GONE);
+            holder.imgOff.setVisibility(View.GONE);
+        }
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                iClickCTHD.onClickCTHD(position);
+
+            }
+        });
     }
-
     @Override
     public int getItemCount() {
-        return 0;
+        return mListUser.size();
     }
+
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
         private final TextView tvItemUsername;

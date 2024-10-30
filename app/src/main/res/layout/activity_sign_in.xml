@@ -111,7 +111,7 @@
         android:layout_margin="10dp"
         />
     <Button
-        android:id="@+id/btn_signin"
+        android:id="@+id/btn_dangnhap"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Đăng nhập"
@@ -190,7 +190,7 @@
             />
 
         <TextView
-            android:id="@+id/txtSignup"
+            android:id="@+id/btn_dangky"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Đăng ký"

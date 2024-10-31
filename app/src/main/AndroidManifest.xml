@@ -26,6 +26,9 @@
         tools:replace="android:theme"
         tools:targetApi="34">
         <activity
+            android:name=".SearchActivity"
+            android:exported="false" />
+        <activity
             android:name=".View.ForgotPasswordActivity"
             android:exported="false" />
         <activity

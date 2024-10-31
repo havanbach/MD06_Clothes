@@ -21,7 +21,7 @@ import androidx.fragment.app.FragmentTransaction;
 import com.example.md06_clothes.fragment.BillFragment;
 import com.example.md06_clothes.fragment.FavoriteFragment;
 import com.example.md06_clothes.fragment.HomeFragment;
-import com.example.md06_clothes.fragment.NotifyFragment;
+
 import com.example.md06_clothes.fragment.ProfileFragment;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -58,7 +58,7 @@ public class MainActivity extends AppCompatActivity {
         broadcastIntent();
 
 
-        setProFile();
+//        setProFile(); can fix
         // Trong onCreate của MainActivity
         BottomNavigationView bottomNavigationView = findViewById(R.id.bottomNavigationView);
 
@@ -117,41 +117,41 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    public void setProFile() {
-        db = FirebaseFirestore.getInstance();
-        if (homeFragment.getTvNameHome()==null){
-            return;
-        }
-        if (homeFragment.getTvEmailHome()==null){
-            return;
-        }
-        if (homeFragment.getCirAvatarHome() == null){
-            return;
-        }
-        homeFragment.getTvEmailHome().setText(FirebaseAuth.getInstance().getCurrentUser().getEmail());
-        db.collection("User").document(FirebaseAuth.getInstance().getCurrentUser().getUid())
-                .collection("Profile")
-                .get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
-                    @Override
-                    public void onSuccess(@NonNull QuerySnapshot queryDocumentSnapshots) {
-                        if(queryDocumentSnapshots.size()>0){
-                            DocumentSnapshot documentSnapshot = queryDocumentSnapshots.getDocuments().get(0);
-                            if(documentSnapshot!=null){
-                                try{
-                                    homeFragment.getTvNameHome().setText(documentSnapshot.getString("hoten").length()>0 ?
-                                            documentSnapshot.getString("hoten") : "");
-
-                                    if(documentSnapshot.getString("avatar").length()>0){
-                                        Picasso.get().load(documentSnapshot.getString("avatar").trim()).into(homeFragment.getCirAvatarHome());
-                                    }
-                                }catch (Exception e){
-                                    Log.d("ERROR",e.getMessage());
-                                }
-                            }
-                        }
-                    }
-                });
-    }
+//    public void setProFile() {
+//        db = FirebaseFirestore.getInstance();
+//        if (homeFragment.getTvNameHome()==null){
+//            return;
+//        }
+//        if (homeFragment.getTvEmailHome()==null){
+//            return;
+//        }
+//        if (homeFragment.getCirAvatarHome() == null){
+//            return;
+//        }
+//        homeFragment.getTvEmailHome().setText(FirebaseAuth.getInstance().getCurrentUser().getEmail());
+//        db.collection("User").document(FirebaseAuth.getInstance().getCurrentUser().getUid())
+//                .collection("Profile")
+//                .get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+//                    @Override
+//                    public void onSuccess(@NonNull QuerySnapshot queryDocumentSnapshots) {
+//                        if(queryDocumentSnapshots.size()>0){
+//                            DocumentSnapshot documentSnapshot = queryDocumentSnapshots.getDocuments().get(0);
+//                            if(documentSnapshot!=null){
+//                                try{
+//                                    homeFragment.getTvNameHome().setText(documentSnapshot.getString("hoten").length()>0 ?
+//                                            documentSnapshot.getString("hoten") : "");
+//
+//                                    if(documentSnapshot.getString("avatar").length()>0){
+//                                        Picasso.get().load(documentSnapshot.getString("avatar").trim()).into(homeFragment.getCirAvatarHome());
+//                                    }
+//                                }catch (Exception e){
+//                                    Log.d("ERROR",e.getMessage());
+//                                }
+//                            }
+//                        }
+//                    }
+//                });
+//    }
 
     @SuppressLint("WrongViewCast")
 

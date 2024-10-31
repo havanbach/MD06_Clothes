@@ -23,7 +23,7 @@ import com.example.md06_clothes.Models.Favorite;
 import com.example.md06_clothes.Presenter.FavoritePresenter;
 import com.example.md06_clothes.Presenter.ProductPresenter;
 import com.example.md06_clothes.R;
-import com.example.md06_clothes.View.DetailSPActivity;
+
 import com.example.md06_clothes.my_interface.FavoriteView;
 import com.example.md06_clothes.my_interface.IClickCTHD;
 import com.example.md06_clothes.my_interface.ProductView;

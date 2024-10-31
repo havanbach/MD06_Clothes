@@ -12,6 +12,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 
+import com.example.md06_clothes.Models.Product;
 import com.example.md06_clothes.R;
 import com.example.md06_clothes.my_interface.IClickCTHD;
 import com.squareup.picasso.Picasso;

@@ -57,7 +57,11 @@ public class MainActivity extends AppCompatActivity {
         MyReceiver = new MyReceiver();
         broadcastIntent();
 
-
+        if (savedInstanceState == null) {
+            getSupportFragmentManager().beginTransaction()
+                    .replace(R.id.frame, new HomeFragment())
+                    .commit();
+        }
         setProFile();
         // Trong onCreate của MainActivity
         BottomNavigationView bottomNavigationView = findViewById(R.id.bottomNavigationView);
@@ -101,10 +105,7 @@ public class MainActivity extends AppCompatActivity {
         } else {
             Log.e("MainActivity", "BottomNavigationView is null!");
         }
-
-
     }
-
     public void setProFile() {
         db = FirebaseFirestore.getInstance();
         if (homeFragment.getTvNameHome()==null){

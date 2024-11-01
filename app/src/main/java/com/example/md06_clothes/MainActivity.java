@@ -69,24 +69,12 @@ public class MainActivity extends AppCompatActivity {
                 public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                     Fragment selectedFragment = null;
 
-//                    int itemId = item.getItemId();
-//                    if (itemId == R.id.hometrangchu) {
-//                        selectedFragment = new HomeFragment();
-//                    } else if (itemId == R.id.canhan) {
-//                        selectedFragment = new ProfileFragment();
-//                    }else if (itemId == R.id.yeuthich) {
-//                        selectedFragment = new FavoriteFragment();
-//                    }else if (itemId == R.id.donhang) {
-//                        selectedFragment = new BillFragment();
-//                    }else if (itemId == R.id.khac) {
-//                        selectedFragment = new NotifyFragment();
-//                    }
                     switch (item.getItemId()) {
                         case R.id.hometrangchu:
                             selectedFragment = new HomeFragment();
                             break;
                         case R.id.canhan:
-//                            selectedFragment = new ProfileFragment(); , can fix Trung
+                            selectedFragment = new ProfileFragment();
                             break;
                         case R.id.yeuthich:
 //                            selectedFragment = new FavoriteFragment(); , can fix Nguyen Huynh
@@ -117,41 +105,41 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-//    public void setProFile() {
-//        db = FirebaseFirestore.getInstance();
-//        if (homeFragment.getTvNameHome()==null){
-//            return;
-//        }
-//        if (homeFragment.getTvEmailHome()==null){
-//            return;
-//        }
-//        if (homeFragment.getCirAvatarHome() == null){
-//            return;
-//        }
-//        homeFragment.getTvEmailHome().setText(FirebaseAuth.getInstance().getCurrentUser().getEmail());
-//        db.collection("User").document(FirebaseAuth.getInstance().getCurrentUser().getUid())
-//                .collection("Profile")
-//                .get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
-//                    @Override
-//                    public void onSuccess(@NonNull QuerySnapshot queryDocumentSnapshots) {
-//                        if(queryDocumentSnapshots.size()>0){
-//                            DocumentSnapshot documentSnapshot = queryDocumentSnapshots.getDocuments().get(0);
-//                            if(documentSnapshot!=null){
-//                                try{
-//                                    homeFragment.getTvNameHome().setText(documentSnapshot.getString("hoten").length()>0 ?
-//                                            documentSnapshot.getString("hoten") : "");
-//
-//                                    if(documentSnapshot.getString("avatar").length()>0){
-//                                        Picasso.get().load(documentSnapshot.getString("avatar").trim()).into(homeFragment.getCirAvatarHome());
-//                                    }
-//                                }catch (Exception e){
-//                                    Log.d("ERROR",e.getMessage());
-//                                }
-//                            }
-//                        }
-//                    }
-//                });
-//    }
+    public void setProFile() {
+        db = FirebaseFirestore.getInstance();
+        if (homeFragment.getTvNameHome()==null){
+            return;
+        }
+        if (homeFragment.getTvEmailHome()==null){
+            return;
+        }
+        if (homeFragment.getCirAvatarHome() == null){
+            return;
+        }
+        homeFragment.getTvEmailHome().setText(FirebaseAuth.getInstance().getCurrentUser().getEmail());
+        db.collection("User").document(FirebaseAuth.getInstance().getCurrentUser().getUid())
+                .collection("Profile")
+                .get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+                    @Override
+                    public void onSuccess(@NonNull QuerySnapshot queryDocumentSnapshots) {
+                        if(queryDocumentSnapshots.size()>0){
+                            DocumentSnapshot documentSnapshot = queryDocumentSnapshots.getDocuments().get(0);
+                            if(documentSnapshot!=null){
+                                try{
+                                    homeFragment.getTvNameHome().setText(documentSnapshot.getString("hoten").length()>0 ?
+                                            documentSnapshot.getString("hoten") : "");
+
+                                    if(documentSnapshot.getString("avatar").length()>0){
+                                        Picasso.get().load(documentSnapshot.getString("avatar").trim()).into(homeFragment.getCirAvatarHome());
+                                    }
+                                }catch (Exception e){
+                                    Log.d("ERROR",e.getMessage());
+                                }
+                            }
+                        }
+                    }
+                });
+    }
 
     @SuppressLint("WrongViewCast")
 

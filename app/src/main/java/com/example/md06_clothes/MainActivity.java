@@ -89,7 +89,7 @@ public class MainActivity extends AppCompatActivity {
 //                            selectedFragment = new ProfileFragment(); , can fix Trung
                             break;
                         case R.id.yeuthich:
-//                            selectedFragment = new FavoriteFragment(); , can fix Nguyen Hoc
+//                            selectedFragment = new FavoriteFragment(); , can fix Nguyen Huynh
                             break;
                         case R.id.donhang:
 //                            selectedFragment = new BillFragment(); , can fix Hiep Pham

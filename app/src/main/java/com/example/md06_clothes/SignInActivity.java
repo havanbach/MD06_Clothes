@@ -84,6 +84,12 @@ public class SignInActivity extends AppCompatActivity {
         edt_passin = findViewById(R.id.edt_matkhau_user);
         btnDangNhap = findViewById(R.id.btn_dangnhap);
         btnDangKy = findViewById(R.id.btn_dangky);
+        btnDangKy.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(SignInActivity.this,SignUpActivity.class));
+            }
+        });
         hidein.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

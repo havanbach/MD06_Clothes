@@ -18,6 +18,9 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 
+import com.example.md06_clothes.R;
+import com.example.md06_clothes.my_interface.BinhLuanView;
+import com.example.md06_clothes.my_interface.GioHangView;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.appbar.CollapsingToolbarLayout;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
@@ -33,7 +36,7 @@ import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 //
-//public class DetailSPActivity extends AppCompatActivity implements BinhLuanView, GioHangView {
+public class DetailSPActivity extends AppCompatActivity implements BinhLuanView, GioHangView {
 //
 //    private ImageView viewAnimation;
 //    private View viewEndAnimation;
@@ -64,16 +67,33 @@ import java.util.HashMap;
 //    private MainActivity mainActivity;
 //
 //
-//    @Override
-//    protected void onCreate(Bundle savedInstanceState) {
-//        super.onCreate(savedInstanceState);
-//        setContentView(R.layout.activity_detail_spactivity);
-//
-//        InitWidget();
-//        Init();
-//        Event();
-//
-//    }
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_detail_spactivity);
+
+
+    }
+
+    @Override
+    public void getDataBinhLuan(String idbinhluan, String idproduct, String iduser, String rate, String noidung) {
+
+    }
+
+    @Override
+    public void OnSucess() {
+
+    }
+
+    @Override
+    public void OnFail() {
+
+    }
+
+    @Override
+    public void getDataSanPham(String id, String idsp, String tensp, Long giatien, String hinhanh, String loaisp, String mota, Long soluong, String size, Long type, String chatlieu) {
+
+    }
 //
 //    private void Event() {
 //        linearShowAllCmt.setOnClickListener(new View.OnClickListener() {
@@ -290,4 +310,4 @@ import java.util.HashMap;
 //    public void getDataSanPham(String id, String idsp, String tensp, Long giatien, String hinhanh, String loaisp, String mota, Long soluong, String size, Long type, String chatlieu) {
 //
 //    }
-//}
+}

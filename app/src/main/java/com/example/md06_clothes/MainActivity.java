@@ -16,13 +16,11 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
-
-
-import com.example.md06_clothes.fragment.BillFragment;
 import com.example.md06_clothes.fragment.FavoriteFragment;
 import com.example.md06_clothes.fragment.HomeFragment;
-
+import com.example.md06_clothes.fragment.NotifyFragment;
 import com.example.md06_clothes.fragment.ProfileFragment;
+import com.example.md06_clothes.ultil.MyReceiver;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationBarView;
@@ -54,11 +52,11 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
-//        MyReceiver = new MyReceiver(); can fix
+        MyReceiver = new MyReceiver();
         broadcastIntent();
 
 
-//        setProFile(); can fix
+        setProFile();
         // Trong onCreate của MainActivity
         BottomNavigationView bottomNavigationView = findViewById(R.id.bottomNavigationView);
 
@@ -77,13 +75,13 @@ public class MainActivity extends AppCompatActivity {
                             selectedFragment = new ProfileFragment();
                             break;
                         case R.id.yeuthich:
-//                            selectedFragment = new FavoriteFragment(); , can fix Nguyen Huynh
+                            selectedFragment = new FavoriteFragment();
                             break;
                         case R.id.donhang:
 //                            selectedFragment = new BillFragment(); , can fix Hiep Pham
                             break;
                         case R.id.khac:
-//                            selectedFragment = new NotifyFragment(); , can fix Hiep Nguyen
+                            selectedFragment = new NotifyFragment();
                             break;
                         default:
                             // Xử lý trường hợp không xác định

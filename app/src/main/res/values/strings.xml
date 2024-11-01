@@ -66,6 +66,7 @@
         an item that everyone needs in their wardrobe!.</string>
     <string name="the_fashion_app_that_makes_you_look_your_best">The Fashion App That Makes You Look Your Best</string>
     <string name="lorem_ipsum_dolor_sit_amet_consectetur_adipiscing_elit">Lorem ipsum dolor sit amet, consectetur adipiscing elit.</string>
+    <string name="title_activity_maps">MapsActivity</string>
 
 
 </resources>

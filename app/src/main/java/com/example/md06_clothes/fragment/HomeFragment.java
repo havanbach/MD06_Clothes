@@ -38,6 +38,7 @@ import com.example.md06_clothes.View.CategoryActivity;
 import com.example.md06_clothes.View.ChatActivity;
 import com.example.md06_clothes.View.DetailSPActivity;
 
+import com.example.md06_clothes.View.SearchActivity;
 import com.example.md06_clothes.my_interface.IClickCTHD;
 import com.example.md06_clothes.my_interface.IClickLoaiProduct;
 import com.example.md06_clothes.my_interface.IClickOpenBottomSheet;
@@ -209,8 +210,8 @@ public class HomeFragment extends Fragment {
         edtSearchHome.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-//                Intent intent = new Intent(getActivity(), SearchActivity.class); can fix
-//                startActivity(intent); can fix
+                Intent intent = new Intent(getActivity(), SearchActivity.class);
+                startActivity(intent);
             }
         });
 
@@ -530,8 +531,8 @@ public class HomeFragment extends Fragment {
                     @Override
                     public void onClickCTHD(int pos) {
 
-//                        Intent intent = new Intent(getContext(), SearchActivity.class); can fix
-//                        startActivity(intent); can fix
+                        Intent intent = new Intent(getContext(), SearchActivity.class);
+                        startActivity(intent);
                     }
                 });
                 viewPager.setAdapter(bannerAdapter);

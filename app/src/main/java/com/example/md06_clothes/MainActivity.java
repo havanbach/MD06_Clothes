@@ -54,7 +54,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
-//        MyReceiver = new MyReceiver();      can fix
+//        MyReceiver = new MyReceiver(); can fix
         broadcastIntent();
 
 
@@ -83,19 +83,19 @@ public class MainActivity extends AppCompatActivity {
 //                    }
                     switch (item.getItemId()) {
                         case R.id.hometrangchu:
-//                            selectedFragment = new HomeFragment(); can fix
+                            selectedFragment = new HomeFragment();
                             break;
                         case R.id.canhan:
-//                            selectedFragment = new ProfileFragment(); , can fix
+//                            selectedFragment = new ProfileFragment(); , can fix Trung
                             break;
                         case R.id.yeuthich:
-//                            selectedFragment = new FavoriteFragment(); , can fix
+//                            selectedFragment = new FavoriteFragment(); , can fix Nguyen Hoc
                             break;
                         case R.id.donhang:
-//                            selectedFragment = new BillFragment(); , can fix
+//                            selectedFragment = new BillFragment(); , can fix Hiep Pham
                             break;
                         case R.id.khac:
-//                            selectedFragment = new NotifyFragment(); , can fix
+//                            selectedFragment = new NotifyFragment(); , can fix Hiep Nguyen
                             break;
                         default:
                             // Xử lý trường hợp không xác định

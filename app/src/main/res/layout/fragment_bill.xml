@@ -22,7 +22,7 @@
             android:layout_gravity="center"/>
         <!-- Thuộc tính tabMode="scrollable" nếu có nhiều tab thì ta dùng nó sẽ trượt được-->
         <!-- Còn nếu tabMode="fixed" thì nó sẽ chia tablayout thành các phần bằng nhau-->
-        <com.example.djtmedoi.Adapter.CustomTabLayout
+        <com.example.md06_clothes.Adapter.CustomTabLayout
             android:layout_marginTop="15dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

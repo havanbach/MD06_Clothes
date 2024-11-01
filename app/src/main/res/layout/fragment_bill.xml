@@ -22,18 +22,17 @@
             android:layout_gravity="center"/>
         <!-- Thuộc tính tabMode="scrollable" nếu có nhiều tab thì ta dùng nó sẽ trượt được-->
         <!-- Còn nếu tabMode="fixed" thì nó sẽ chia tablayout thành các phần bằng nhau-->
-        <com.example.md06_clothes.Adapter.CustomTabLayout
+        <com.example.djtmedoi.Adapter.CustomTabLayout
+            android:layout_marginTop="15dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="15dp"
             android:id="@+id/tab_Layout"
             app:tabSelectedTextColor="#FF5722"
             app:tabBackground="@color/white"
             app:tabTextColor="@android:color/darker_gray"
             app:tabIndicatorHeight="2dp"
             app:tabIndicatorColor="#FF5722"
-            app:tabMode="scrollable"
-        />
+            app:tabMode="scrollable"/>
         <androidx.viewpager.widget.ViewPager
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

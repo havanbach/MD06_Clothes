@@ -16,6 +16,5 @@ public class MyReceiver extends BroadcastReceiver {
         } else {
             s = "Không có kết nối Internet";
         }
-//        Toast.makeText(context, s, Toast.LENGTH_LONG).show();
     }
 }

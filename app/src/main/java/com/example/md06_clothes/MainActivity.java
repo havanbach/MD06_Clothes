@@ -16,6 +16,8 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
+
+import com.example.md06_clothes.fragment.BillFragment;
 import com.example.md06_clothes.fragment.FavoriteFragment;
 import com.example.md06_clothes.fragment.HomeFragment;
 import com.example.md06_clothes.fragment.NotifyFragment;
@@ -78,7 +80,7 @@ public class MainActivity extends AppCompatActivity {
                             selectedFragment = new FavoriteFragment();
                             break;
                         case R.id.donhang:
-//                            selectedFragment = new BillFragment(); , can fix Hiep Pham
+                            selectedFragment = new BillFragment();
                             break;
                         case R.id.khac:
                             selectedFragment = new NotifyFragment();

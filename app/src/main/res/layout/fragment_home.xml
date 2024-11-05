@@ -63,24 +63,24 @@
                     android:layout_weight="1"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content">
+
                     <ImageView
-                        android:layout_centerHorizontal="true"
                         android:id="@+id/img_home_cart"
-                        android:layout_width="30dp"
-                        android:layout_height="25dp"
-                        android:src="@drawable/ic_cart4"/>
+                        android:layout_width="25dp"
+                        android:layout_height="match_parent"
+                        android:layout_centerHorizontal="true"
+                        android:src="@drawable/ic_cart4" />
 
                     <TextView
-                        android:visibility="gone"
-                        android:gravity="center"
                         android:id="@+id/tv_number_cart"
                         android:layout_width="15dp"
                         android:layout_height="15dp"
                         android:background="@drawable/boder_score"
+                        android:gravity="center"
                         android:padding="2dp"
                         android:textColor="@color/white"
-                        android:layout_alignParentEnd="true"
-                        android:textSize="8dp" />
+                        android:textSize="8sp"
+                        android:visibility="gone" />
 
                 </RelativeLayout>
 
@@ -166,7 +166,7 @@
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:textSize="10dp"
+                                android:textSize="10sp"
                                 android:textStyle="italic"
                                 android:textColor="#228b22"
                                 android:text="Email: "/>

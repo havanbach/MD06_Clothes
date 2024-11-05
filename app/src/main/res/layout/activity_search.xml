@@ -59,7 +59,7 @@
                         android:background="@drawable/search_view_bg"
                         android:layout_width="0dp"
                         android:layout_height="45dp"
-                        app:queryHint="Thoi trang ăn yêu thích ...."
+                        app:queryHint="Thời trang yêu thích ...."
                         app:iconifiedByDefault="false"
                         app:queryBackground="@null">
                     </androidx.appcompat.widget.SearchView>

@@ -24,7 +24,7 @@
             android:id="@+id/img_seach"
             android:layout_width="74dp"
             android:layout_height="74dp"
-            android:src="@drawable/pop_1"/>
+            android:src="@drawable/Áo"/>
     </androidx.cardview.widget.CardView>
 
 

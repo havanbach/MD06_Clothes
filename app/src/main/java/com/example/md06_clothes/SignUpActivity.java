@@ -54,9 +54,7 @@ public class SignUpActivity extends AppCompatActivity {
         InitWidget();
         MyReceiver = new MyReceiver();      // Check Internet
         broadcastIntent();                  // Check Internet
-//        if (NetworkUtil.isNetworkConnected(this)){
-//            Event();
-//        }
+
 
         hideup = findViewById(R.id.hidein);
         hideupp = findViewById(R.id.hideinn);
@@ -77,7 +75,7 @@ public class SignUpActivity extends AppCompatActivity {
         txtSignin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(SignUpActivity.this, SignUpActivity.class));
+                startActivity(new Intent(SignUpActivity.this, SignInActivity.class));// huỳnh đã fix lỗi
             }
         });
         hideupp.setOnClickListener(new View.OnClickListener() {

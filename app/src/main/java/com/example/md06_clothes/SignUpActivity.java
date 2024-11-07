@@ -75,7 +75,7 @@ public class SignUpActivity extends AppCompatActivity {
         txtSignin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(SignUpActivity.this, SignInActivity.class));// huỳnh đã fix lỗi
+                startActivity(new Intent(SignUpActivity.this, SignInActivity.class));//  đã fix lỗi
             }
         });
         hideupp.setOnClickListener(new View.OnClickListener() {

@@ -32,6 +32,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QuerySnapshot;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -92,71 +93,96 @@ public class SignUpActivity extends AppCompatActivity {
                 edtSignUpConfirm.setSelection(edtSignUpConfirm.getText().length());
             }
         });
+
         btnSignUpDangKy.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 String email = edtSignUpEmail.getText().toString().trim();
                 String pass = edtSignUpPassword.getText().toString().trim();
                 String confirm = edtSignUpConfirm.getText().toString().trim();
-                if (email.length() > 0){
-                    if (pass.length() > 0){
-                        if (pass.equals(confirm)){
-                            FirebaseAuth auth = FirebaseAuth.getInstance();
-                            auth.createUserWithEmailAndPassword(email, pass).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-                                @Override
-                                public void onComplete(@NonNull @NotNull Task<AuthResult> task) {
-                                    if (task.isSuccessful()){
-                                        HashMap<String,String> hashMap =  new HashMap<>();
-                                        hashMap.put("iduser",FirebaseAuth.getInstance().getCurrentUser().getUid());
-                                        hashMap.put("email", email);
-                                        FirebaseFirestore db = FirebaseFirestore.getInstance();
-                                        db.collection("IDUser").add(hashMap);
 
-                                        // Realtime Firebase: Tạo 1 database có tên Users, id tự động đặt cho tài khoản
-                                        String username= "any name";
-                                        reference1 = FirebaseDatabase.getInstance().getReference("Users").child(FirebaseAuth.getInstance().getCurrentUser().getUid());
-                                        HashMap<String, String> mapRealtime = new HashMap<>();
-                                        mapRealtime.put("iduser", FirebaseAuth.getInstance().getCurrentUser().getUid());
-                                        mapRealtime.put("name", username);
-                                        mapRealtime.put("avatar", "default");
-                                        mapRealtime.put("status", "online");
-                                        mapRealtime.put("search", username.toLowerCase());
-                                        reference1.setValue(mapRealtime);
+                if (email.length() > 0) {
+                    if (pass.length() > 0) {
+                        if (pass.equals(confirm)) {
+                            FirebaseFirestore db = FirebaseFirestore.getInstance();
 
-                                        reference2 = FirebaseDatabase.getInstance().getReference("Chatlist").child("WvPK8OV0erKJP8w2KZNp")
-                                                .child(FirebaseAuth.getInstance().getCurrentUser().getUid());
-                                        HashMap<String, String> mapRealtime2 = new HashMap<>();
-                                        mapRealtime2.put("id", FirebaseAuth.getInstance().getCurrentUser().getUid());
-                                        reference2.setValue(mapRealtime2);
+                            // Kiểm tra email đã tồn tại chưa trong Firestore
+                            db.collection("IDUser")
+                                    .whereEqualTo("email", email)
+                                    .get()
+                                    .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                                        @Override
+                                        public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                            if (task.isSuccessful()) {
+                                                if (!task.getResult().isEmpty()) {
+                                                    // Email đã tồn tại
+                                                    Toast.makeText(SignUpActivity.this, "Email đã tồn tại, vui lòng chọn email khác.", Toast.LENGTH_SHORT).show();
+                                                } else {
+                                                    // Email chưa tồn tại, tiếp tục đăng ký
+                                                    FirebaseAuth auth = FirebaseAuth.getInstance();
+                                                    auth.createUserWithEmailAndPassword(email, pass).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                                                        @Override
+                                                        public void onComplete(@NonNull @NotNull Task<AuthResult> task) {
+                                                            if (task.isSuccessful()) {
+                                                                HashMap<String, String> hashMap = new HashMap<>();
+                                                                hashMap.put("iduser", FirebaseAuth.getInstance().getCurrentUser().getUid());
+                                                                hashMap.put("email", email);
 
+                                                                db.collection("IDUser").add(hashMap);
 
-                                        Intent intent = new Intent(SignUpActivity.this, MainActivity.class);
-                                        startActivity(intent);
-                                        User user = new User();
-                                        user.setIduser(auth.getUid());
-                                        user.setEmail(email);
-                                        finishAffinity();
-                                        Toast.makeText(SignUpActivity.this, "Đăng ký thành công", Toast.LENGTH_SHORT).show();
-                                    } else if (!isEmailValid(email)){
-                                        Toast.makeText(SignUpActivity.this, "Email định dạng không đúng", Toast.LENGTH_SHORT).show();
-                                    } else {
-                                        Toast.makeText(SignUpActivity.this, "Authentication failed.", Toast.LENGTH_SHORT).show();
-                                        Log.w("signup","failed", task.getException());
-                                    }
-                                }
-                            });
+                                                                // Thêm vào Firebase Realtime Database nếu cần thiết
+                                                                String username = "any name";
+                                                                reference1 = FirebaseDatabase.getInstance().getReference("Users")
+                                                                        .child(FirebaseAuth.getInstance().getCurrentUser().getUid());
+
+                                                                HashMap<String, String> mapRealtime = new HashMap<>();
+                                                                mapRealtime.put("iduser", FirebaseAuth.getInstance().getCurrentUser().getUid());
+                                                                mapRealtime.put("name", username);
+                                                                mapRealtime.put("avatar", "default");
+                                                                mapRealtime.put("status", "online");
+                                                                mapRealtime.put("search", username.toLowerCase());
+                                                                reference1.setValue(mapRealtime);
+
+                                                                reference2 = FirebaseDatabase.getInstance().getReference("Chatlist")
+                                                                        .child("WvPK8OV0erKJP8w2KZNp")
+                                                                        .child(FirebaseAuth.getInstance().getCurrentUser().getUid());
+
+                                                                HashMap<String, String> mapRealtime2 = new HashMap<>();
+                                                                mapRealtime2.put("id", FirebaseAuth.getInstance().getCurrentUser().getUid());
+                                                                reference2.setValue(mapRealtime2);
+
+                                                                Intent intent = new Intent(SignUpActivity.this, MainActivity.class);
+                                                                startActivity(intent);
+                                                                User user = new User();
+                                                                user.setIduser(auth.getUid());
+                                                                user.setEmail(email);
+                                                                finishAffinity();
+                                                                Toast.makeText(SignUpActivity.this, "Đăng ký thành công", Toast.LENGTH_SHORT).show();
+                                                            } else {
+                                                                Toast.makeText(SignUpActivity.this, "Authentication failed.", Toast.LENGTH_SHORT).show();
+                                                                Log.w("signup", "failed", task.getException());
+                                                            }
+                                                        }
+                                                    });
+                                                }
+                                            } else {
+                                                Toast.makeText(SignUpActivity.this, "Kiểm tra email thất bại, vui lòng thử lại.", Toast.LENGTH_SHORT).show();
+                                            }
+                                        }
+                                    });
                         } else {
                             Toast.makeText(SignUpActivity.this, "Mật khẩu xác nhận không khớp.\nVui lòng nhập lại!", Toast.LENGTH_SHORT).show();
                         }
                     } else {
                         Toast.makeText(SignUpActivity.this, "Bạn chưa nhập mật khẩu", Toast.LENGTH_SHORT).show();
                     }
-
                 } else {
                     Toast.makeText(SignUpActivity.this, "Bạn chưa nhập Email", Toast.LENGTH_SHORT).show();
                 }
             }
         });
+
+
     }
     private void InitWidget() {
         edtSignUpEmail = findViewById(R.id.edt_sign_up_email);

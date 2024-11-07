@@ -18,7 +18,7 @@
             android:id="@+id/img_favorite"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:src="@drawable/Áo"
+            android:src="@drawable/ao3"
             android:scaleType="centerCrop"/>
     </androidx.cardview.widget.CardView>
 

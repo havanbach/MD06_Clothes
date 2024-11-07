@@ -117,7 +117,7 @@
                 android:layout_height="wrap_content">
 
                 <EditText
-                    android:id="@+id/textPassword"
+                    android:id="@+id/edt_sign_up_confirm"
                     android:hint="Nhập lại mật khẩu"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"

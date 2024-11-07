@@ -147,6 +147,25 @@ public class SignUpActivity extends AppCompatActivity {
         });
     }
 
+
+    // Kiểm tra email có đúng định dạng hay không
+    private boolean isValidEmail(String email) {
+        String emailPattern = "^[a-zA-Z0-9_+&*-]+(?:\\.[a-zA-Z0-9_+&*-]+)*@(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,7}$";
+        Pattern pattern = Pattern.compile(emailPattern);
+        return pattern.matcher(email).matches();
+    }
+
+    // Kiểm tra mật khẩu có đúng định dạng hay không
+    // (?=.*[a-z]): Yêu cầu ít nhất một chữ cái viết thường.
+    // (?=.*[A-Z]): Yêu cầu ít nhất một chữ cái viết hoa.
+    // (?=.*\\d): Yêu cầu ít nhất một chữ số.
+    // (?=.*[@$!%*?&]): Yêu cầu ít nhất một ký tự đặc biệt (các ký tự đặc biệt trong ví dụ này là @$!%*?&).
+    // [A-Za-z\\d@$!%*?&]{6,}$: Đảm bảo mật khẩu có độ dài tối thiểu là 6 ký tự và chỉ chứa các ký tự hợp lệ
+    private boolean isValidPassword(String password) {
+        String passwordPattern = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*?&])[A-Za-z\\d@$!%*?&]{6,}$";
+        return password.matches(passwordPattern);
+    }
+
     // Kiểm tra dữ liệu đầu vào
     private boolean validateInputs(String email, String password, String confirm) {
         if (email.isEmpty()) {
@@ -161,6 +180,10 @@ public class SignUpActivity extends AppCompatActivity {
             Toast.makeText(this, "Bạn chưa nhập mật khẩu", Toast.LENGTH_SHORT).show();
             return false;
         }
+        if (!isValidPassword(password)) {
+            Toast.makeText(this, "Mật khẩu phải có ít nhất 6 kí tự, gồm chữ hoa, chữ thường và kí tự đặc biệt", Toast.LENGTH_SHORT).show();
+            return false;
+        }
         if (!password.equals(confirm)) {
             Toast.makeText(this, "Mật khẩu xác nhận không khớp.\nVui lòng nhập lại!", Toast.LENGTH_SHORT).show();
             return false;
@@ -168,12 +191,7 @@ public class SignUpActivity extends AppCompatActivity {
         return true;
     }
 
-    // Kiểm tra email có đúng định dạng hay không
-    private boolean isValidEmail(String email) {
-        String emailPattern = "^[a-zA-Z0-9_+&*-]+(?:\\.[a-zA-Z0-9_+&*-]+)*@(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,7}$";
-        Pattern pattern = Pattern.compile(emailPattern);
-        return pattern.matcher(email).matches();
-    }
+
 
     private void InitWidget() {
         edtSignUpEmail = findViewById(R.id.edt_sign_up_email);

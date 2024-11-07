@@ -54,7 +54,7 @@
     // Huỳnh xây dựng string cho Onboarding sc
     <string name="screen1"> Shopping with our </string>
     <string name="screen2"> Luxury </string>
-    <string name="screen3">/ Modern and cheap </string>
+    <string name="screen3"> Modern and cheap </string>
     <string name="screen1desc"> Where can I find a pair of pants (shirts) that are as good in fabric and super
         smooth seams as our shop? Hurry up and grab it now for a super cheap price.</string>
     <string name="screen2desc"> Learn to love yourself, simply buy new clothes and

@@ -27,7 +27,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true"
-                android:text="Thoi trang"
+                android:text="Thời trang"
                 android:textColor="#FF5722"
                 android:textSize="30dp"
                 android:textStyle="bold" />

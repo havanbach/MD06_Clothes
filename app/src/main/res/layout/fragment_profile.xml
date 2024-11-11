@@ -35,7 +35,7 @@
                 android:textSize="12dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Logout"/>
+                android:text="Đăng xuất"/>
         </LinearLayout>
     <LinearLayout
         android:layout_width="match_parent"
@@ -105,7 +105,7 @@
 
     <EditText
         android:id="@+id/edt_full_name"
-        android:hint="Full name"
+        android:hint="Họ tên"
         android:background="@drawable/custom_edittext"
         android:drawablePadding="12dp"
         android:paddingStart="12dp"
@@ -122,7 +122,7 @@
 
     <EditText
         android:id="@+id/edt_address"
-        android:hint="Address"
+        android:hint="Địa chỉ"
         android:background="@drawable/custom_edittext"
         android:drawablePadding="12dp"
         android:paddingStart="12dp"
@@ -139,7 +139,7 @@
     <EditText
         android:inputType="number"
         android:id="@+id/edt_phone"
-        android:hint="Phone Number"
+        android:hint="Số điện thoại"
         android:background="@drawable/custom_edittext"
         android:drawablePadding="12dp"
         android:paddingStart="12dp"
@@ -158,7 +158,7 @@
         android:cursorVisible="false"
         android:focusable="false"
         android:id="@+id/edt_date"
-        android:hint="Date of birth"
+        android:hint="Năm sinh"
         android:background="@drawable/custom_edittext"
         android:drawablePadding="12dp"
         android:paddingStart="12dp"
@@ -192,7 +192,7 @@
                     android:layout_marginStart="12dp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Gender : "
+                    android:text="Giới tính: "
                     android:textSize="18sp"
                     android:textColor="@color/black"/>
                 <RadioGroup

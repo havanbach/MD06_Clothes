@@ -27,6 +27,15 @@
         tools:targetApi="34">
 
         <activity
+            android:name=".View.CommentActivity"
+            android:exported="false" />
+        <activity
+            android:name=".View.CartActivity"
+            android:exported="false" />
+        <activity
+            android:name=".View.DetailSPActivity"
+            android:exported="false" />
+        <activity
             android:name=".View.SearchActivity"
             android:exported="false" />
         <activity

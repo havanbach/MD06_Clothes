@@ -19,8 +19,8 @@ public class ViewPagerAdapter extends PagerAdapter {
     //chia 3 Onboarding Walkthrough Screen
     int sliderAllImages[] = {
             R.drawable.shopping,
-            R.drawable.slider2,
-            R.drawable.slider3,
+            R.drawable.shorts,
+            R.drawable.live,
     };
 
     int sliderAllTitle[] = {

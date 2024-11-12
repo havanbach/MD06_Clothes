@@ -78,7 +78,7 @@
         android:id="@+id/btn_started"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Let's Get Started"
+        android:text="Bắt đầu thôi!"
         android:backgroundTint="#795548"
         android:textColor="#fff"
         android:layout_margin="16dp" />

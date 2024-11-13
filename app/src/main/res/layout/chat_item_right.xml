@@ -24,7 +24,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="@drawable/background_right"
-            android:text="I am Chinh"
+            android:text="Tôi là Hiệp"
             android:textColor="#fff"
             android:padding="8dp"/>
 
@@ -33,7 +33,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/tv_seen"
-            android:text="Seen"
+            android:text="Xem"
             android:layout_below="@+id/tv_show_msg"
             android:layout_alignParentRight="true"/>
 

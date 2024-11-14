@@ -38,7 +38,7 @@
                     android:id="@+id/cir_avatar_home"
                     android:layout_width="0dp"
                     android:layout_height="40dp"
-                    android:src="@drawable/thoi"/>
+                    android:src="@drawable/slider3"/>
                 <EditText
                     android:clickable="false"
                     android:cursorVisible="false"
@@ -196,7 +196,7 @@
                 android:layout_width="370dp"
                 android:layout_height="130dp"
                 android:layout_marginStart="20dp"
-                android:background="@drawable/thoi"/>
+                android:background="@drawable/qc1"/>
             <TextView
                 android:layout_marginTop="5dp"
                 android:id="@+id/txtsp"
@@ -215,6 +215,12 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"/>
 
+            <ImageView
+                android:layout_marginTop="10dp"
+                android:layout_width="370dp"
+                android:layout_height="130dp"
+                android:layout_marginStart="20dp"
+                android:background="@drawable/qc1"/>
             <TextView
                 android:layout_marginTop="10dp"
                 android:layout_width="wrap_content"
@@ -232,8 +238,12 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"/>
 
-
-
+            <ImageView
+                android:layout_marginTop="10dp"
+                android:layout_width="370dp"
+                android:layout_height="130dp"
+                android:layout_marginStart="20dp"
+                android:background="@drawable/qc1"/>
 
             <TextView
                 android:layout_width="wrap_content"
@@ -274,6 +284,12 @@
                 android:layout_marginStart="20dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
+            <ImageView
+                android:layout_marginTop="10dp"
+                android:layout_width="370dp"
+                android:layout_height="130dp"
+                android:layout_marginStart="20dp"
+                android:background="@drawable/qc1"/>
 
             <TextView
                 android:layout_width="wrap_content"
@@ -349,7 +365,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
                 android:layout_marginStart="20dp"
-                android:text="Bán chạy nhất | ĐÁo hoodie
+                android:text="Bán chạy nhất | Áo hoodie
 "
                 android:textColor="#228b22"
                 android:textSize="16sp"

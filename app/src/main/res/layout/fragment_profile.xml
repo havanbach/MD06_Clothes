@@ -80,7 +80,7 @@
                 android:textColor="#2196F3"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="nguyenchinh992000@gmail.com"/>
+                android:text="nguyenvana9999@gmail.com"/>
 
             <LinearLayout
                 android:layout_gravity="center"
@@ -105,7 +105,7 @@
 
     <EditText
         android:id="@+id/edt_full_name"
-        android:hint="Họ tên"
+        android:hint="Họ và tên:"
         android:background="@drawable/custom_edittext"
         android:drawablePadding="12dp"
         android:paddingStart="12dp"

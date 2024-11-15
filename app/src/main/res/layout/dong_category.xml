@@ -18,7 +18,7 @@
             android:id="@+id/img_category"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:src="@drawable/logo3"
+            android:src="@drawable/aonoibat"
             android:scaleType="centerCrop"/>
     </androidx.cardview.widget.CardView>
 

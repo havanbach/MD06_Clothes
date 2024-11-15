@@ -36,8 +36,8 @@ import com.example.md06_clothes.R;
 import com.example.md06_clothes.View.CartActivity;
 import com.example.md06_clothes.View.CategoryActivity;
 import com.example.md06_clothes.View.ChatActivity;
-import com.example.md06_clothes.View.DetailSPActivity;
 
+import com.example.md06_clothes.View.DetailSPActivity;
 import com.example.md06_clothes.View.SearchActivity;
 import com.example.md06_clothes.my_interface.IClickCTHD;
 import com.example.md06_clothes.my_interface.IClickLoaiProduct;

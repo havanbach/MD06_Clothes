@@ -110,8 +110,8 @@
                     android:layout_height="wrap_content">
                     <androidx.viewpager.widget.ViewPager
                         android:id="@+id/viewpager"
-                        android:layout_width="390dp"
-                        android:layout_height="120dp" />
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
                     <me.relex.circleindicator.CircleIndicator
                         android:layout_alignBottom="@id/viewpager"
                         android:layout_centerHorizontal="true"
@@ -135,14 +135,17 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal">
+
                     <TextView
-                        android:textColor="#228b22"
-                        android:textSize="16sp"
-                        android:textStyle="bold"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Xin chào"
-                        android:layout_marginEnd="5dp"/>
+                        android:layout_marginEnd="5dp"
+                        android:fontFamily="@font/akronim"
+                        android:textStyle="bold"
+                        android:text="Clothes xin chào !"
+                        android:textColor="#228b22"
+                        android:textSize="20dp" />
+
                     <TextView
                         android:textColor="#228b22"
                         android:id="@+id/tv_name_home"

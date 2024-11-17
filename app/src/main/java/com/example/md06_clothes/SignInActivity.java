@@ -27,6 +27,7 @@ import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
 import com.example.md06_clothes.Models.Admin;
 import com.example.md06_clothes.View.Admin.AdminHomeActivity;
+import com.example.md06_clothes.View.ForgotPasswordActivity;
 import com.example.md06_clothes.ultil.MyReceiver;
 import com.example.md06_clothes.ultil.NetworkUtil;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -182,6 +183,13 @@ public class SignInActivity extends AppCompatActivity {
                     Toast.makeText(SignInActivity.this, "Bạn chưa nhập tài khoản", Toast.LENGTH_SHORT).show();
                 }
 
+            }
+        });
+        tvForgotPassword.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intentForgot = new Intent(SignInActivity.this, ForgotPasswordActivity.class);
+                startActivity(intentForgot);
             }
         });
     }

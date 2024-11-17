@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools">
+    xmlns:tools="http://schemas.android.com/tools" >
 
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.INTERNET" />
@@ -24,7 +24,10 @@
         android:theme="@style/Theme.MD06_Clothes"
         android:usesCleartextTraffic="true"
         tools:replace="android:theme"
-        tools:targetApi="34">
+        tools:targetApi="34" >
+        <activity
+            android:name=".View.DetailSPActivity"
+            android:exported="false" />
         <activity
             android:name=".View.DetailSPActivity"
             android:exported="false" />
@@ -35,13 +38,13 @@
             android:name=".View.CartActivity"
             android:exported="false" />
         <activity
-            android:name=".View.DetailSPActivity"
-            android:exported="false" />
-        <activity
             android:name=".View.SearchActivity"
             android:exported="false" />
         <activity
             android:name=".View.ForgotPasswordActivity"
+            android:exported="false" />
+        <activity
+            android:name=".View.CategoryActivity"
             android:exported="false" />
         <activity
             android:name=".WelcomeScreen"
@@ -60,7 +63,7 @@
             android:exported="false" />
         <activity
             android:name=".SplashActivity"
-            android:exported="true">
+            android:exported="true" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

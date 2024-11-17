@@ -611,7 +611,6 @@ public class HomeFragment extends Fragment {
                 startActivity(intent);
             }
         });
-
         rcvDSSP = view.findViewById(R.id.rcv_ds_sanpham);
         rcvSPNoiBat = view.findViewById(R.id.rcv_sp_noibat);
         rcvSPDoUong = view.findViewById(R.id.rcv_sp_douong);

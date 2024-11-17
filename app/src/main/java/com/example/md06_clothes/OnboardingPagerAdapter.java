@@ -12,7 +12,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.viewpager.widget.PagerAdapter;
 
-public class ViewPagerAdapter extends PagerAdapter {
+public class OnboardingPagerAdapter extends PagerAdapter {
 
     Context context;
 
@@ -35,7 +35,7 @@ public class ViewPagerAdapter extends PagerAdapter {
             R.string.screen3desc,
     };
 
-    public ViewPagerAdapter(Context context){
+    public OnboardingPagerAdapter(Context context){
         this.context = context;
     }
 

@@ -17,7 +17,7 @@ public class NavigationActivity extends AppCompatActivity {
     LinearLayout dotIndicator;
     Button backButton, nextButton, skipButton;
     TextView[] dots;
-    ViewPagerAdapter viewPagerAdapter;
+    OnboardingPagerAdapter onboardingPagerAdapter;
     ViewPager.OnPageChangeListener viewPagerListener = new ViewPager.OnPageChangeListener() {
         @Override
         public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
@@ -88,8 +88,8 @@ public class NavigationActivity extends AppCompatActivity {
         slideViewPager = (ViewPager) findViewById(R.id.slideViewPager);
         dotIndicator = (LinearLayout) findViewById(R.id.dotIndicator);
 
-        viewPagerAdapter = new ViewPagerAdapter(this);
-        slideViewPager.setAdapter(viewPagerAdapter);
+        onboardingPagerAdapter = new OnboardingPagerAdapter(this);
+        slideViewPager.setAdapter(onboardingPagerAdapter);
 
         setDotIndicator(0);
         slideViewPager.addOnPageChangeListener(viewPagerListener);

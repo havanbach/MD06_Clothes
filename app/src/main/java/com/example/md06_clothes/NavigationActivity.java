@@ -11,6 +11,8 @@ import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.viewpager.widget.ViewPager;
 
+import com.example.md06_clothes.Adapter.OnboardingPagerAdapter;
+
 public class NavigationActivity extends AppCompatActivity {
 
     ViewPager slideViewPager;

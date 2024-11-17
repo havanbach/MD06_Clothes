@@ -1,4 +1,4 @@
-package com.example.md06_clothes;
+package com.example.md06_clothes.Adapter;
 
 
 import android.content.Context;
@@ -11,6 +11,8 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.viewpager.widget.PagerAdapter;
+
+import com.example.md06_clothes.R;
 
 public class OnboardingPagerAdapter extends PagerAdapter {
 

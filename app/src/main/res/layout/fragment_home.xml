@@ -201,13 +201,15 @@
                 android:layout_marginStart="20dp"
                 android:layout_margin="20dp"
                 android:background="@drawable/qc1"/>
+
             <TextView
-                android:layout_marginTop="5dp"
                 android:id="@+id/txtsp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="20dp"
+                android:layout_marginTop="5dp"
                 android:elevation="5dp"
+                android:fontFamily="@font/akronim"
                 android:text="Bán chạy nhất | Thời trang đường phố"
                 android:textColor="#228b22"
                 android:textSize="16sp"
@@ -221,16 +223,18 @@
 
             <ImageView
                 android:layout_marginTop="10dp"
-                android:layout_width="370dp"
+                android:layout_width="match_parent"
                 android:layout_height="130dp"
                 android:layout_marginStart="20dp"
-                android:background="@drawable/qc1"/>
+                android:layout_margin="20dp"
+                android:background="@drawable/posterhome1"/>
             <TextView
                 android:layout_marginTop="10dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="20dp"
                 android:elevation="5dp"
+                android:fontFamily="@font/akronim"
                 android:text="Bán chạy nhất | Du lịch biển"
                 android:textColor="#228b22"
                 android:textSize="16sp"
@@ -244,16 +248,18 @@
 
             <ImageView
                 android:layout_marginTop="10dp"
-                android:layout_width="370dp"
+                android:layout_width="match_parent"
                 android:layout_height="130dp"
                 android:layout_marginStart="20dp"
-                android:background="@drawable/qc1"/>
+                android:layout_margin="20dp"
+                android:background="@drawable/posterhome2"/>
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="20dp"
                 android:layout_marginTop="10dp"
+                android:fontFamily="@font/akronim"
                 android:text="Bán chạy nhất | Thời trang cao cấp"
                 android:textColor="#228b22"
                 android:textSize="16sp"
@@ -268,9 +274,10 @@
 
             <ImageView
                 android:layout_marginTop="10dp"
-                android:layout_width="370dp"
+                android:layout_width="match_parent"
                 android:layout_height="130dp"
                 android:layout_marginStart="20dp"
+                android:layout_margin="20dp"
                 android:background="@drawable/sale" />
 
             <TextView
@@ -278,6 +285,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="20dp"
                 android:layout_marginTop="10dp"
+                android:fontFamily="@font/akronim"
                 android:text="Bán chạy nhất | Thời trang công sở"
                 android:textColor="#228b22"
                 android:textSize="16sp"
@@ -288,18 +296,21 @@
                 android:layout_marginStart="20dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
+
             <ImageView
-                android:layout_marginTop="10dp"
-                android:layout_width="370dp"
+                android:layout_width="match_parent"
                 android:layout_height="130dp"
+                android:layout_margin="20dp"
                 android:layout_marginStart="20dp"
-                android:background="@drawable/qc1"/>
+                android:layout_marginTop="10dp"
+                android:background="@drawable/posterhome3" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="20dp"
                 android:layout_marginTop="10dp"
+                android:fontFamily="@font/akronim"
                 android:text="Bán chạy nhất | Thời trang thể thao"
                 android:textColor="#228b22"
                 android:textSize="16sp"
@@ -312,17 +323,19 @@
                 android:layout_height="wrap_content" />
 
             <ImageView
-                android:layout_width="370dp"
-                android:layout_height="80dp"
                 android:layout_marginTop="10dp"
+                android:layout_width="match_parent"
+                android:layout_height="130dp"
                 android:layout_marginStart="20dp"
-                android:background="@drawable/sale"/>
+                android:layout_margin="20dp"
+                android:background="@drawable/posterhome4"/>
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
                 android:layout_marginStart="20dp"
+                android:fontFamily="@font/akronim"
                 android:text="Bán chạy nhất | Áo thun"
                 android:textColor="#228b22"
                 android:textSize="16sp"
@@ -336,10 +349,11 @@
 
             <ImageView
                 android:layout_marginTop="10dp"
+                android:layout_width="match_parent"
+                android:layout_height="130dp"
                 android:layout_marginStart="20dp"
-                android:layout_width="390dp"
-                android:layout_height="100dp"
-                android:background="@drawable/sale"/>
+                android:layout_margin="20dp"
+                android:background="@drawable/posterhome7"/>
 
             <TextView
                 android:layout_marginTop="10dp"
@@ -347,6 +361,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Bán chạy nhất | Đồ ngủ "
+                android:fontFamily="@font/akronim"
                 android:textColor="#228b22"
                 android:textSize="16sp"
                 android:textStyle="bold" />
@@ -358,19 +373,20 @@
                 android:layout_height="wrap_content" />
 
             <ImageView
-                android:layout_width="380dp"
-                android:layout_height="100dp"
                 android:layout_marginTop="10dp"
+                android:layout_width="match_parent"
+                android:layout_height="130dp"
                 android:layout_marginStart="20dp"
-                android:background="@drawable/sale"/>
+                android:layout_margin="20dp"
+                android:background="@drawable/posterhome6"/>
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
                 android:layout_marginStart="20dp"
-                android:text="Bán chạy nhất | Áo hoodie
-"
+                android:text="Bán chạy nhất | Áo hoodie"
+                android:fontFamily="@font/akronim"
                 android:textColor="#228b22"
                 android:textSize="16sp"
                 android:textStyle="bold" />

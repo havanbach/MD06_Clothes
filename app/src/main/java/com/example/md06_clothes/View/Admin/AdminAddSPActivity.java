@@ -69,7 +69,7 @@ public class AdminAddSPActivity extends AppCompatActivity implements AdapterView
 //                }
 //            }
 //        });
-//        Event();
+        Event();
     }
 
     private void Event() {
@@ -94,6 +94,20 @@ public class AdminAddSPActivity extends AppCompatActivity implements AdapterView
             @Override
             public void onClick(View view) {
                 pickImage();
+            }
+        });
+        btnRefresh.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                edtsizeSP.setText("");
+                edtchatlieuSP.setText("");
+                edtTenSP.setText("");
+                edtGiatienSP.setText("");
+                edtTypeSP.setText("");
+                edtMotaSP.setText("");
+                edtSoluongSP.setText("");
+                image = "";
+                imgAdd.setImageResource(R.drawable.pl);
             }
         });
     }

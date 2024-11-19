@@ -4,6 +4,8 @@ import android.Manifest;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
@@ -31,7 +33,16 @@ import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
+import com.google.zxing.BarcodeFormat;
+import com.google.zxing.MultiFormatWriter;
+import com.google.zxing.common.BitMatrix;
+import com.journeyapps.barcodescanner.BarcodeEncoder;
 
+import java.io.ByteArrayOutputStream;
+import java.util.HashMap;
 import java.util.List;
 
 import de.hdodenhof.circleimageview.CircleImageView;
@@ -232,6 +243,47 @@ public class AdminAddSPActivity extends AppCompatActivity implements AdapterView
                                 }
                             });
                 } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+        btnQRProduct.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                MultiFormatWriter writer = new MultiFormatWriter();
+                try {
+
+                    BitMatrix matrix = writer.encode(product.getId(), BarcodeFormat.QR_CODE, 350, 350);
+                    BarcodeEncoder encoder = new BarcodeEncoder();
+                    Bitmap bitmap = encoder.createBitmap(matrix);
+
+                    ByteArrayOutputStream baos = new ByteArrayOutputStream();
+                    bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
+                    byte[] data = baos.toByteArray();
+                    String filename = System.currentTimeMillis() + "";
+                    StorageReference storageReference;
+                    storageReference = FirebaseStorage.getInstance("gs://doan-dc57a.appspot.com/").getReference();
+                    storageReference.child("QRProduct").child(filename + ".jpg").putBytes(data).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                        @Override
+                        public void onSuccess(@NonNull UploadTask.TaskSnapshot taskSnapshot) {
+                            if (taskSnapshot.getTask().isSuccessful()) {
+                                storageReference.child("QRProduct").child(filename + ".jpg").getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                                    @Override
+                                    public void onSuccess(@NonNull Uri uri) {
+                                        imgQRProduct.setImageBitmap(bitmap);
+                                        HashMap<String, String> maps = new HashMap<>();
+                                        maps.put("idproduct", product.getId());
+                                        maps.put("hinhanh_qr", uri.toString());
+                                        db.collection("QRProduct").add(maps);
+                                    }
+                                });
+
+                            }
+                            dialog.dismiss();
+                        }
+                    });
+
+                } catch (Exception e){
                     e.printStackTrace();
                 }
             }

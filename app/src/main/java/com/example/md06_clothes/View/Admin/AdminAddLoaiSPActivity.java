@@ -21,6 +21,9 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
+import com.squareup.picasso.Picasso;
 
 public class AdminAddLoaiSPActivity extends AppCompatActivity {
     private ImageView imgBackThemLoai, imgThemLoai;
@@ -36,7 +39,7 @@ public class AdminAddLoaiSPActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_admin_add_loai_spactivity);
 //
-//        Init();
+        Init();
         Event();
 
     }
@@ -82,7 +85,32 @@ public class AdminAddLoaiSPActivity extends AppCompatActivity {
             }
         });
     }
+    private void Init() {
+        imgBackThemLoai = findViewById(R.id.img_back_themloai);
+        imgThemLoai = findViewById(R.id.image_them_loai);
+        edtThemLoai = findViewById(R.id.edt_them_loai);
+        btnThemLoai = findViewById(R.id.btn_them_loai);
 
+        // Dialog
+        dialog = new ProgressDialog(this); // this = YourActivity
+        dialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+        dialog.setTitle("Upload image");
+        dialog.setMessage("Uploading. Please wait...");
+        dialog.setIndeterminate(true);
+        dialog.setCanceledOnTouchOutside(false);
+
+        Intent intent = getIntent();
+        String a = intent.getStringExtra("loaisp");
+        edtThemLoai.setText(a);
+        db.collection("LoaiProduct").whereEqualTo("tenloai", a).get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+            @Override
+            public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+                for (QueryDocumentSnapshot q : queryDocumentSnapshots){
+                    Picasso.get().load(q.getString("hinhanhloai")).into(imgThemLoai);
+                }
+            }
+        });
+    }
 
     private void pickImage() {
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {

@@ -200,6 +200,42 @@ public class AdminAddSPActivity extends AppCompatActivity implements AdapterView
                 }
             }
         });
+        btnEdit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (!validate()) {
+                    return;
+                }
+                try {
+                    Product sp = new Product();
+                    sp.setGiatien(Long.parseLong(edtGiatienSP.getText().toString()));
+                    sp.setMota(edtMotaSP.getText().toString());
+                    sp.setsize(edtsizeSP.getText().toString());
+                    sp.setType(Long.parseLong(edtTypeSP.getText().toString()));
+                    sp.setTensp(edtTenSP.getText().toString());
+                    sp.setSoluong(Long.parseLong(edtSoluongSP.getText().toString()));
+                    sp.setchatlieu(edtchatlieuSP.getText().toString());
+                    sp.setLoaisp(spinnerDanhMuc.getSelectedItem().toString());
+                    sp.setHinhanh(image);
+                    db.collection("SanPham").document(product.getId()).set(sp)
+                            .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                @Override
+                                public void onSuccess(@NonNull Void unused) {
+                                    Toast.makeText(AdminAddSPActivity.this, "Cập nhật sản phẩm thành công!!!", Toast.LENGTH_SHORT).show();
+                                    setResult(RESULT_OK);
+                                    finish();
+                                }
+                            }).addOnFailureListener(new OnFailureListener() {
+                                @Override
+                                public void onFailure(@NonNull Exception e) {
+                                    Toast.makeText(AdminAddSPActivity.this, "Cập nhật sản phẩm thất bại!!!", Toast.LENGTH_SHORT).show();
+                                }
+                            });
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
     }
     private void pickImage() {
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {

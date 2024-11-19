@@ -9,11 +9,17 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 
+import com.example.md06_clothes.Models.LoaiProduct;
 import com.example.md06_clothes.R;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 public class AdminAddLoaiSPActivity extends AppCompatActivity {
@@ -49,7 +55,34 @@ public class AdminAddLoaiSPActivity extends AppCompatActivity {
                 pickImage();
             }
         });
+        btnThemLoai.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                try {
+                    LoaiProduct sp = new LoaiProduct();
+                    sp.setTenloai(edtThemLoai.getText().toString().trim());
+                    sp.setHinhanh(image);
+                    db.collection("LoaiProduct").add(sp).addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+                        @Override
+                        public void onSuccess(@NonNull DocumentReference documentReference) {
+                            Toast.makeText(AdminAddLoaiSPActivity.this, "Thành công!!!", Toast.LENGTH_SHORT).show();
+                            setResult(RESULT_OK);
+                            finish();
+
+                        }
+                    }).addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+                            Toast.makeText(AdminAddLoaiSPActivity.this, "Thất bại!!!", Toast.LENGTH_SHORT).show();
+                        }
+                    });
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
     }
+
 
     private void pickImage() {
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {

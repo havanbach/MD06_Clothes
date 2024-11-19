@@ -4,7 +4,11 @@ import android.Manifest;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -23,7 +27,14 @@ import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 import com.squareup.picasso.Picasso;
+
+import java.io.ByteArrayOutputStream;
+import java.io.FileNotFoundException;
+import java.io.InputStream;
 
 public class AdminAddLoaiSPActivity extends AppCompatActivity {
     private ImageView imgBackThemLoai, imgThemLoai;
@@ -119,6 +130,8 @@ public class AdminAddLoaiSPActivity extends AppCompatActivity {
             pickImage();
         }
     }
+
+
     private void pickImage() {
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},
@@ -128,6 +141,47 @@ public class AdminAddLoaiSPActivity extends AppCompatActivity {
             intent.setType("image/*");
             intent.setAction(Intent.ACTION_PICK);
             startActivityForResult(Intent.createChooser(intent, "Select Image"), library_picker);
+        }
+    }
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (requestCode == library_picker && resultCode == RESULT_OK && null != data) {
+            try {
+
+                dialog.show();
+                Uri uri = data.getData();
+                InputStream inputStream = getContentResolver().openInputStream(uri);
+                Bitmap bitmap = BitmapFactory.decodeStream(inputStream);
+
+                ByteArrayOutputStream baos = new ByteArrayOutputStream();
+                bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
+                byte[] datas = baos.toByteArray();
+                String filename = System.currentTimeMillis() + "";
+                StorageReference storageReference;
+                storageReference = FirebaseStorage.getInstance("gs://doan-dc57a.appspot.com/").getReference();
+                storageReference.child("Profile").child(filename + ".jpg").putBytes(datas).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                    @Override
+                    public void onSuccess(@NonNull UploadTask.TaskSnapshot taskSnapshot) {
+                        if (taskSnapshot.getTask().isSuccessful()) {
+                            storageReference.child("Profile").child(filename + ".jpg").getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                                @Override
+                                public void onSuccess(@NonNull Uri uri) {
+                                    imgThemLoai.setImageBitmap(bitmap);
+                                    image = uri.toString();
+                                }
+                            });
+                            Toast.makeText(AdminAddLoaiSPActivity.this, "Thành công", Toast.LENGTH_SHORT).show();
+                        }
+                        dialog.dismiss();
+                    }
+                });
+            } catch (FileNotFoundException e) {
+                Log.d("CHECKED", e.getMessage());
+                dialog.dismiss();
+            }
+
         }
     }
 }

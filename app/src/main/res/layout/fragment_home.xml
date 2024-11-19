@@ -210,7 +210,7 @@
                 android:layout_marginTop="5dp"
                 android:elevation="5dp"
                 android:fontFamily="@font/akronim"
-                android:text="Bán chạy nhất | Thời trang đường phố"
+                android:text="Bán chạy nhất | Thời trang hot"
                 android:textColor="#228b22"
                 android:textSize="16sp"
                 android:textStyle="bold" />
@@ -260,7 +260,7 @@
                 android:layout_marginStart="20dp"
                 android:layout_marginTop="10dp"
                 android:fontFamily="@font/akronim"
-                android:text="Bán chạy nhất | Thời trang cao cấp"
+                android:text="Bán chạy nhất | Cao cấp"
                 android:textColor="#228b22"
                 android:textSize="16sp"
                 android:textStyle="bold" />
@@ -286,7 +286,7 @@
                 android:layout_marginStart="20dp"
                 android:layout_marginTop="10dp"
                 android:fontFamily="@font/akronim"
-                android:text="Bán chạy nhất | Thời trang công sở"
+                android:text="Bán chạy nhất | Công sở"
                 android:textColor="#228b22"
                 android:textSize="16sp"
                 android:textStyle="bold" />
@@ -311,7 +311,7 @@
                 android:layout_marginStart="20dp"
                 android:layout_marginTop="10dp"
                 android:fontFamily="@font/akronim"
-                android:text="Bán chạy nhất | Thời trang thể thao"
+                android:text="Bán chạy nhất | Thể thao"
                 android:textColor="#228b22"
                 android:textSize="16sp"
                 android:textStyle="bold" />

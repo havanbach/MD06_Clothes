@@ -5,6 +5,7 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.AdapterView;
@@ -14,6 +15,7 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatButton;
@@ -21,7 +23,10 @@ import androidx.core.app.ActivityCompat;
 
 import com.example.md06_clothes.Models.Product;
 import com.example.md06_clothes.R;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.List;
 
@@ -108,6 +113,50 @@ public class AdminAddSPActivity extends AppCompatActivity implements AdapterView
                 edtSoluongSP.setText("");
                 image = "";
                 imgAdd.setImageResource(R.drawable.pl);
+            }
+        });
+        // Nếu xóa bất kỳ 1 sản phẩm nào đó thì những hóa đơn có chứa sản phẩm đó cũng phải bị xóa hoặc dùng nhiều cách khác.
+        // Ở đây lựa chọn xóa luôn hóa đơn chứa sản phẩm bị xóa.
+        btnDelete.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                db.collection("SanPham").document(product.getId()).delete().addOnSuccessListener(unused -> {
+                    db.collection("IDUser").get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+                        @Override
+                        public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+                            for (QueryDocumentSnapshot q: queryDocumentSnapshots){
+                                Log.d("checkiduser", q.getString("iduser"));
+
+                                // Từ iduser mà ta có, lấy ra tất cả id_hoadon có id_product là KlUnpxIGoIFkHlvshil2
+                                db.collection("ChitietHoaDon").document(q.getString("iduser")).
+                                        collection("ALL").whereEqualTo("id_product", product.getId()).get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+                                            @Override
+                                            public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+                                                for (QueryDocumentSnapshot d: queryDocumentSnapshots){
+                                                    Log.d("checkidhoadon", d.getString("id_hoadon"));
+
+                                                    // Từ id_hoadon mà ta có, thực hiện xóa id hóa đơn của bảng HoaDon
+                                                    db.collection("HoaDon").document(d.getString("id_hoadon")).delete().addOnSuccessListener(new OnSuccessListener<Void>() {
+                                                        @Override
+                                                        public void onSuccess(Void unused) {
+                                                            Toast.makeText(AdminAddSPActivity.this, "Xoá sản phẩm thành công!!!", Toast.LENGTH_SHORT).show();
+                                                        }
+                                                    });
+//                                            db.collection("QRproduct").document(product.getId()).delete();
+                                                }
+                                            }
+                                        });
+                            }
+
+                        }
+                    });
+
+                    setResult(RESULT_OK);
+                    finish();
+                }).addOnFailureListener(e -> {
+                    Toast.makeText(AdminAddSPActivity.this, "Xoá sản phẩm thất bại!!!", Toast.LENGTH_SHORT).show();
+                });
+
             }
         });
     }

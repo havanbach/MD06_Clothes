@@ -13,7 +13,7 @@ import androidx.viewpager.widget.ViewPager;
 
 
 import com.example.md06_clothes.R;
-import com.example.md06_clothes.OnboardingPagerAdapter;
+import com.example.md06_clothes.Adapter.OnboardingPagerAdapter;
 import com.google.android.material.tabs.TabLayout;
 
 public class BillFragment extends Fragment {

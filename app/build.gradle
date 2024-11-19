@@ -65,6 +65,7 @@ dependencies {
     implementation libs.activity
     implementation libs.navigation.fragment
     implementation libs.navigation.ui
+    implementation libs.cardview
 
     // Thêm các test dependencies
     testImplementation 'junit:junit:4.13.2'

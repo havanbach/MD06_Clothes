@@ -6,6 +6,7 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
@@ -48,6 +49,8 @@ import com.journeyapps.barcodescanner.BarcodeEncoder;
 import com.squareup.picasso.Picasso;
 
 import java.io.ByteArrayOutputStream;
+import java.io.FileNotFoundException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -82,8 +85,8 @@ public class AdminAddSPActivity extends AppCompatActivity implements AdapterView
         setContentView(R.layout.activity_admin_add_spactivity);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
-//        InitWidget();
-//        Init();
+        InitWidget();
+        Init();
 
 //        // Test: Lấy ra id của hóa đơn từ bảng HoaDon
 //        db.collection("HoaDon").get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
@@ -442,7 +445,78 @@ public class AdminAddSPActivity extends AppCompatActivity implements AdapterView
 
         return true;
     }
+    private void InitWidget() {
+        btnDownQRProduct = findViewById(R.id.btn_down_qr_product);
+        tvTaoMaQR = findViewById(R.id.tv_taomaqr);
+        imgQRProduct = findViewById(R.id.img_qr_product);
+        btnQRProduct = findViewById(R.id.btn_qr_product);
+        tvTitle = findViewById(R.id.tv_title);
+        imgAddLoaiProduct = findViewById(R.id.img_add_loaiproduct);
+        btnAddBack = findViewById(R.id.btn_add_back);
+        btnRefresh = findViewById(R.id.btn_refresh);
+        btnSave = findViewById(R.id.btn_save);
+        edtTenSP = findViewById(R.id.edt_tensp);
+        edtGiatienSP = findViewById(R.id.edt_giatiensp);
+        edtsizeSP = findViewById(R.id.edt_sizesp);
+        edtchatlieuSP = findViewById(R.id.edt_chatlieusp);
+        edtSoluongSP = findViewById(R.id.edt_soluongsp);
+        edtTypeSP = findViewById(R.id.edt_typesp);
+        edtMotaSP = findViewById(R.id.edt_motasp);
+        imgAdd = findViewById(R.id.themanh);
+        btnDanhmuc = findViewById(R.id.btn_danhmuc);
+        btnDelete = findViewById(R.id.btn_delete);
+        btnEdit = findViewById(R.id.btn_edit);
+        spinnerDanhMuc = findViewById(R.id.spinner_danhmuc);
 
+        // Dialog
+        dialog = new ProgressDialog(this); // this = YourActivity
+        dialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+        dialog.setTitle("Upload image");
+        dialog.setMessage("Uploading. Please wait...");
+        dialog.setIndeterminate(true);
+        dialog.setCanceledOnTouchOutside(false);
+    }
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (requestCode == LIBRARY_PICKER && resultCode == RESULT_OK && null != data) {
+            try {
+
+                dialog.show();
+                Uri uri = data.getData();
+                InputStream inputStream = getContentResolver().openInputStream(uri);
+                Bitmap bitmap = BitmapFactory.decodeStream(inputStream);
+
+                ByteArrayOutputStream baos = new ByteArrayOutputStream();
+                bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
+                byte[] datas = baos.toByteArray();
+                String filename = System.currentTimeMillis() + "";
+                StorageReference storageReference;
+                storageReference = FirebaseStorage.getInstance("gs://doan-dc57a.appspot.com/").getReference();
+                storageReference.child("Profile").child(filename + ".jpg").putBytes(datas).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                    @Override
+                    public void onSuccess(@NonNull UploadTask.TaskSnapshot taskSnapshot) {
+                        if (taskSnapshot.getTask().isSuccessful()) {
+                            storageReference.child("Profile").child(filename + ".jpg").getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                                @Override
+                                public void onSuccess(@NonNull Uri uri) {
+                                    imgAdd.setImageBitmap(bitmap);
+                                    image = uri.toString();
+                                }
+                            });
+                            Toast.makeText(AdminAddSPActivity.this, "Thành công", Toast.LENGTH_SHORT).show();
+                        }
+                        dialog.dismiss();
+                    }
+                });
+            } catch (FileNotFoundException e) {
+                Log.d("CHECKED", e.getMessage());
+                dialog.dismiss();
+            }
+
+        }
+    }
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long l) {
         if (position > 0) {

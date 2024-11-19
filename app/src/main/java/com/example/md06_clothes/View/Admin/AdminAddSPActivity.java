@@ -16,6 +16,7 @@ import android.view.WindowManager;
 import android.webkit.CookieManager;
 import android.webkit.URLUtil;
 import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -44,8 +45,10 @@ import com.google.zxing.BarcodeFormat;
 import com.google.zxing.MultiFormatWriter;
 import com.google.zxing.common.BitMatrix;
 import com.journeyapps.barcodescanner.BarcodeEncoder;
+import com.squareup.picasso.Picasso;
 
 import java.io.ByteArrayOutputStream;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -321,6 +324,76 @@ public class AdminAddSPActivity extends AppCompatActivity implements AdapterView
 
             }
         });
+    }
+    private void Init() {
+        db = FirebaseFirestore.getInstance();
+        list = new ArrayList<>();
+        list.add("Chọn Danh mục");
+
+        // Nhận data từ AdminProductActivity
+        if (getIntent() != null && getIntent().hasExtra("SP")) {
+            product = (Product) getIntent().getSerializableExtra("SP");
+        }
+        if (product != null) {
+            btnQRProduct.setVisibility(View.VISIBLE);
+            imgQRProduct.setVisibility(View.VISIBLE);
+            tvTaoMaQR.setVisibility(View.VISIBLE);
+            db.collection("QRProduct").whereEqualTo("idproduct", product.getId())
+                    .get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+                        @Override
+                        public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+                            for (QueryDocumentSnapshot q : queryDocumentSnapshots){
+                                if (q.getString("idproduct").equals(product.getId())){
+                                    btnQRProduct.setVisibility(View.GONE);
+                                    btnDownQRProduct.setVisibility(View.VISIBLE);
+                                    Picasso.get().load(q.getString("hinhanh_qr")).into(imgQRProduct);
+                                    tvTaoMaQR.setText("Mã QR sản phẩm");
+                                }
+                            }
+                        }
+                    });
+
+            edtchatlieuSP.setText(product.getchatlieu());
+            edtMotaSP.setText(product.getMota());
+            edtsizeSP.setText(product.getsize());
+            edtSoluongSP.setText(product.getSoluong() + "");
+            edtGiatienSP.setText(product.getGiatien() + "");
+            edtTenSP.setText(product.getTensp());
+            edtTypeSP.setText(product.getType()+"");
+            btnEdit.setVisibility(View.VISIBLE);
+            btnDelete.setVisibility(View.VISIBLE);
+            btnSave.setVisibility(View.GONE);
+            tvTitle.setText("Edit sản phẩm");
+            if (!TextUtils.isEmpty(product.getHinhanh())) {
+                Picasso.get().load(product.getHinhanh()).into(imgAdd);
+                image = product.getHinhanh();
+            }
+        }
+
+        db.collection("LoaiProduct").get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+            @Override
+            public void onSuccess(@NonNull QuerySnapshot queryDocumentSnapshots) {
+                for (QueryDocumentSnapshot q : queryDocumentSnapshots) {
+                    list.add(q.getString("tenloai"));
+                    Log.d("TAG", "onSuccess: " + q.getString("tenloai"));
+                }
+                ArrayAdapter arrayAdapter = new ArrayAdapter(AdminAddSPActivity.this, android.R.layout.simple_list_item_1, list);
+                spinnerDanhMuc.setAdapter(arrayAdapter);
+                if (list.size() > 0) {
+                    spinnerDanhMuc.setSelection(1);
+                    if (product != null) {
+                        for (int i = 0; i < list.size(); i++) {
+                            if (list.get(i).equals(product.getLoaisp())) {
+                                spinnerDanhMuc.setSelection(i);
+                                break;
+                            }
+                        }
+                    }
+                }
+
+            }
+        });
+
     }
     private void pickImage() {
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {

@@ -1,16 +1,20 @@
 package com.example.md06_clothes.View.Admin;
 
 import android.Manifest;
+import android.app.DownloadManager;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
+import android.webkit.CookieManager;
+import android.webkit.URLUtil;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
@@ -286,6 +290,35 @@ public class AdminAddSPActivity extends AppCompatActivity implements AdapterView
                 } catch (Exception e){
                     e.printStackTrace();
                 }
+            }
+        });
+        btnDownQRProduct.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                db.collection("QRProduct").whereEqualTo("idproduct", product.getId())
+                        .get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+                            @Override
+                            public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+                                for (QueryDocumentSnapshot q : queryDocumentSnapshots){
+                                    if (q.getString("idproduct").equals(product.getId())){
+                                        String getUrl = q.getString("hinhanh_qr");
+                                        DownloadManager.Request request = new DownloadManager.Request(Uri.parse(getUrl));
+                                        String title = URLUtil.guessFileName(getUrl, null, null);
+                                        request.setTitle(title);
+                                        request.setDescription("Đang tải File, vui lòng đợi....");
+                                        String cookie = CookieManager.getInstance().getCookie(getUrl);
+                                        request.addRequestHeader("cookie", cookie);
+                                        request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED);
+                                        request.setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS, title);
+
+                                        DownloadManager downloadManager = (DownloadManager) getSystemService(DOWNLOAD_SERVICE);
+                                        downloadManager.enqueue(request);
+                                        Toast.makeText(AdminAddSPActivity.this, "Đã tải mã QR, kiểm tra trong thư viện ảnh", Toast.LENGTH_SHORT).show();
+                                    }
+                                }
+                            }
+                        });
+
             }
         });
     }

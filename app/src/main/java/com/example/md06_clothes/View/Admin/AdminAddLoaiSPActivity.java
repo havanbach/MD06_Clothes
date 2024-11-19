@@ -181,7 +181,6 @@ public class AdminAddLoaiSPActivity extends AppCompatActivity {
                 Log.d("CHECKED", e.getMessage());
                 dialog.dismiss();
             }
-
         }
     }
 }

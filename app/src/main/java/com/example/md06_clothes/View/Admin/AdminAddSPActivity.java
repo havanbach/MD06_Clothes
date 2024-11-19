@@ -5,6 +5,7 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
@@ -17,13 +18,16 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatButton;
 import androidx.core.app.ActivityCompat;
 
 import com.example.md06_clothes.Models.Product;
 import com.example.md06_clothes.R;
+import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
@@ -159,6 +163,43 @@ public class AdminAddSPActivity extends AppCompatActivity implements AdapterView
 
             }
         });
+        btnSave.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (!validate()) {
+                    return;
+                }
+                try {
+                    Product sp = new Product();
+                    sp.setGiatien(Long.parseLong(edtGiatienSP.getText().toString()));
+                    sp.setMota(edtMotaSP.getText().toString());
+                    sp.setsize(edtsizeSP.getText().toString());
+                    sp.setType(Long.parseLong(edtTypeSP.getText().toString()));
+                    sp.setTensp(edtTenSP.getText().toString());
+                    sp.setSoluong(Long.parseLong(edtSoluongSP.getText().toString()));
+                    sp.setchatlieu(edtchatlieuSP.getText().toString());
+                    sp.setLoaisp(spinnerDanhMuc.getSelectedItem().toString());
+                    sp.setHinhanh(image);
+
+                    db.collection("SanPham").add(sp).addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+                        @Override
+                        public void onSuccess(@NonNull DocumentReference documentReference) {
+                            Toast.makeText(AdminAddSPActivity.this, "Thành công!!!", Toast.LENGTH_SHORT).show();
+                            setResult(RESULT_OK);
+                            finish();
+
+                        }
+                    }).addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+                            Toast.makeText(AdminAddSPActivity.this, "Thất bại!!!", Toast.LENGTH_SHORT).show();
+                        }
+                    });
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
     }
     private void pickImage() {
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
@@ -170,6 +211,42 @@ public class AdminAddSPActivity extends AppCompatActivity implements AdapterView
             intent.setAction(Intent.ACTION_PICK);
             startActivityForResult(Intent.createChooser(intent, "Select Image"), LIBRARY_PICKER);
         }
+    }
+    private boolean validate() {
+        if (TextUtils.isEmpty(image)) {
+            Toast.makeText(this, "Vui lòng chọn hình ảnh", Toast.LENGTH_SHORT).show();
+            return false;
+        }
+        if (TextUtils.isEmpty(edtGiatienSP.getText().toString())) {
+            Toast.makeText(this, "Vui lòng nhập giá tiền", Toast.LENGTH_SHORT).show();
+            return false;
+        }
+        if (TextUtils.isEmpty(edtTenSP.getText().toString())) {
+            Toast.makeText(this, "Vui lòng nhập tên sản phẩm", Toast.LENGTH_SHORT).show();
+            return false;
+        }
+        if (TextUtils.isEmpty(edtsizeSP.getText().toString())) {
+            Toast.makeText(this, "Vui lòng nhập Size", Toast.LENGTH_SHORT).show();
+            return false;
+        }
+        if (TextUtils.isEmpty(edtchatlieuSP.getText().toString())) {
+            Toast.makeText(this, "Vui lòng nhập Chất liệu", Toast.LENGTH_SHORT).show();
+            return false;
+        }
+        if (TextUtils.isEmpty(edtSoluongSP.getText().toString())) {
+            Toast.makeText(this, "Vui lòng nhập số lượng", Toast.LENGTH_SHORT).show();
+            return false;
+        }
+        if (TextUtils.isEmpty(edtTypeSP.getText().toString())) {
+            Toast.makeText(this, "Vui lòng nhập type", Toast.LENGTH_SHORT).show();
+            return false;
+        }
+        if (TextUtils.isEmpty(edtMotaSP.getText().toString())) {
+            Toast.makeText(this, "Vui lòng nhập mô tả", Toast.LENGTH_SHORT).show();
+            return false;
+        }
+
+        return true;
     }
 
     @Override

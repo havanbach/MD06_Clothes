@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/ctr_bg"
+    android:background="@color/white"
     tools:context=".View.DetailSPActivity"
     tools:visibility="visible">
 
@@ -19,21 +19,20 @@
             android:id="@+id/collapsing_toolbar"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@drawable/ctr_bg"
+            android:background="@color/white"
             android:fitsSystemWindows="true"
             android:outlineAmbientShadowColor="@color/black"
             android:outlineSpotShadowColor="@color/black"
             app:contentScrim="?attr/colorPrimary"
             app:layout_scrollFlags="scroll|snap|exitUntilCollapsed"
-            app:title="Thời trang nữ">
+            app:title="Thời trang nam">
 
             <ImageView
                 android:id="@+id/img_detail"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:scaleType="matrix"
-                android:src="@drawable/thoi"
-                app:layout_collapseMode="parallax" />
+                android:scaleType="centerCrop"
+                android:src="@drawable/thoi" />
 
             <androidx.appcompat.widget.AppCompatToggleButton
                 android:id="@+id/toogle_btn_favorite"

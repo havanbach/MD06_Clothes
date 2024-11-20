@@ -192,7 +192,7 @@
                     android:layout_marginStart="12dp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Giới tính: "
+                    android:text="Giới tính:"
                     android:textSize="18sp"
                     android:textColor="@color/black"/>
                 <RadioGroup
@@ -226,7 +226,7 @@
         android:id="@+id/btn_update_profile"
         android:layout_width="170dp"
         android:layout_height="wrap_content"
-        android:text="Update Profile"
+        android:text="Cập nhật thông tin"
         android:layout_marginTop="20dp"/>
 
     <ImageView

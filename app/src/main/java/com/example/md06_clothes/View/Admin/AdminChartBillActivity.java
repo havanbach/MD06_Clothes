@@ -465,7 +465,7 @@ public class AdminChartBillActivity extends AppCompatActivity implements HoaDonV
                     chonBarChart += Integer.parseInt(String.valueOf(numBarChart));
                     Log.d("barchart", "Tổng tiền: " + chonBarChart);
                     barEntries.add(new BarEntry(11,chonBarChart/1000));
-                } else if (dayHD.compareTo(t12) >= 0){                                                                // Tháng 12
+                } else if (dayHD.compareTo(t12) >= 0){                                   // Tháng 12
                     numBarChart = NumberFormat.getInstance().parse(tienBarChart);
                     chonBarChart += Integer.parseInt(String.valueOf(numBarChart));
                     Log.d("barchart", "Tổng tiền: " + chonBarChart);

@@ -16,7 +16,6 @@ import androidx.appcompat.widget.AppCompatImageView;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.md06_clothes.Adapter.AdminUsersAdapter;
 import com.example.md06_clothes.Models.User;
 import com.example.md06_clothes.Presenter.UserPresenter;
 import com.example.md06_clothes.R;

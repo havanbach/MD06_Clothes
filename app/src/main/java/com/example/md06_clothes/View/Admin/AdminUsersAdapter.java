@@ -1,4 +1,4 @@
-package com.example.md06_clothes.Adapter;
+package com.example.md06_clothes.View.Admin;
 
 import android.content.Context;
 import android.view.LayoutInflater;

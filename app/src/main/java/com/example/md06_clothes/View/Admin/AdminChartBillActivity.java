@@ -493,7 +493,7 @@ public class AdminChartBillActivity extends AppCompatActivity implements HoaDonV
     private void Init() {
         mlistYear = new ArrayList<>();
         mlistYear.add("2024");
-        ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, mlistYear);
+        ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(this, R.layout.support_simple_spinner_dropdown_item, mlistYear);
         spinnerDoanhthu.setAdapter(arrayAdapter);
         mlist = new ArrayList<>();
         hoaDonPreSenter = new HoaDonPreSenter(this);

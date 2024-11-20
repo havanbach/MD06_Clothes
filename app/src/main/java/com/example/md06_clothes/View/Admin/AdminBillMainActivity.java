@@ -120,8 +120,7 @@ public class AdminBillMainActivity extends AppCompatActivity implements HoaDonVi
             public void onSuccess(@NonNull QuerySnapshot queryDocumentSnapshots) {
                 for(QueryDocumentSnapshot d : queryDocumentSnapshots){
                     mlistUser.add(d.getString("iduser"));
-                    ArrayAdapter arrayAdapter2 = new ArrayAdapter(AdminBillMainActivity.this, android.R.layout.simple_spinner_dropdown_item, mlistUser);
-
+                    ArrayAdapter arrayAdapter2 = new ArrayAdapter(AdminBillMainActivity.this, R.layout.support_simple_spinner_dropdown_item, mlistUser);
                     arrayAdapter2.setDropDownViewResource(android.R.layout.simple_list_item_1);
                     spinnerUserAdmin.setAdapter(arrayAdapter2);
                     spinnerUserAdmin.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {

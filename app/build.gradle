@@ -79,5 +79,4 @@ dependencies {
     // Đăng nhập bằng google
     implementation 'com.google.android.gms:play-services-auth:20.2.0'
 
-    implementation 'androidx.appcompat:appcompat:1.6.1' // Hoặc phiên bản mới nhất
 }

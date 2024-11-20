@@ -21,7 +21,7 @@
         android:textAllCaps="true"
         android:textColor="#ff0000"
         android:textSize="18sp"
-        android:text="Liên hệ: Afforda Company"
+        android:text="Liên hệ: Clothes"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"/>
     <TextView
@@ -32,7 +32,7 @@
         android:textAllCaps="true"
         android:textColor="#008000"
         android:textSize="18sp"
-        android:text="Địa Chỉ store: Hà Nội"
+        android:text="Địa chỉ cửa hàng: Hà Nội"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"/>
     <TextView

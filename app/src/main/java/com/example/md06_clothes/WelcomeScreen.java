@@ -16,7 +16,6 @@ public class WelcomeScreen extends AppCompatActivity {
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_welcome_screen);
         Button btn_started = findViewById(R.id.btn_started);
-/////
         btn_started.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

@@ -127,7 +127,7 @@ public class AdminProductActivity extends AppCompatActivity {
             public void onSuccess(@NonNull QuerySnapshot queryDocumentSnapshots) {
                 for(QueryDocumentSnapshot d : queryDocumentSnapshots){
                     mlistLoaiSP.add(d.getString("tenloai"));
-                    ArrayAdapter arrayAdapter = new ArrayAdapter(AdminProductActivity.this, androidx.appcompat.R.layout.support_simple_spinner_dropdown_item, mlistLoaiSP);
+                    ArrayAdapter arrayAdapter = new ArrayAdapter(AdminProductActivity.this, android.R.layout.simple_spinner_dropdown_item, mlistLoaiSP);
                     arrayAdapter.setDropDownViewResource(android.R.layout.simple_list_item_1);
                     spinnerLoaiSP.setAdapter(arrayAdapter);
                     spinnerLoaiSP.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {

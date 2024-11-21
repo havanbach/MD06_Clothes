@@ -465,7 +465,7 @@ public class AdminChartBillActivity extends AppCompatActivity implements HoaDonV
                     chonBarChart += Integer.parseInt(String.valueOf(numBarChart));
                     Log.d("barchart", "Tổng tiền: " + chonBarChart);
                     barEntries.add(new BarEntry(11,chonBarChart/1000));
-                } else if (dayHD.compareTo(t12) >= 0){                                                                // Tháng 12
+                } else if (dayHD.compareTo(t12) >= 0){                                   // Tháng 12
                     numBarChart = NumberFormat.getInstance().parse(tienBarChart);
                     chonBarChart += Integer.parseInt(String.valueOf(numBarChart));
                     Log.d("barchart", "Tổng tiền: " + chonBarChart);
@@ -493,7 +493,7 @@ public class AdminChartBillActivity extends AppCompatActivity implements HoaDonV
     private void Init() {
         mlistYear = new ArrayList<>();
         mlistYear.add("2024");
-        ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, mlistYear);
+        ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(this, R.layout.support_simple_spinner_dropdown_item, mlistYear);
         spinnerDoanhthu.setAdapter(arrayAdapter);
         mlist = new ArrayList<>();
         hoaDonPreSenter = new HoaDonPreSenter(this);

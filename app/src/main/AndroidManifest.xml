@@ -25,15 +25,15 @@
         android:usesCleartextTraffic="true"
         tools:replace="android:theme"
         tools:targetApi="34" >
+
         <activity
             android:name=".View.DetailSPActivity"
             android:exported="false" />
         <activity
             android:name=".View.CommentActivity"
             android:exported="false" />
-        <activity
-            android:name=".View.CartActivity"
-            android:exported="false" />
+        <activity android:name="com.example.md06_clothes.View.CartActivity" />
+        <activity android:name="com.example.md06_clothes.View.OrderSuccessActivity"/>
         <activity
             android:name=".View.SearchActivity"
             android:exported="false" />

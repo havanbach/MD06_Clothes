@@ -44,13 +44,6 @@ public class HoaDonDaGiaoAdapter extends RecyclerView.Adapter<HoaDonDaGiaoAdapte
 
     }
 
-//    public Boolean TrangThaiDaGiao(boolean b){
-//        return b;
-//    }
-
-
-
-
     @NotNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull @NotNull ViewGroup parent, int viewType) {
@@ -73,12 +66,12 @@ public class HoaDonDaGiaoAdapter extends RecyclerView.Adapter<HoaDonDaGiaoAdapte
         holder.tvTotal.setText(NumberFormat.getInstance().format(product.getGiatien() * product.getSoluong()));
         Picasso.get().load(product.getHinhanh()).into(holder.img);
 
-//        holder.constraintDongDanhGia.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                iClickCTHD.onClickCTHD(position);
-//            }
-//        });
+        holder.constraintDongDanhGia.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                iClickCTHD.onClickCTHD(position);
+            }
+        });
 
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         db.collection("BinhLuan").whereEqualTo("iduser", FirebaseAuth.getInstance().getCurrentUser().getUid())

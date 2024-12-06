@@ -8,7 +8,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
 
 import com.example.md06_clothes.R;
-//import com.example.md06_clothes.View.ChatActivity;
+import com.example.md06_clothes.View.ChatActivity;
 import com.example.md06_clothes.SignInActivity;
 
 public class AdminHomeActivity extends AppCompatActivity {
@@ -27,44 +27,44 @@ public class AdminHomeActivity extends AppCompatActivity {
 
     private void Event() {
 
-//        cChat.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                Intent intent = new Intent(AdminHomeActivity.this, ChatActivity.class);
-//                intent.putExtra("message", 1);
-//                startActivity(intent);
-//            }
-//        });
-//
-//        cAddUser.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                Intent intent = new Intent(AdminHomeActivity.this, AdminUsersActivity.class);
-//                startActivity(intent);
-//            }
-//        });
-//        cHoaDon.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                Intent intent = new Intent(AdminHomeActivity.this, AdminBillMainActivity.class);
-//                startActivity(intent);
-//            }
-//        });
-//
-//        cThongKe.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                Intent intent = new Intent(AdminHomeActivity.this, AdminChartBillActivity.class);
-//                startActivity(intent);
-//            }
-//        });
-//        cAddProduct.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                Intent intent = new Intent(AdminHomeActivity.this, AdminProductActivity.class);
-//                startActivity(intent);
-//            }
-//        });
+        cChat.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(AdminHomeActivity.this, ChatActivity.class);
+                intent.putExtra("message", 1);
+                startActivity(intent);
+            }
+        });
+
+        cAddUser.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(AdminHomeActivity.this, AdminUsersActivity.class);
+                startActivity(intent);
+            }
+        });
+        cHoaDon.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(AdminHomeActivity.this, AdminBillMainActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        cThongKe.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(AdminHomeActivity.this, AdminChartBillActivity.class);
+                startActivity(intent);
+            }
+        });
+        cAddProduct.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(AdminHomeActivity.this, AdminProductActivity.class);
+                startActivity(intent);
+            }
+        });
 
         cSignOut.setOnClickListener(new View.OnClickListener() {
             @Override

@@ -39,18 +39,18 @@ public class NotifyFragment extends Fragment implements OnMapReadyCallback {
         txtsdt = v.findViewById(R.id.txtsdt);
         txtnoidung = v.findViewById(R.id.txtnoidung);
 
-        db.collection("ThongTinCuaHang").document("sBI6zx4YiA3TPhUISVxo")
+        db.collection("ThongTinCuaHang").document("4It8RfW5U1FoFOWiZH7W")
                 .get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
-            @Override
-            public void onSuccess(@NonNull DocumentSnapshot documentSnapshot) {
+                    @Override
+                    public void onSuccess(@NonNull DocumentSnapshot documentSnapshot) {
 
-                txtdiachi.setText("Địa chỉ : "+documentSnapshot.getString("diachi"));
-                txtsdt.setText("Liên hệ : "+documentSnapshot.getString("sdt"));
-                txtnoidung.setText("Nội Dung : "+documentSnapshot.getString("noidung"));
+                        txtdiachi.setText("Địa chỉ : "+documentSnapshot.getString("diachi"));
+                        txtsdt.setText("Liên hệ : "+documentSnapshot.getString("sdt"));
+                        txtnoidung.setText("Nội Dung : "+documentSnapshot.getString("noidung"));
 
 
-            }
-        });
+                    }
+                });
 
         // GG maps
         SupportMapFragment mapFragment = (SupportMapFragment) getChildFragmentManager()

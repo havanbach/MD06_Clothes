@@ -32,12 +32,12 @@ public class Story {
     public void HandleGetStory(String iduser){
         db.collection("LichSuTimKiem").document(iduser).collection("Story")
                 .get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
-            @Override
-            public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
-                for (QueryDocumentSnapshot q: queryDocumentSnapshots){
-                    callback.getDataStory(q.getString("noidungtimkiem"));
-                }
-            }
-        });
+                    @Override
+                    public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+                        for (QueryDocumentSnapshot q: queryDocumentSnapshots){
+                            callback.getDataStory(q.getString("noidungtimkiem"));
+                        }
+                    }
+                });
     }
 }

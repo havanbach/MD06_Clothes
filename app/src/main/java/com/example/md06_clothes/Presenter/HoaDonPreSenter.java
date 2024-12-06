@@ -38,7 +38,7 @@ public class HoaDonPreSenter implements IHoaDon {
 
     @Override
     public void OnFail() {
-      callback.OnFail();
+        callback.OnFail();
     }
 
     public void CapNhatTrangThai(int i,String id) {

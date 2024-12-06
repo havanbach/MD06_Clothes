@@ -85,126 +85,126 @@ public class Giohang {
         hashMap.put("UID",FirebaseAuth.getInstance().getCurrentUser().getUid());
         db.collection("HoaDon")
                 .add(hashMap).addOnCompleteListener(new OnCompleteListener<DocumentReference>() {
-            @Override
-            public void onComplete(@NonNull Task<DocumentReference> task) {
-                if(task.isSuccessful()){
-                    for(Product sanPhamModels : arrayList){
-                        HashMap<String,Object> map_chitiet = new HashMap<>();
-                        map_chitiet.put("id_hoadon",task.getResult().getId());
-                        map_chitiet.put("id_product",sanPhamModels.getIdsp());
-                        map_chitiet.put("soluong",sanPhamModels.getSoluong());
-                        db.collection("ChitietHoaDon").document(FirebaseAuth.getInstance().getCurrentUser().getUid())
-                                .collection("ALL").add(map_chitiet).addOnCompleteListener(new OnCompleteListener<DocumentReference>() {
-                            @Override
-                            public void onComplete(@NonNull Task<DocumentReference> task) {
-                                if(task.isSuccessful()){
-                                    db.collection("GioHang").document(FirebaseAuth.getInstance().getCurrentUser().getUid())
-                                            .collection("ALL").get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
-                                        @Override
-                                        public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
-                                            for (QueryDocumentSnapshot q : queryDocumentSnapshots){
-                                                db.collection("GioHang").document(FirebaseAuth.getInstance().getCurrentUser().getUid())
-                                                        .collection("ALL").document(q.getId()).delete().addOnCompleteListener(new OnCompleteListener<Void>() {
-                                                    @Override
-                                                    public void onComplete(@NonNull @NotNull Task<Void> task) {
-                                                        if (task.isSuccessful()) {
-                                                            callback.OnSucess();
-                                                        } else {
-                                                            callback.OnFail();
-                                                        }
-                                                    }
-                                                });
-                                            }
-                                        }
-                                    });
+                    @Override
+                    public void onComplete(@NonNull Task<DocumentReference> task) {
+                        if(task.isSuccessful()){
+                            for(Product sanPhamModels : arrayList){
+                                HashMap<String,Object> map_chitiet = new HashMap<>();
+                                map_chitiet.put("id_hoadon",task.getResult().getId());
+                                map_chitiet.put("id_product",sanPhamModels.getIdsp());
+                                map_chitiet.put("soluong",sanPhamModels.getSoluong());
+                                db.collection("ChitietHoaDon").document(FirebaseAuth.getInstance().getCurrentUser().getUid())
+                                        .collection("ALL").add(map_chitiet).addOnCompleteListener(new OnCompleteListener<DocumentReference>() {
+                                            @Override
+                                            public void onComplete(@NonNull Task<DocumentReference> task) {
+                                                if(task.isSuccessful()){
+                                                    db.collection("GioHang").document(FirebaseAuth.getInstance().getCurrentUser().getUid())
+                                                            .collection("ALL").get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+                                                                @Override
+                                                                public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+                                                                    for (QueryDocumentSnapshot q : queryDocumentSnapshots){
+                                                                        db.collection("GioHang").document(FirebaseAuth.getInstance().getCurrentUser().getUid())
+                                                                                .collection("ALL").document(q.getId()).delete().addOnCompleteListener(new OnCompleteListener<Void>() {
+                                                                                    @Override
+                                                                                    public void onComplete(@NonNull @NotNull Task<Void> task) {
+                                                                                        if (task.isSuccessful()) {
+                                                                                            callback.OnSucess();
+                                                                                        } else {
+                                                                                            callback.OnFail();
+                                                                                        }
+                                                                                    }
+                                                                                });
+                                                                    }
+                                                                }
+                                                            });
 
-                                }
+                                                }
+
+                                            }
+                                        });
 
                             }
-                        });
+
+                        }else{
+
+                        }
 
                     }
-
-                }else{
-
-                }
-
-            }
-        });
+                });
     }
 
     //check giỏ hàng đúng id user
     public  void AddCart(String idsp, Long soluong){
         db.collection("GioHang").document(FirebaseAuth.getInstance().getCurrentUser().getUid())
                 .collection("ALL").whereEqualTo("id_product",idsp).get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
-            @Override
-            public void onSuccess(@NonNull QuerySnapshot queryDocumentSnapshots) {
-                if(queryDocumentSnapshots.size()!=0){
-                    if(queryDocumentSnapshots.size()>0){
-                        for(QueryDocumentSnapshot d : queryDocumentSnapshots){
-                            long   soluong_sp = d.getLong("soluong");
-                            //check so luong sp tăng lên 1
-                            if(soluong_sp>0){
-                                soluong_sp = soluong_sp + soluong;
-                                db.collection("GioHang").document(FirebaseAuth.getInstance().getCurrentUser().getUid())
-                                        .collection("ALL").document(d.getId()).update("soluong",soluong_sp).addOnCompleteListener(new OnCompleteListener<Void>() {
-                                    @Override
-                                    public void onComplete(@NonNull Task<Void> task) {
-                                        if(task.isSuccessful()){
-                                            callback.OnSucess();
-                                        }else{
-                                            callback.OnFail();
-                                        }
+                    @Override
+                    public void onSuccess(@NonNull QuerySnapshot queryDocumentSnapshots) {
+                        if(queryDocumentSnapshots.size()!=0){
+                            if(queryDocumentSnapshots.size()>0){
+                                for(QueryDocumentSnapshot d : queryDocumentSnapshots){
+                                    long   soluong_sp = d.getLong("soluong");
+                                    //check so luong sp tăng lên 1
+                                    if(soluong_sp>0){
+                                        soluong_sp = soluong_sp + soluong;
+                                        db.collection("GioHang").document(FirebaseAuth.getInstance().getCurrentUser().getUid())
+                                                .collection("ALL").document(d.getId()).update("soluong",soluong_sp).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                                    @Override
+                                                    public void onComplete(@NonNull Task<Void> task) {
+                                                        if(task.isSuccessful()){
+                                                            callback.OnSucess();
+                                                        }else{
+                                                            callback.OnFail();
+                                                        }
+                                                    }
+                                                });
                                     }
-                                });
+                                }
                             }
+                        }else{
+                            Giohang hangModels = new Giohang(idsp,soluong);
+                            db.collection("GioHang").document(FirebaseAuth.getInstance().getCurrentUser().getUid())
+                                    .collection("ALL").add(hangModels).addOnCompleteListener(new OnCompleteListener<DocumentReference>() {
+                                        @Override
+                                        public void onComplete(@NonNull Task<DocumentReference> task) {
+                                            if(task.isSuccessful()){
+                                                callback.OnSucess();
+                                            }else {
+                                                callback.OnFail();
+                                            }
+                                        }
+                                    });
                         }
                     }
-                }else{
-                    Giohang hangModels = new Giohang(idsp,soluong);
-                    db.collection("GioHang").document(FirebaseAuth.getInstance().getCurrentUser().getUid())
-                            .collection("ALL").add(hangModels).addOnCompleteListener(new OnCompleteListener<DocumentReference>() {
-                        @Override
-                        public void onComplete(@NonNull Task<DocumentReference> task) {
-                            if(task.isSuccessful()){
-                                callback.OnSucess();
-                            }else {
-                                callback.OnFail();
-                            }
-                        }
-                    });
-                }
-            }
-        });
+                });
     }
 
     public  void HandlegetDataGioHang(){
         db.collection("GioHang").document(FirebaseAuth.getInstance().getCurrentUser().getUid())
                 .collection("ALL").get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
-            @Override
-            public void onSuccess(@NonNull QuerySnapshot queryDocumentSnapshots) {
-                if(queryDocumentSnapshots.size()>0){
-                    for(QueryDocumentSnapshot s : queryDocumentSnapshots){
-                        db.collection("SanPham").document(s.getString("id_product"))
-                                .get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
-                            @Override
-                            public void onSuccess(@NonNull DocumentSnapshot d) {
+                    @Override
+                    public void onSuccess(@NonNull QuerySnapshot queryDocumentSnapshots) {
+                        if(queryDocumentSnapshots.size()>0){
+                            for(QueryDocumentSnapshot s : queryDocumentSnapshots){
+                                db.collection("SanPham").document(s.getString("id_product"))
+                                        .get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                                            @Override
+                                            public void onSuccess(@NonNull DocumentSnapshot d) {
 
-                                callback.getDataSanPham(s.getId(),s.getString("id_product"),d.getString("tensp"),
-                                        d.getLong("giatien"),d.getString("hinhanh"),
-                                        d.getString("loaisp"),
-                                        d.getString("mota"),
-                                        s.getLong("soluong"),d.getString("size"),
-                                        d.getLong("type"),d.getString("chatlieu"));
+                                                callback.getDataSanPham(s.getId(),s.getString("id_product"),d.getString("tensp"),
+                                                        d.getLong("giatien"),d.getString("hinhanh"),
+                                                        d.getString("loaisp"),
+                                                        d.getString("mota"),
+                                                        s.getLong("soluong"),d.getString("size"),
+                                                        d.getLong("type"),d.getString("chatlieu"));
 
 
+                                            }
+                                        });
                             }
-                        });
-                    }
-                }
+                        }
 
-            }
-        });
+                    }
+                });
     }
     public  void HandleDeleteDataGioHang(String id){
         db.collection("GioHang").document(FirebaseAuth.getInstance().getCurrentUser().getUid())
@@ -215,56 +215,56 @@ public class Giohang {
 
         db.collection("ChitietHoaDon").document(FirebaseAuth.getInstance().getCurrentUser().getUid())
                 .collection("ALL").whereEqualTo("id_hoadon",id).get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
-            @Override
-            public void onSuccess(@NonNull QuerySnapshot queryDocumentSnapshots) {
-                if(queryDocumentSnapshots.size()>0){
-                    for(QueryDocumentSnapshot s : queryDocumentSnapshots){
-                        Log.d("CHECKED",s.getString("id_product"));
-                        db.collection("SanPham").document(s.getString("id_product"))
-                                .get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
-                            @Override
-                            public void onSuccess(@NonNull DocumentSnapshot d) {
-                                callback.getDataSanPham(s.getId(),s.getString("id_product"),d.getString("tensp"),
-                                        d.getLong("giatien"),d.getString("hinhanh"),
-                                        d.getString("loaisp"),
-                                        d.getString("mota"),
-                                        s.getLong("soluong"),d.getString("size"),
-                                        1l,d.getString("chatlieu"));
+                    @Override
+                    public void onSuccess(@NonNull QuerySnapshot queryDocumentSnapshots) {
+                        if(queryDocumentSnapshots.size()>0){
+                            for(QueryDocumentSnapshot s : queryDocumentSnapshots){
+                                Log.d("CHECKED",s.getString("id_product"));
+                                db.collection("SanPham").document(s.getString("id_product"))
+                                        .get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                                            @Override
+                                            public void onSuccess(@NonNull DocumentSnapshot d) {
+                                                callback.getDataSanPham(s.getId(),s.getString("id_product"),d.getString("tensp"),
+                                                        d.getLong("giatien"),d.getString("hinhanh"),
+                                                        d.getString("loaisp"),
+                                                        d.getString("mota"),
+                                                        s.getLong("soluong"),d.getString("size"),
+                                                        1l,d.getString("chatlieu"));
+                                            }
+                                        });
                             }
-                        });
-                    }
-                }
+                        }
 
-            }
-        });
+                    }
+                });
     }
     public void HandleGetDataCTHD(String id,String uid) {
 
         if(uid!=null){
             db.collection("ChitietHoaDon").document(uid)
                     .collection("ALL").whereEqualTo("id_hoadon",id).get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
-                @Override
-                public void onSuccess(@NonNull QuerySnapshot queryDocumentSnapshots) {
-                    if(queryDocumentSnapshots.size()>0){
-                        for(QueryDocumentSnapshot s : queryDocumentSnapshots){
+                        @Override
+                        public void onSuccess(@NonNull QuerySnapshot queryDocumentSnapshots) {
+                            if(queryDocumentSnapshots.size()>0){
+                                for(QueryDocumentSnapshot s : queryDocumentSnapshots){
 //                            Log.d("CHECKED",s.getString("id_product"));
-                            db.collection("SanPham").document(s.getString("id_product"))
-                                    .get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
-                                @Override
-                                public void onSuccess(@NonNull DocumentSnapshot d) {
-                                    callback.getDataSanPham(s.getId(),s.getString("id_product"),d.getString("tensp"),
-                                            d.getLong("giatien"),d.getString("hinhanh"),
-                                            d.getString("loaisp"),
-                                            d.getString("mota"),
-                                            s.getLong("soluong"),d.getString("size"),
-                                            1l,d.getString("chatlieu"));
+                                    db.collection("SanPham").document(s.getString("id_product"))
+                                            .get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                                                @Override
+                                                public void onSuccess(@NonNull DocumentSnapshot d) {
+                                                    callback.getDataSanPham(s.getId(),s.getString("id_product"),d.getString("tensp"),
+                                                            d.getLong("giatien"),d.getString("hinhanh"),
+                                                            d.getString("loaisp"),
+                                                            d.getString("mota"),
+                                                            s.getLong("soluong"),d.getString("size"),
+                                                            1l,d.getString("chatlieu"));
+                                                }
+                                            });
                                 }
-                            });
-                        }
-                    }
+                            }
 
-                }
-            });
+                        }
+                    });
 
         }else{
 

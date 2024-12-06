@@ -127,23 +127,23 @@ public class SearchActivity extends AppCompatActivity implements ProductView, St
     ActivityResultLauncher<ScanOptions> barLaucher = registerForActivityResult(new ScanContract(), result ->
     {
         // Nếu quét dc mã QR và ngược lại:
-       if (result.getContents() != null){
-           try {
-               for (Product product: mlistsearch){
-                   if(result.getContents().equals(product.getId())){
-                       Intent intent = new Intent(SearchActivity.this, DetailSPActivity.class);
-                       intent.putExtra("search", product);
-                       startActivity(intent);
-                   }
-               }
+        if (result.getContents() != null){
+            try {
+                for (Product product: mlistsearch){
+                    if(result.getContents().equals(product.getId())){
+                        Intent intent = new Intent(SearchActivity.this, DetailSPActivity.class);
+                        intent.putExtra("search", product);
+                        startActivity(intent);
+                    }
+                }
 
-           } catch (Exception e){
+            } catch (Exception e){
                 e.printStackTrace();
-           }
+            }
 
-       } else {
-           Toast.makeText(this, "Hủy quét mã", Toast.LENGTH_SHORT).show();
-       }
+        } else {
+            Toast.makeText(this, "Hủy quét mã", Toast.LENGTH_SHORT).show();
+        }
     });
 
     private void StorySearch(String text){

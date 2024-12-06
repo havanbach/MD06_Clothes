@@ -82,19 +82,19 @@ public class GiohangAdapter extends RecyclerView.Adapter<GiohangAdapter.ViewHold
                 product.setSoluong(Long.parseLong(String.valueOf(number)));
                 db.collection("GioHang").document(FirebaseAuth.getInstance().getCurrentUser().getUid())
                         .collection("ALL").whereEqualTo("id_product",product.getIdsp()).get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
-                    @Override
-                    public void onSuccess(@NonNull QuerySnapshot queryDocumentSnapshots) {
-                        if(queryDocumentSnapshots.size()!=0){
-                            for(QueryDocumentSnapshot d : queryDocumentSnapshots){
-                                long soluong_sp = d.getLong("soluong");
-                                soluong_sp = product.getSoluong();
-                                db.collection("GioHang").document(FirebaseAuth.getInstance().getCurrentUser().getUid())
-                                        .collection("ALL").document(d.getId()).update("soluong",soluong_sp);
+                            @Override
+                            public void onSuccess(@NonNull QuerySnapshot queryDocumentSnapshots) {
+                                if(queryDocumentSnapshots.size()!=0){
+                                    for(QueryDocumentSnapshot d : queryDocumentSnapshots){
+                                        long soluong_sp = d.getLong("soluong");
+                                        soluong_sp = product.getSoluong();
+                                        db.collection("GioHang").document(FirebaseAuth.getInstance().getCurrentUser().getUid())
+                                                .collection("ALL").document(d.getId()).update("soluong",soluong_sp);
 
+                                    }
+                                }
                             }
-                        }
-                    }
-                });
+                        });
 
                 if (number < 2 ){
                     holder.btnMinusGiohang.setVisibility(View.GONE);
@@ -117,22 +117,22 @@ public class GiohangAdapter extends RecyclerView.Adapter<GiohangAdapter.ViewHold
                 product.setSoluong(Long.parseLong(String.valueOf(number)));
                 db.collection("GioHang").document(FirebaseAuth.getInstance().getCurrentUser().getUid())
                         .collection("ALL").whereEqualTo("id_product",product.getIdsp()).get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
-                    @Override
-                    public void onSuccess(@NonNull QuerySnapshot queryDocumentSnapshots) {
-                        Log.d("SL",queryDocumentSnapshots.size()+"");
-                        if(queryDocumentSnapshots.size()!=0){
-                            for(QueryDocumentSnapshot d : queryDocumentSnapshots){
-                                long soluong_sp = d.getLong("soluong");
-                                Log.d("soluong", String.valueOf(soluong_sp));
-                                soluong_sp = product.getSoluong();
-                                db.collection("GioHang").document(FirebaseAuth.getInstance().getCurrentUser().getUid())
-                                        .collection("ALL").document(d.getId()).update("soluong",soluong_sp);
+                            @Override
+                            public void onSuccess(@NonNull QuerySnapshot queryDocumentSnapshots) {
+                                Log.d("SL",queryDocumentSnapshots.size()+"");
+                                if(queryDocumentSnapshots.size()!=0){
+                                    for(QueryDocumentSnapshot d : queryDocumentSnapshots){
+                                        long soluong_sp = d.getLong("soluong");
+                                        Log.d("soluong", String.valueOf(soluong_sp));
+                                        soluong_sp = product.getSoluong();
+                                        db.collection("GioHang").document(FirebaseAuth.getInstance().getCurrentUser().getUid())
+                                                .collection("ALL").document(d.getId()).update("soluong",soluong_sp);
 
 
+                                    }
+                                }
                             }
-                        }
-                    }
-                });
+                        });
 
                 if (number < 2 ){
                     holder.btnMinusGiohang.setVisibility(View.GONE);

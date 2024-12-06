@@ -59,16 +59,16 @@ public class Favorite {
     public  void HandleGetFavorite(String iduser){
         db.collection("Favorite").whereEqualTo("iduser", iduser)
                 .get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
-            @Override
-            public void onSuccess(@NonNull QuerySnapshot queryDocumentSnapshots) {
-                if(queryDocumentSnapshots.size()>0){
-                    for(QueryDocumentSnapshot d : queryDocumentSnapshots){
-                        callback.getDataFavorite(d.getId(), d.getString("idproduct"), iduser);
-                    }
-                }
+                    @Override
+                    public void onSuccess(@NonNull QuerySnapshot queryDocumentSnapshots) {
+                        if(queryDocumentSnapshots.size()>0){
+                            for(QueryDocumentSnapshot d : queryDocumentSnapshots){
+                                callback.getDataFavorite(d.getId(), d.getString("idproduct"), iduser);
+                            }
+                        }
 
-            }
-        });
+                    }
+                });
     }
 
 

@@ -26,7 +26,7 @@ import java.util.ArrayList;
 import de.hdodenhof.circleimageview.CircleImageView;
 
 public class AllCommentAdapter extends RecyclerView.Adapter<AllCommentAdapter.ViewHolder>{
-//
+    //
     private Context context;
     private ArrayList<Binhluan> mlist;
 

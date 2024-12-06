@@ -76,17 +76,17 @@ public class HoaDonDaGiaoAdapter extends RecyclerView.Adapter<HoaDonDaGiaoAdapte
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         db.collection("BinhLuan").whereEqualTo("iduser", FirebaseAuth.getInstance().getCurrentUser().getUid())
                 .get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
-            @Override
-            public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
-                for (QueryDocumentSnapshot q : queryDocumentSnapshots){
-                    if (product.getIdsp().equals(q.getString("idproduct"))){
-                        holder.btnDongDanhGia.setEnabled(false);
-                        holder.btnDongDanhGia.setText("Đã đánh giá");
-                    }
-                }
+                    @Override
+                    public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+                        for (QueryDocumentSnapshot q : queryDocumentSnapshots){
+                            if (product.getIdsp().equals(q.getString("idproduct"))){
+                                holder.btnDongDanhGia.setEnabled(false);
+                                holder.btnDongDanhGia.setText("Đã đánh giá");
+                            }
+                        }
 
-            }
-        });
+                    }
+                });
 
         holder.btnDongDanhGia.setOnClickListener(new View.OnClickListener() {
             @Override

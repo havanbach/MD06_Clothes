@@ -57,10 +57,6 @@ public class GiohangAdapter extends RecyclerView.Adapter<GiohangAdapter.ViewHold
             this.mListGiohang.add(newArr.get(i));
         this.notifyDataSetChanged();
     }
-    //Cập nhật danh sách giỏ hàng khi có thay đổi
-    //Xóa toàn bộ danh sách cũ
-    //Thêm các sản phẩm mới từ d/s newArr
-    //Thông báo cho adapter rằng dữ liệu đã thay đổi
 
     @Override
     public ViewHolder onCreateViewHolder(@NotNull ViewGroup parent, int viewType) {
@@ -68,23 +64,19 @@ public class GiohangAdapter extends RecyclerView.Adapter<GiohangAdapter.ViewHold
         view = LayoutInflater.from(context).inflate(R.layout.dong_giohang, parent,false);
         return new ViewHolder(view);
     }
-    //Tạo view cho từng item trong d/s
 
     @Override
     public void onBindViewHolder(@NotNull ViewHolder holder, int position) {
-    //Gắn data vào viewHolder
-        Product product = mListGiohang.get(position);
 
-        // Hiển thị thông tin s/p
+        Product product = mListGiohang.get(position);
         holder.tvTenGiohang.setText(product.getTensp());
         holder.tvGiatienGiohang.setText(String.valueOf(product.getGiatien()));
         holder.tvNumberGiohang.setText(String.valueOf(product.getSoluong()));
 
-        // [Tăng/giảm] số lượng
         holder.btnMinusGiohang.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                // Giảm số lượng và cập nhật Firebase
+
                 String soluong = holder.tvNumberGiohang.getText().toString();
                 number = Integer.parseInt(soluong) - 1;
                 product.setSoluong(Long.parseLong(String.valueOf(number)));
@@ -112,11 +104,12 @@ public class GiohangAdapter extends RecyclerView.Adapter<GiohangAdapter.ViewHold
                 int numberCurrent = Integer.parseInt(holder.tvNumberGiohang.getText().toString());
                 int costCurrent = Integer.parseInt(holder.tvGiatienGiohang.getText().toString());
                 holder.tvTotalGiohang.setText(NumberFormat.getInstance().format(numberCurrent * costCurrent));
+//                cartFragment.TongTienGioHang();
+//                ((CartFragment) fragment).TongTienGioHang();
                 cartActivity.TongTienGioHang();
             }
         });
         holder.btnPlusGiohang.setOnClickListener(new View.OnClickListener() {
-            // Tăng số lượng và cập nhật Firebase
             @Override
             public void onClick(View view) {
                 String soluong = holder.tvNumberGiohang.getText().toString();
@@ -134,6 +127,8 @@ public class GiohangAdapter extends RecyclerView.Adapter<GiohangAdapter.ViewHold
                                 soluong_sp = product.getSoluong();
                                 db.collection("GioHang").document(FirebaseAuth.getInstance().getCurrentUser().getUid())
                                         .collection("ALL").document(d.getId()).update("soluong",soluong_sp);
+
+
                             }
                         }
                     }
@@ -147,7 +142,8 @@ public class GiohangAdapter extends RecyclerView.Adapter<GiohangAdapter.ViewHold
                 int numberCurrent = Integer.parseInt(holder.tvNumberGiohang.getText().toString());
                 int costCurrent = Integer.parseInt(holder.tvGiatienGiohang.getText().toString());
                 holder.tvTotalGiohang.setText(NumberFormat.getInstance().format(numberCurrent * costCurrent));
-                // Hiển thị tổng tiền
+//                cartFragment.TongTienGioHang();
+//                ((CartFragment) fragment).TongTienGioHang();
                 cartActivity.TongTienGioHang();
             }
         });
@@ -161,7 +157,7 @@ public class GiohangAdapter extends RecyclerView.Adapter<GiohangAdapter.ViewHold
         int costCurrent = Integer.parseInt(holder.tvGiatienGiohang.getText().toString());
         holder.tvTotalGiohang.setText(NumberFormat.getInstance().format(numberCurrent * costCurrent));
         Picasso.get().load(product.getHinhanh()).into(holder.imgGiohang);
-        // Hiển thị hình ảnh
+
     }
 
     @Override

@@ -128,13 +128,13 @@ public class DetailSPActivity extends AppCompatActivity implements BinhLuanView,
         } else {
             db.collection("Favorite").whereEqualTo("idproduct", product.getId())
                     .whereEqualTo("iduser", FirebaseAuth.getInstance().getCurrentUser().getUid()).get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
-                @Override
-                public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
-                    for (QueryDocumentSnapshot q : queryDocumentSnapshots){
-                        db.collection("Favorite").document(q.getId()).delete();
-                    }
-                }
-            });
+                        @Override
+                        public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+                            for (QueryDocumentSnapshot q : queryDocumentSnapshots){
+                                db.collection("Favorite").document(q.getId()).delete();
+                            }
+                        }
+                    });
         }
 
     }
@@ -216,15 +216,15 @@ public class DetailSPActivity extends AppCompatActivity implements BinhLuanView,
         // Check sp này đã được yêu thích từ trước hay chưa, nếu có thì sẽ set cho tooglebutton = true;
         db.collection("Favorite").whereEqualTo("iduser", FirebaseAuth.getInstance().getCurrentUser().getUid())
                 .get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
-            @Override
-            public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
-                for (QueryDocumentSnapshot q : queryDocumentSnapshots){
-                    if (q.getString("idproduct").equals(product.getId())){
-                        toggleButtonFavorite.setChecked(true);
+                    @Override
+                    public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+                        for (QueryDocumentSnapshot q : queryDocumentSnapshots){
+                            if (q.getString("idproduct").equals(product.getId())){
+                                toggleButtonFavorite.setChecked(true);
+                            }
+                        }
                     }
-                }
-            }
-        });
+                });
 
         collapsingToolbarLayout.setTitle(product.getTensp());
         tvGiaDetail.setText(NumberFormat.getInstance().format(product.getGiatien()));

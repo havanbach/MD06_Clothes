@@ -26,7 +26,6 @@ import androidx.core.view.WindowInsetsCompat;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
 import com.example.md06_clothes.Models.Admin;
-import com.example.md06_clothes.View.Admin.AdminHomeActivity;
 import com.example.md06_clothes.View.ForgotPasswordActivity;
 import com.example.md06_clothes.ultil.MyReceiver;
 import com.example.md06_clothes.ultil.NetworkUtil;
@@ -142,11 +141,6 @@ public class SignInActivity extends AppCompatActivity {
                                 }
                                 switch (tk) {
                                     case 1:
-                                        progressDialog.dismiss();
-                                        Intent intent = new Intent(SignInActivity.this, AdminHomeActivity.class);
-                                        startActivity(intent);
-                                        finish();
-                                        break;
                                     case 2:
                                         FirebaseAuth auth = FirebaseAuth.getInstance();
                                         auth.signInWithEmailAndPassword(strEmail, strMatKhau).addOnCompleteListener(new OnCompleteListener<AuthResult>() {

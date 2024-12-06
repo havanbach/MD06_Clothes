@@ -228,7 +228,7 @@ public class CTHDActivity extends AppCompatActivity implements GioHangView, HoaD
         ratingDanhgia.setOnRatingBarChangeListener(new RatingBar.OnRatingBarChangeListener() {
             @Override
             public void onRatingChanged(RatingBar ratingBar, float v, boolean b) {
-               r = String.valueOf(ratingDanhgia.getRating());
+                r = String.valueOf(ratingDanhgia.getRating());
             }
         });
 

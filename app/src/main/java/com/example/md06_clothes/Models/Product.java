@@ -160,21 +160,21 @@ public class Product implements Serializable{
     public void HandleGetDataProduct(){
         db.collection("SanPham").
                 get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
-            @Override
-            public void onSuccess(@NonNull QuerySnapshot queryDocumentSnapshots) {
-                if(queryDocumentSnapshots.size()>0){
-                    for(QueryDocumentSnapshot d : queryDocumentSnapshots){
-                        callback.getDataProduct(d.getId(),d.getString("tensp"),
-                                d.getLong("giatien"),d.getString("hinhanh"),
-                                d.getString("loaisp"),d.getString("mota"),
-                                d.getLong("soluong"),d.getString("size"),
-                                d.getLong("type"),d.getString("chatlieu"));
+                    @Override
+                    public void onSuccess(@NonNull QuerySnapshot queryDocumentSnapshots) {
+                        if(queryDocumentSnapshots.size()>0){
+                            for(QueryDocumentSnapshot d : queryDocumentSnapshots){
+                                callback.getDataProduct(d.getId(),d.getString("tensp"),
+                                        d.getLong("giatien"),d.getString("hinhanh"),
+                                        d.getString("loaisp"),d.getString("mota"),
+                                        d.getLong("soluong"),d.getString("size"),
+                                        d.getLong("type"),d.getString("chatlieu"));
+
+                            }
+                        }
 
                     }
-                }
-
-            }
-        });
+                });
     }
 
     public void HandleGetWithIDProduct(String idproduct){

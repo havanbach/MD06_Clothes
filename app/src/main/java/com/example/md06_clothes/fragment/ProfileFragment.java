@@ -168,75 +168,75 @@ public class ProfileFragment extends Fragment {
         firestore.collection("User").document(FirebaseAuth.getInstance().getCurrentUser().getUid())
                 .collection("Profile")
                 .get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
-            @Override
-            public void onSuccess(@NonNull QuerySnapshot queryDocumentSnapshots) {
+                    @Override
+                    public void onSuccess(@NonNull QuerySnapshot queryDocumentSnapshots) {
 
-                if(queryDocumentSnapshots.size()>0){
-                    DocumentSnapshot documentSnapshot = queryDocumentSnapshots.getDocuments().get(0);
-                    if(documentSnapshot!=null){
-                        key = documentSnapshot.getId();
-                        try{
-                            edtAddress.setText(documentSnapshot.getString("diachi").length()>0 ?
-                                    documentSnapshot.getString("diachi") : "");
-                            edtFullName.setText(documentSnapshot.getString("hoten").length()>0 ?
-                                    documentSnapshot.getString("hoten") : "");
-                            edtPhoneNumber.setText(documentSnapshot.getString("sdt").length()>0 ?
-                                    documentSnapshot.getString("sdt") : "");
-                            edtDate.setText(documentSnapshot.getString("ngaysinh").length()>0 ?
-                                    documentSnapshot.getString("ngaysinh") : "");
-                            String sex = documentSnapshot.getString("gioitinh");
-                            if (sex.length()>0){
-                                if (sex.equals("Nam")){
-                                    rdoNam.setChecked(true);
-                                } else {
-                                    rdoNu.setChecked(true);
+                        if(queryDocumentSnapshots.size()>0){
+                            DocumentSnapshot documentSnapshot = queryDocumentSnapshots.getDocuments().get(0);
+                            if(documentSnapshot!=null){
+                                key = documentSnapshot.getId();
+                                try{
+                                    edtAddress.setText(documentSnapshot.getString("diachi").length()>0 ?
+                                            documentSnapshot.getString("diachi") : "");
+                                    edtFullName.setText(documentSnapshot.getString("hoten").length()>0 ?
+                                            documentSnapshot.getString("hoten") : "");
+                                    edtPhoneNumber.setText(documentSnapshot.getString("sdt").length()>0 ?
+                                            documentSnapshot.getString("sdt") : "");
+                                    edtDate.setText(documentSnapshot.getString("ngaysinh").length()>0 ?
+                                            documentSnapshot.getString("ngaysinh") : "");
+                                    String sex = documentSnapshot.getString("gioitinh");
+                                    if (sex.length()>0){
+                                        if (sex.equals("Nam")){
+                                            rdoNam.setChecked(true);
+                                        } else {
+                                            rdoNu.setChecked(true);
+                                        }
+                                    } else {
+                                        rdoGroup.clearCheck();
+                                    }
+                                    if(documentSnapshot.getString("avatar").length()>0){
+                                        Picasso.get().load(documentSnapshot.getString("avatar").trim()).into(imgAvatar);
+                                    }
+                                }catch (Exception e){
                                 }
-                            } else {
-                                rdoGroup.clearCheck();
+
+                            }else{
+                                HashMap<String,String> hashMap=  new HashMap<>();
+                                hashMap.put("diachi","");
+                                hashMap.put("hoten","");
+                                hashMap.put("sdt","");
+                                hashMap.put("ngaysinh","");
+                                hashMap.put("gioitinh","");
+                                hashMap.put("avatar","");
+                                hashMap.put("iduser", FirebaseAuth.getInstance().getCurrentUser().getUid());
+                                firestore.collection("User").document(FirebaseAuth.getInstance().getCurrentUser().getUid())
+                                        .collection("Profile").add(hashMap).addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+                                            @Override
+                                            public void onSuccess(@NonNull DocumentReference documentReference) {
+                                                key = documentReference.getId();
+                                            }
+                                        });
+
                             }
-                            if(documentSnapshot.getString("avatar").length()>0){
-                                Picasso.get().load(documentSnapshot.getString("avatar").trim()).into(imgAvatar);
-                            }
-                        }catch (Exception e){
+                        }else{
+                            HashMap<String,String> hashMap=  new HashMap<>();
+                            hashMap.put("diachi","");
+                            hashMap.put("hoten","");
+                            hashMap.put("sdt","");
+                            hashMap.put("ngaysinh","");
+                            hashMap.put("gioitinh","");
+                            hashMap.put("avatar","");
+                            hashMap.put("iduser", FirebaseAuth.getInstance().getCurrentUser().getUid());
+                            firestore.collection("User").document(FirebaseAuth.getInstance().getCurrentUser().getUid())
+                                    .collection("Profile").add(hashMap).addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+                                        @Override
+                                        public void onSuccess(@NonNull DocumentReference documentReference) {
+                                            key = documentReference.getId();
+                                        }
+                                    });
                         }
-
-                    }else{
-                        HashMap<String,String> hashMap=  new HashMap<>();
-                        hashMap.put("diachi","");
-                        hashMap.put("hoten","");
-                        hashMap.put("sdt","");
-                        hashMap.put("ngaysinh","");
-                        hashMap.put("gioitinh","");
-                        hashMap.put("avatar","");
-                        hashMap.put("iduser", FirebaseAuth.getInstance().getCurrentUser().getUid());
-                        firestore.collection("User").document(FirebaseAuth.getInstance().getCurrentUser().getUid())
-                                .collection("Profile").add(hashMap).addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
-                            @Override
-                            public void onSuccess(@NonNull DocumentReference documentReference) {
-                                key = documentReference.getId();
-                            }
-                        });
-
                     }
-                }else{
-                    HashMap<String,String> hashMap=  new HashMap<>();
-                    hashMap.put("diachi","");
-                    hashMap.put("hoten","");
-                    hashMap.put("sdt","");
-                    hashMap.put("ngaysinh","");
-                    hashMap.put("gioitinh","");
-                    hashMap.put("avatar","");
-                    hashMap.put("iduser", FirebaseAuth.getInstance().getCurrentUser().getUid());
-                    firestore.collection("User").document(FirebaseAuth.getInstance().getCurrentUser().getUid())
-                            .collection("Profile").add(hashMap).addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
-                        @Override
-                        public void onSuccess(@NonNull DocumentReference documentReference) {
-                            key = documentReference.getId();
-                        }
-                    });
-                }
-            }
-        });
+                });
     }
 
     // Hàm set thông tin người dùng hiện tại khi click vào My Profile
@@ -296,23 +296,51 @@ public class ProfileFragment extends Fragment {
         btnUpdateprofile.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
                 String strFullName = edtFullName.getText().toString().trim();
                 String strAddress = edtAddress.getText().toString().trim();
                 String strSDT = edtPhoneNumber.getText().toString().trim();
                 String strDate = edtDate.getText().toString().trim();
                 String strSex;
-                if (rdoNam.isChecked()){
+
+                if (rdoNam.isChecked()) {
                     strSex = "Nam";
-                } else {
+                } else if (rdoNu.isChecked()) {
                     strSex = "Nữ";
+                } else {
+                    strSex = "";
+                }
+
+                // Validate dữ liệu đầu vào
+                if (strFullName.isEmpty()) {
+                    edtFullName.setError("Vui lòng nhập tên đầy đủ!");
+                    return;
+                }
+                if (strAddress.isEmpty()) {
+                    edtAddress.setError("Vui lòng nhập địa chỉ!");
+                    return;
+                }
+                if (!strSDT.matches("^[0-9]{10,11}$")) {
+                    edtPhoneNumber.setError("Số điện thoại không hợp lệ!");
+                    return;
+                }
+                if (strDate.isEmpty()) {
+                    edtDate.setError("Vui lòng chọn ngày sinh!");
+                    return;
+                }
+                if (strSex.isEmpty()) {
+                    Toast.makeText(getContext(), "Vui lòng chọn giới tính!", Toast.LENGTH_SHORT).show();
+                    return;
                 }
 
                 FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-                if (user == null){
+                if (user == null) {
+                    Toast.makeText(getContext(), "Không tìm thấy thông tin người dùng!", Toast.LENGTH_SHORT).show();
                     return;
                 }
+
                 progressDialog.show();
+
+                // Cập nhật User Profile
                 UserProfileChangeRequest profileUpdates = new UserProfileChangeRequest.Builder()
                         .setDisplayName(strFullName)
                         .setPhotoUri(mUri)
@@ -321,13 +349,13 @@ public class ProfileFragment extends Fragment {
                 user.updateProfile(profileUpdates).addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
-                        progressDialog.dismiss();
                         if (task.isSuccessful()) {
-                            mMainActivity.setProFile();
+                            Toast.makeText(getContext(), "Cập nhật thông tin tài khoản thành công!", Toast.LENGTH_SHORT).show();
                         }
                     }
                 });
 
+                // Cập nhật Firestore
                 Map<String, Object> chinh = new HashMap<>();
                 chinh.put("hoten", strFullName);
                 chinh.put("diachi", strAddress);
@@ -337,18 +365,21 @@ public class ProfileFragment extends Fragment {
 
                 firestore.collection("User").document(FirebaseAuth.getInstance().getCurrentUser().getUid())
                         .collection("Profile").document(key)
-                        .update(chinh).addOnCompleteListener(new OnCompleteListener<Void>() {
-                    @Override
-                    public void onComplete(@NonNull Task<Void> task) {
-                        if(task.isSuccessful()){
-                            Toast.makeText(getContext(), "Cập nhật thông tin thành công", Toast.LENGTH_SHORT).show();
+                        .update(chinh)
+                        .addOnCompleteListener(new OnCompleteListener<Void>() {
+                            @Override
+                            public void onComplete(@NonNull Task<Void> task) {
+                                progressDialog.dismiss();
+                                if (task.isSuccessful()) {
+                                    Toast.makeText(getContext(), "Cập nhật thông tin thành công!", Toast.LENGTH_SHORT).show();
+                                    LoadInfo();
+                                } else {
+                                    Toast.makeText(getContext(), "Đã xảy ra lỗi khi cập nhật!", Toast.LENGTH_SHORT).show();
+                                }
+                            }
+                        });
 
-                        }
-
-                    }
-                });
-
-                // Import vào Realtime của Firebase
+                // Cập nhật Realtime Database
                 reference = FirebaseDatabase.getInstance().getReference("Users").child(FirebaseAuth.getInstance().getCurrentUser().getUid());
                 HashMap<String, Object> map = new HashMap<>();
                 map.put("iduser", FirebaseAuth.getInstance().getCurrentUser().getUid());
@@ -357,6 +388,7 @@ public class ProfileFragment extends Fragment {
                 reference.updateChildren(map);
             }
         });
+
 
         layoutLogout.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -472,13 +504,13 @@ public class ProfileFragment extends Fragment {
                                     firestore.collection("User").document(FirebaseAuth.getInstance().getCurrentUser().getUid())
                                             .collection("Profile").document(key)
                                             .update("avatar",uri.toString()).addOnCompleteListener(new OnCompleteListener<Void>() {
-                                        @Override
-                                        public void onComplete(@NonNull Task<Void> task) {
-                                            if(task.isSuccessful()){
-                                                imgAvatar.setImageBitmap(bitmap);
-                                            }
-                                        }
-                                    });
+                                                @Override
+                                                public void onComplete(@NonNull Task<Void> task) {
+                                                    if(task.isSuccessful()){
+                                                        imgAvatar.setImageBitmap(bitmap);
+                                                    }
+                                                }
+                                            });
 
                                     // update vào realtime database của firebase
                                     reference = FirebaseDatabase.getInstance().getReference("Users").child(FirebaseAuth.getInstance().getCurrentUser().getUid());

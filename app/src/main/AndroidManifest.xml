@@ -25,6 +25,14 @@
         android:usesCleartextTraffic="true"
         tools:replace="android:theme"
         tools:targetApi="34" >
+
+        <activity
+            android:name=".View.CTHDActivity"
+            android:exported="false" />
+
+        <activity
+            android:name=".View.OrderSuccessActivity"
+            android:exported="false" />
         <activity
             android:name=".View.DetailSPActivity"
             android:exported="false" />
@@ -58,30 +66,7 @@
         <activity
             android:name=".SignUpActivity"
             android:exported="false" />
-        <activity
-            android:name=".View.Admin.AdminHomeActivity"
-            android:exported="false" />
-        <activity
-            android:name=".View.Admin.AdminUsersActivity"
-            android:exported="false" />
-        <activity
-            android:name=".View.Admin.AdminAddLoaiSPActivity"
-            android:exported="false" />
-        <activity
-            android:name=".View.Admin.AdminAddSPActivity"
-            android:exported="false" />
-        <activity
-            android:name=".View.Admin.AdminBillMainActivity"
-            android:exported="false" />
-        <activity
-            android:name=".View.Admin.AdminChartBillActivity"
-            android:exported="false" />
-        <activity
-            android:name=".View.Admin.AdminCTHDActivity"
-            android:exported="false" />
-        <activity
-            android:name=".View.Admin.AdminProductActivity"
-            android:exported="false" />
+
         <activity
             android:name=".SplashActivity"
             android:exported="true" >
@@ -95,6 +80,10 @@
         <meta-data
             android:name="preloaded_fonts"
             android:resource="@array/preloaded_fonts" />
+
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="AIzaSyBV6Gkj62oXj-Y8GkKXVqKFr79lZajash4" />
     </application>
 
 </manifest>

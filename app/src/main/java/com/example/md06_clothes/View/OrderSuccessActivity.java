@@ -154,7 +154,7 @@ public class OrderSuccessActivity extends AppCompatActivity {
         for (Product product: mlist){
             i++;
             if (product.getTensp().length() > 20 ){
-                 s = product.getTensp().substring(0,20) + "...";
+                s = product.getTensp().substring(0,20) + "...";
             } else s = product.getTensp();
 
             canvas.drawText(i + ". ", 40, 950+j, myPaint);

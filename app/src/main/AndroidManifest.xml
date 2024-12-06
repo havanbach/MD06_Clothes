@@ -38,6 +38,9 @@
             android:name=".View.SearchActivity"
             android:exported="false" />
         <activity
+            android:name=".View.CTHDActivity"
+            android:exported="false" />
+        <activity
             android:name=".View.OrderSuccessActivity"
             android:exported="false" />
         <activity

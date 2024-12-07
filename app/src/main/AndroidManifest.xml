@@ -29,6 +29,15 @@
             android:name=".View.DetailSPActivity"
             android:exported="false" />
         <activity
+            android:name=".View.DanhGiaActivity"
+            android:exported="false" />
+        <activity
+            android:name=".View.ChatActivity"
+            android:exported="false" />
+        <activity
+            android:name=".View.MessageActivity"
+            android:exported="false" />
+        <activity
             android:name=".View.CommentActivity"
             android:exported="false" />
         <activity

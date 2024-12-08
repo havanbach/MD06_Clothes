@@ -501,7 +501,7 @@ public class CartActivity extends AppCompatActivity implements GioHangView {
                     Log.d("CHECKED",checked);
                     Calendar calendar=Calendar.getInstance();
                     SimpleDateFormat simpleDateFormat=new SimpleDateFormat("yyyy-MM-dd");
-//                    gioHangPresenter.HandleAddHoaDon(ghichu,simpleDateFormat.format(calendar.getTime()),diachi,hoten,sdt,spinnerPhuongthuc.getSelectedItem().toString(),tienthanhtoan,listGiohang);
+
                     HashMap<String,Object> hashMap2 = new HashMap<>();
                     hashMap2.put("ghichu", ghichu);
                     hashMap2.put("ngaydat",ngaydat);

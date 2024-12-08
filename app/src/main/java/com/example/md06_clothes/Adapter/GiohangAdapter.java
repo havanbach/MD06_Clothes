@@ -92,7 +92,7 @@ public class GiohangAdapter extends RecyclerView.Adapter<GiohangAdapter.ViewHold
             }
         });
 
-        // Giảm số lượng
+        // Giảm số lượng sp
         holder.btnMinusGiohang.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

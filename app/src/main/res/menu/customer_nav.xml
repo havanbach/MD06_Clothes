@@ -17,8 +17,10 @@
         android:id="@+id/donhang"
         android:title="Đơn hàng"
         android:icon="@drawable/ic_bill" />
-    <item
-        android:id="@+id/khac"
-        android:title="Khác"
-        android:icon="@drawable/ic_action_name" />
+
+<!--    tính năng phát triển-->
+<!--    <item-->
+<!--        android:id="@+id/khac"-->
+<!--        android:title="Khác"-->
+<!--        android:icon="@drawable/ic_action_name" />-->
 </menu>

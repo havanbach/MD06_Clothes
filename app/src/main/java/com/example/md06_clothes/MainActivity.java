@@ -52,10 +52,10 @@ public class MainActivity extends AppCompatActivity {
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
-        MyReceiver = new MyReceiver();
-        broadcastIntent();
+
+        MyReceiver = new MyReceiver();      // Check Internet
+        broadcastIntent();                  // Check Internet
 
         if (savedInstanceState == null) {
             getSupportFragmentManager().beginTransaction()
@@ -86,9 +86,10 @@ public class MainActivity extends AppCompatActivity {
                         case R.id.donhang:
                             selectedFragment = new BillFragment();
                             break;
-                        case R.id.khac:
-                            selectedFragment = new NotifyFragment();
-                            break;
+//                            tính năng phát triển
+//                        case R.id.khac:
+//                            selectedFragment = new NotifyFragment();
+//                            break;
                         default:
                             // Xử lý trường hợp không xác định
                             return false;

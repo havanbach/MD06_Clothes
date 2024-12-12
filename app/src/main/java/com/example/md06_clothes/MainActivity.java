@@ -87,9 +87,9 @@ public class MainActivity extends AppCompatActivity {
                             selectedFragment = new BillFragment();
                             break;
 //                            tính năng phát triển
-//                        case R.id.khac:
-//                            selectedFragment = new NotifyFragment();
-//                            break;
+                        case R.id.khac:
+                            selectedFragment = new NotifyFragment();
+                            break;
                         default:
                             // Xử lý trường hợp không xác định
                             return false;

@@ -19,8 +19,8 @@
         android:icon="@drawable/ic_bill" />
 
 <!--    tính năng phát triển-->
-<!--    <item-->
-<!--        android:id="@+id/khac"-->
-<!--        android:title="Khác"-->
-<!--        android:icon="@drawable/ic_action_name" />-->
+    <item
+        android:id="@+id/khac"
+        android:title="Khác"
+        android:icon="@drawable/ic_action_name" />
 </menu>

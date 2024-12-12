@@ -1,5 +1,8 @@
 package com.example.md06_clothes.View;
 
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+
 import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -16,9 +19,6 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
-
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.ActivityCompat;
 
 import com.example.md06_clothes.Models.Product;
 import com.example.md06_clothes.R;
@@ -117,13 +117,6 @@ public class OrderSuccessActivity extends AppCompatActivity {
         canvas.drawText("Liên hệ: " + sdt, 20, 640, myPaint);
         canvas.drawText("Địa chỉ: " + diachi, 20, 690, myPaint);
         canvas.drawText("Phương thức: " + phuongthuc, 20, 740, myPaint);
-
-//        if (!ghichu.equals("")){
-//            myPaint.setTextAlign(Paint.Align.LEFT);
-//            myPaint.setTextSize(30f);
-//            myPaint.setColor(Color.BLACK);
-//            canvas.drawText("Ghi chú: " + ghichu, 20, 2000, myPaint);
-//        }
 
         myPaint.setTextAlign(Paint.Align.RIGHT);
         canvas.drawText("ID hóa đơn: " + idhoadon, pageWidth-20, 590, myPaint);

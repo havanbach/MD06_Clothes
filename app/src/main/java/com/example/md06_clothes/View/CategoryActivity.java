@@ -11,7 +11,6 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -32,26 +31,42 @@ public class CategoryActivity extends AppCompatActivity {
     private TextView tvCategory;
     private EditText edtSearch;
     private RecyclerView rcvCategory;
+
     private CategoryAdapter categoryAdapter;
     private FirebaseFirestore firestore = FirebaseFirestore.getInstance();
     private Product product;
-    private ArrayList<Product> arr_khac, arr_micay, arr_chaosup, arr_pizza, arr_sandwich, arr_douong, arr_lau, arr_doannhanh;
+
+    // Khai báo các mảng danh sách
+    private ArrayList<Product> arr_khac;
+    private ArrayList<Product> arr_micay;
+    private ArrayList<Product> arr_chaosup;
+    private ArrayList<Product> arr_pizza;
+    private ArrayList<Product> arr_sandwich;
+    private ArrayList<Product> arr_douong;
+    private ArrayList<Product> arr_lau;
+    private ArrayList<Product> arr_doannhanh;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_category);
 
+        // Khởi tạo các thành phần giao diện và dữ liệu
         InitWidget();
         Init();
         Event();
     }
 
+    // Khởi tạo dữ liệu ban đầu
     private void Init() {
         Intent intent = getIntent();
-        String loaiProduct = intent.getStringExtra("loaiproduct"); // Nhận loại sản phẩm
-        tvCategory.setText(loaiProduct);
+        String loaiProduct = intent.getStringExtra("loaiproduct"); // Nhận loại sản phẩm từ Intent
+        tvCategory.setText(loaiProduct); // Hiển thị tên loại sản phẩm
 
+        // Xác định danh sách hiện tại dựa trên loại sản phẩm
+        ArrayList<Product> currentList = getListByCategory(loaiProduct);
+
+        // Truy vấn dữ liệu từ Firestore
         firestore.collection("SanPham")
                 .whereEqualTo("loaisp", loaiProduct)
                 .get()
@@ -60,7 +75,7 @@ public class CategoryActivity extends AppCompatActivity {
                     public void onSuccess(@NonNull QuerySnapshot queryDocumentSnapshots) {
                         if (!queryDocumentSnapshots.isEmpty()) {
                             for (QueryDocumentSnapshot d : queryDocumentSnapshots) {
-                                arr_khac.add(new Product(
+                                currentList.add(new Product(
                                         d.getId(),
                                         d.getString("tensp"),
                                         d.getLong("giatien"),
@@ -73,10 +88,11 @@ public class CategoryActivity extends AppCompatActivity {
                                         d.getString("chatlieu")
                                 ));
                             }
-                            categoryAdapter = new CategoryAdapter(CategoryActivity.this, arr_khac, new IClickOpenBottomSheet() {
+                            // Cập nhật adapter với danh sách sản phẩm
+                            categoryAdapter = new CategoryAdapter(CategoryActivity.this, currentList, new IClickOpenBottomSheet() {
                                 @Override
                                 public void onClickOpenBottomSheet(int position) {
-                                    product = arr_khac.get(position);
+                                    product = currentList.get(position);
                                     SendData();
                                 }
                             });
@@ -94,28 +110,31 @@ public class CategoryActivity extends AppCompatActivity {
                 });
     }
 
-
-    private void SendData(){
+    // Gửi dữ liệu sản phẩm sang `DetailSPActivity`
+    private void SendData() {
         Intent intent = new Intent(CategoryActivity.this, DetailSPActivity.class);
         intent.putExtra("search", product);
         startActivity(intent);
     }
 
+    // Quản lý sự kiện giao diện
     private void Event() {
         imgBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                finish();
+                finish(); // Quay lại màn hình trước đó
             }
         });
     }
 
+    // Khởi tạo các thành phần giao diện
     private void InitWidget() {
         imgBack = findViewById(R.id.img_back);
         tvCategory = findViewById(R.id.tv_category);
         edtSearch = findViewById(R.id.edt_search);
         rcvCategory = findViewById(R.id.rcv_category);
 
+        // Khởi tạo các mảng danh sách sản phẩm
         arr_khac = new ArrayList<>();
         arr_micay = new ArrayList<>();
         arr_chaosup = new ArrayList<>();
@@ -124,7 +143,27 @@ public class CategoryActivity extends AppCompatActivity {
         arr_douong = new ArrayList<>();
         arr_lau = new ArrayList<>();
         arr_doannhanh = new ArrayList<>();
-
     }
 
+    // Trả về danh sách sản phẩm dựa theo loại
+    private ArrayList<Product> getListByCategory(String loaiProduct) {
+        switch (loaiProduct.toLowerCase()) {
+            case "micay":
+                return arr_micay;
+            case "chaosup":
+                return arr_chaosup;
+            case "pizza":
+                return arr_pizza;
+            case "sandwich":
+                return arr_sandwich;
+            case "douong":
+                return arr_douong;
+            case "lau":
+                return arr_lau;
+            case "doannhanh":
+                return arr_doannhanh;
+            default:
+                return arr_khac; // Mặc định trả về danh sách `arr_khac`
+        }
+    }
 }

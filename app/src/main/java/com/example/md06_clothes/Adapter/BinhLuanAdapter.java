@@ -24,7 +24,7 @@ import java.util.ArrayList;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
-public class BinhLuanAdapter extends RecyclerView.Adapter<BinhLuanAdapter.ViewHolder>{
+public class BinhLuanAdapter extends RecyclerView.Adapter<BinhLuanAdapter.ViewHolder> {
 
     private Context context;
     private ArrayList<Binhluan> mlist;
@@ -39,8 +39,7 @@ public class BinhLuanAdapter extends RecyclerView.Adapter<BinhLuanAdapter.ViewHo
     @NotNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull @NotNull ViewGroup parent, int viewType) {
-        View view;
-        view = LayoutInflater.from(parent.getContext()).inflate(com.example.md06_clothes.R.layout.dong_binhluan, parent,false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.dong_binhluan, parent, false);
         return new ViewHolder(view);
     }
 
@@ -55,9 +54,17 @@ public class BinhLuanAdapter extends RecyclerView.Adapter<BinhLuanAdapter.ViewHo
         db.collection("User").document(binhluan.getIduser()).collection("Profile").get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
             @Override
             public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
-                for (QueryDocumentSnapshot q : queryDocumentSnapshots){
+                for (QueryDocumentSnapshot q : queryDocumentSnapshots) {
                     holder.tvNameBinhLuan.setText(q.getString("hoten"));
-                    Picasso.get().load(q.getString("avatar")).into(holder.cirHinhAnhBinhLuan);
+                    String avatarUrl = q.getString("avatar");
+
+                    // Kiểm tra nếu avatarUrl hợp lệ trước khi tải ảnh
+                    if (avatarUrl != null && !avatarUrl.isEmpty()) {
+                        Picasso.get().load(avatarUrl).into(holder.cirHinhAnhBinhLuan);
+                    } else {
+                        // Nếu avatarUrl không hợp lệ, tải ảnh mặc định
+                        Picasso.get().load(R.drawable.ao3).into(holder.cirHinhAnhBinhLuan);
+                    }
                 }
             }
         });
@@ -68,13 +75,13 @@ public class BinhLuanAdapter extends RecyclerView.Adapter<BinhLuanAdapter.ViewHo
         return mlist.size();
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder{
+    public class ViewHolder extends RecyclerView.ViewHolder {
 
         private CircleImageView cirHinhAnhBinhLuan;
         private TextView tvBinhLuan, tvRate, tvNameBinhLuan;
+
         public ViewHolder(@NonNull @NotNull View itemView) {
             super(itemView);
-
             cirHinhAnhBinhLuan = itemView.findViewById(R.id.cir_hinhanh_binhluan);
             tvBinhLuan = itemView.findViewById(R.id.tv_binhluan);
             tvRate = itemView.findViewById(R.id.tv_rate);

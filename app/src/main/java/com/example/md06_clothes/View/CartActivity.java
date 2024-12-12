@@ -141,6 +141,7 @@ public class CartActivity extends AppCompatActivity implements GioHangView {
         });
     }
 
+
     private void DiaLogThanhToan() {
         Dialog dialog = new Dialog(CartActivity.this);
         dialog.setContentView(R.layout.dialog_thanhtoan);

@@ -155,7 +155,7 @@ public class MessageActivity extends AppCompatActivity {
         });
     }
     private void sendPushNotification(String sender, String message) {
-        Bitmap bitmap = BitmapFactory.decodeResource(getResources(), R.mipmap.ic_food2);
+        Bitmap bitmap = BitmapFactory.decodeResource(getResources(), R.mipmap.ic_launcher);
         Intent notifyIntent = new Intent(this, ChatActivity.class);
         notifyIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         PendingIntent notifyPendingIntent = PendingIntent.getActivity(

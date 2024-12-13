@@ -1,6 +1,6 @@
 package com.example.md06_clothes.View;
 
-import android.content.BroadcastReceiver;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -17,7 +17,7 @@ import com.google.firebase.auth.FirebaseAuth;
 
 public class ForgotPasswordActivity extends AppCompatActivity {
     private EditText edtEmailForgot;
-    private Button btnForgot;
+    private Button btnForgot, btnBack;
     private FirebaseAuth mFirebaseAuth;
 
     @Override
@@ -31,6 +31,7 @@ public class ForgotPasswordActivity extends AppCompatActivity {
     private void InitWidget() {
         edtEmailForgot = findViewById(R.id.edt_email_forgot);
         btnForgot = findViewById(R.id.btn_forgot);
+        btnBack = findViewById(R.id.btn_back);  // Ánh xạ nút quay lại
     }
 
     private void Event() {
@@ -81,6 +82,15 @@ public class ForgotPasswordActivity extends AppCompatActivity {
                                 Toast.makeText(ForgotPasswordActivity.this, "Yêu cầu thất bại: " + e.getMessage(), Toast.LENGTH_LONG).show();
                             }
                         });
+            }
+        });
+
+        // Cài đặt sự kiện cho nút quay lại
+        btnBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                // Quay lại Activity trước đó
+                onBackPressed();
             }
         });
     }

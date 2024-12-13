@@ -53,7 +53,7 @@ public class ForgotPasswordActivity extends AppCompatActivity {
                         .addOnSuccessListener(new OnSuccessListener<Void>() {
                             @Override
                             public void onSuccess(Void unused) {
-                                Toast.makeText(ForgotPasswordActivity.this, "Đã gửi Email", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(ForgotPasswordActivity.this, "Email khôi phục mật khẩu đã được gửi. Vui lòng kiểm tra hộp thư của bạn", Toast.LENGTH_SHORT).show();
                                 finish();
                             }
                         }).addOnFailureListener(new OnFailureListener() {

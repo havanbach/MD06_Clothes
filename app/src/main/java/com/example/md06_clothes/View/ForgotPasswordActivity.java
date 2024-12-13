@@ -51,14 +51,31 @@ public class ForgotPasswordActivity extends AppCompatActivity {
                 }
 
                 FirebaseAuth auth = FirebaseAuth.getInstance();
-                auth.sendPasswordResetEmail(stremail)
-                        .addOnSuccessListener(new OnSuccessListener<Void>() {
+                auth.fetchSignInMethodsForEmail(stremail)
+                        .addOnSuccessListener(new OnSuccessListener<com.google.firebase.auth.SignInMethodQueryResult>() {
                             @Override
-                            public void onSuccess(Void unused) {
-                                Toast.makeText(ForgotPasswordActivity.this, "Email khôi phục mật khẩu đã được gửi. Vui lòng kiểm tra hộp thư của bạn", Toast.LENGTH_SHORT).show();
-                                finish();
+                            public void onSuccess(com.google.firebase.auth.SignInMethodQueryResult result) {
+                                if (result.getSignInMethods() == null || result.getSignInMethods().isEmpty()) {
+                                    Toast.makeText(ForgotPasswordActivity.this, "Email chưa được đăng ký tài khoản. Vui lòng tạo tài khoản trước.", Toast.LENGTH_LONG).show();
+                                } else {
+                                    auth.sendPasswordResetEmail(stremail)
+                                            .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                                @Override
+                                                public void onSuccess(Void unused) {
+                                                    Toast.makeText(ForgotPasswordActivity.this, "Email khôi phục mật khẩu đã được gửi. Vui lòng kiểm tra hộp thư của bạn", Toast.LENGTH_SHORT).show();
+                                                    finish();
+                                                }
+                                            })
+                                            .addOnFailureListener(new OnFailureListener() {
+                                                @Override
+                                                public void onFailure(@NonNull Exception e) {
+                                                    Toast.makeText(ForgotPasswordActivity.this, "Yêu cầu thất bại: " + e.getMessage(), Toast.LENGTH_LONG).show();
+                                                }
+                                            });
+                                }
                             }
-                        }).addOnFailureListener(new OnFailureListener() {
+                        })
+                        .addOnFailureListener(new OnFailureListener() {
                             @Override
                             public void onFailure(@NonNull Exception e) {
                                 Toast.makeText(ForgotPasswordActivity.this, "Yêu cầu thất bại: " + e.getMessage(), Toast.LENGTH_LONG).show();

@@ -1,82 +1,97 @@
 package com.example.md06_clothes.fragment;
 
+import android.graphics.drawable.AnimationDrawable;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 
-
 import com.example.md06_clothes.R;
+import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.android.gms.maps.UiSettings;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import org.jetbrains.annotations.NotNull;
 
 public class NotifyFragment extends Fragment implements OnMapReadyCallback {
-    private Toolbar toolbar;
-    private FirebaseFirestore db = FirebaseFirestore.getInstance();;
-    private TextView txtdiachi,txtsdt,txtnoidung;
 
+    private static final String TAG = "NotifyFragment";
+
+    private FirebaseFirestore db = FirebaseFirestore.getInstance();
+    private TextView txtDiaChi, txtSdt, txtNoiDung, txtGioiThieu;
+    private LinearLayout layoutContainer;
+
+    // Tọa độ mặc định của cửa hàng
+    private static final LatLng STORE_LOCATION = new LatLng(21.015789, 105.723599);
+    private static final float DEFAULT_ZOOM = 18f;
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        View v =  inflater.inflate(R.layout.fragment_notify, container, false);
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        View v = inflater.inflate(R.layout.fragment_notify, container, false);
 
-        toolbar = v.findViewById(R.id.toolbar);
-        txtdiachi = v.findViewById(R.id.txtdiachi);
-        txtsdt = v.findViewById(R.id.txtsdt);
-        txtnoidung = v.findViewById(R.id.txtnoidung);
+        txtDiaChi = v.findViewById(R.id.txtdiachi);
+        txtSdt = v.findViewById(R.id.txtsdt);
+        txtNoiDung = v.findViewById(R.id.txtnoidung);
+        txtGioiThieu = v.findViewById(R.id.txtgioithieu);
+        layoutContainer = v.findViewById(R.id.layoutContainer);
 
+        // Kích hoạt hiệu ứng chạy chữ
+        txtGioiThieu.setSelected(true);
+        Animation marqueeAnimation = AnimationUtils.loadAnimation(getContext(), R.anim.marquee);
+        txtGioiThieu.startAnimation(marqueeAnimation);
+
+        // Hiệu ứng bo viền nhấp nháy
+        layoutContainer.setBackgroundResource(R.drawable.border_animation);
+        AnimationDrawable borderAnimation = (AnimationDrawable) layoutContainer.getBackground();
+        borderAnimation.start();
+
+        // Lấy thông tin từ Firestore và cập nhật vào TextView
         db.collection("ThongTinCuaHang").document("4It8RfW5U1FoFOWiZH7W")
-                .get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
-                    @Override
-                    public void onSuccess(@NonNull DocumentSnapshot documentSnapshot) {
-
-                        txtdiachi.setText("Địa chỉ : "+documentSnapshot.getString("diachi"));
-                        txtsdt.setText("Liên hệ : "+documentSnapshot.getString("sdt"));
-                        txtnoidung.setText("Nội Dung : "+documentSnapshot.getString("noidung"));
-
-
+                .get()
+                .addOnSuccessListener(documentSnapshot -> {
+                    if (documentSnapshot.exists()) {
+                        txtDiaChi.setText("Email: " + documentSnapshot.getString("email"));
+                        txtSdt.setText("Số điện thoại: " + documentSnapshot.getString("sdt"));
+                        txtNoiDung.setText("Nội dung: " + documentSnapshot.getString("noidung"));
+                        txtGioiThieu.setText("Giới thiệu: " + documentSnapshot.getString("gioithieu"));
+                    } else {
+                        Log.w(TAG, "Document does not exist!");
                     }
-                });
+                })
+                .addOnFailureListener(e -> Log.e(TAG, "Error fetching document", e));
 
-        // GG maps
-        SupportMapFragment mapFragment = (SupportMapFragment) getChildFragmentManager()
-                .findFragmentById(R.id.map);
-        mapFragment.getMapAsync(this);
-        Log.d("state", "onCreateView");
+        // Khởi tạo Google Map
+        SupportMapFragment mapFragment = (SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.map);
+        if (mapFragment != null) {
+            mapFragment.getMapAsync(this);
+        }
+
         return v;
     }
 
     @Override
     public void onMapReady(@NonNull @NotNull GoogleMap googleMap) {
-        db.collection("ThongTinCuaHang").document("sBI6zx4YiA3TPhUISVxo").get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
-            @Override
-            public void onSuccess(DocumentSnapshot documentSnapshot) {
-                txtdiachi.setText("Địa chỉ : "+documentSnapshot.getString("diachi"));
-                txtsdt.setText("Liên hệ : "+documentSnapshot.getString("sdt"));
-                txtnoidung.setText("Nội Dung : "+documentSnapshot.getString("noidung"));
-                //đọc vị trí gg map
+        googleMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
 
-            }
-        });
-    }
+        UiSettings uiSettings = googleMap.getUiSettings();
+        uiSettings.setZoomControlsEnabled(true);
+        uiSettings.setCompassEnabled(true);
+        uiSettings.setMyLocationButtonEnabled(true);
 
-    @Override
-    public void onSaveInstanceState(@NonNull @NotNull Bundle outState) {
-        super.onSaveInstanceState(outState);
-        Log.d("state", "onSave");
+        googleMap.addMarker(new MarkerOptions().position(STORE_LOCATION).title("Cửa hàng Clothes"));
+        googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(STORE_LOCATION, DEFAULT_ZOOM));
     }
 }

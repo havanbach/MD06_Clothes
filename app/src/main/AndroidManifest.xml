@@ -31,9 +31,6 @@
             android:value="AIzaSyCg_slSdCAo4MwIrUCgRk9CtOrFbzX3dIM" />
 
         <activity
-            android:name=".fragment.MapsActivity"
-            android:exported="false" />
-        <activity
             android:name=".View.DetailSPActivity"
             android:exported="false" />
         <activity

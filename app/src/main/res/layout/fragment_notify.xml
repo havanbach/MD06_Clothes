@@ -1,60 +1,120 @@
-<?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/layoutContainer"
-    android:orientation="vertical"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#A5E6AA"
     android:padding="16dp">
 
+    <LinearLayout
+        android:id="@+id/layoutContainer"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
 
-    <!-- Giới thiệu -->
-    <TextView
-        android:id="@+id/txtgioithieu"
+        <!-- Tiêu đề "Thông tin MD6_Clothes" -->
+        <TextView
+            android:id="@+id/txtTitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Thông tin MD6_Clothes"
+            android:textSize="20sp"
+            android:textColor="#FF5722"
+            android:textStyle="bold"
+            android:gravity="center"
+            android:paddingBottom="16dp"
+            android:paddingTop="16dp" />
+
+        <!-- Slideshow với viền -->
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            android:layout_marginBottom="16dp"
+            android:background="@drawable/border_style"
+            android:padding="8dp">
+        <ImageView
+            android:id="@+id/slideshowImage"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:src="@drawable/posterhome6" /> <!-- Thay thế với ảnh slideshow của bạn -->
+    </FrameLayout>
+
+    <!-- CardView cho Giới thiệu với bóng xanh lá cây -->
+    <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textSize="18sp"
-        android:textStyle="bold"
-        android:textColor="#000000"
-        android:text="Giới thiệu về cửa hàng: MD6_Clothes là ứng dụng bán quần áo trực tuyến..." />
+        android:layout_marginBottom="16dp"
+        android:elevation="6dp"
+        android:layout_gravity="center"
+        android:background="@android:color/holo_green_light">
+        <TextView
+            android:id="@+id/txtgioithieu"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:textColor="#000000"
+            android:text="Giới thiệu: MD6_Clothes là ứng dụng bán quần áo trực tuyến..." />
+    </androidx.cardview.widget.CardView>
 
-    <!-- Liên hệ -->
-    <TextView
-        android:id="@+id/txtsdt"
+    <!-- CardView cho Số điện thoại với bóng xanh lá cây -->
+    <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textSize="16sp"
-        android:textStyle="bold"
-        android:textColor="#FF0000"
-        android:text="Liên hệ: 0123 456 789" />
+        android:layout_marginBottom="16dp"
+        android:elevation="6dp"
+        android:layout_gravity="center"
+        android:background="@android:color/holo_green_light">
+        <TextView
+            android:id="@+id/txtsdt"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:textColor="#FF0000"
+            android:text="Liên hệ: 0123 456 789" />
+    </androidx.cardview.widget.CardView>
 
-    <!-- Địa chỉ -->
-    <TextView
-        android:id="@+id/txtdiachi"
+    <!-- CardView cho Địa chỉ (Email) với bóng xanh lá cây -->
+    <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textSize="16sp"
-        android:textStyle="bold"
-        android:textColor="#008000"
-        android:text="Địa chỉ: Hà Nội" />
+        android:layout_marginBottom="16dp"
+        android:elevation="6dp"
+        android:layout_gravity="center"
+        android:background="@android:color/holo_green_light">
+        <TextView
+            android:id="@+id/txtdiachi"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:textColor="#008000"
+            android:text="Địa chỉ: Hà Nội" />
+    </androidx.cardview.widget.CardView>
 
     <!-- Nội dung -->
-    <TextView
-        android:id="@+id/txtnoidung"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:gravity="center"
-        android:padding="10dp"
-        android:textStyle="italic"
-        android:textColor="#A1A09E"
-        android:textSize="14sp"
-        android:text="Nội dung: Cập nhật sản phẩm mới nhất" />
+        <TextView
+            android:id="@+id/txtnoidung"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:padding="10dp"
+            android:textStyle="bold"
+            android:textColor="#E91E63"
+            android:textSize="18sp"
+            android:text="Nội dung: Cập nhật gg map"
+            android:drawableLeft="@drawable/icons8_location_30"
+        android:drawablePadding="8dp" />
 
-    <!-- Bản đồ -->
+
+        <!-- Bản đồ -->
     <fragment
         android:id="@+id/map"
         android:name="com.google.android.gms.maps.SupportMapFragment"
         android:layout_width="match_parent"
         android:layout_height="300dp"
         android:layout_marginTop="16dp" />
+
 </LinearLayout>
+    </ScrollView>

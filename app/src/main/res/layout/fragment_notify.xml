@@ -4,8 +4,8 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="16dp"
-    android:background="@drawable/border_animation">
+    android:padding="16dp">
+
 
     <!-- Giới thiệu -->
     <TextView
@@ -15,13 +15,8 @@
         android:textSize="18sp"
         android:textStyle="bold"
         android:textColor="#000000"
-        android:singleLine="true"
-        android:ellipsize="marquee"
-        android:marqueeRepeatLimit="marquee_forever"
-        android:focusable="true"
-        android:focusableInTouchMode="true"
-        android:scrollHorizontally="true"
         android:text="Giới thiệu về cửa hàng: MD6_Clothes là ứng dụng bán quần áo trực tuyến..." />
+
     <!-- Liên hệ -->
     <TextView
         android:id="@+id/txtsdt"

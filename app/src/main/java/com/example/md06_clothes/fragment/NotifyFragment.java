@@ -48,16 +48,6 @@ public class NotifyFragment extends Fragment implements OnMapReadyCallback {
         txtGioiThieu = v.findViewById(R.id.txtgioithieu);
         layoutContainer = v.findViewById(R.id.layoutContainer);
 
-        // Kích hoạt hiệu ứng chạy chữ
-        txtGioiThieu.setSelected(true);
-        Animation marqueeAnimation = AnimationUtils.loadAnimation(getContext(), R.anim.marquee);
-        txtGioiThieu.startAnimation(marqueeAnimation);
-
-        // Hiệu ứng bo viền nhấp nháy
-        layoutContainer.setBackgroundResource(R.drawable.border_animation);
-        AnimationDrawable borderAnimation = (AnimationDrawable) layoutContainer.getBackground();
-        borderAnimation.start();
-
         // Lấy thông tin từ Firestore và cập nhật vào TextView
         db.collection("ThongTinCuaHang").document("4It8RfW5U1FoFOWiZH7W")
                 .get()

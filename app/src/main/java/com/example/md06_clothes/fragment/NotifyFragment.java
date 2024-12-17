@@ -34,8 +34,9 @@ public class NotifyFragment extends Fragment implements OnMapReadyCallback {
     private LinearLayout layoutContainer;
 
     // Tọa độ mặc định của cửa hàng
-    private static final LatLng STORE_LOCATION = new LatLng(21.015789, 105.723599);
+    private static final LatLng STORE_LOCATION = new LatLng(21.0293336, 105.7691995);
     private static final float DEFAULT_ZOOM = 18f;
+
 
     // Đối tượng ImageView để hiển thị slideshow
     private ImageView slideshowImage;
@@ -99,7 +100,7 @@ public class NotifyFragment extends Fragment implements OnMapReadyCallback {
         uiSettings.setCompassEnabled(true);
         uiSettings.setMyLocationButtonEnabled(true);
 
-        googleMap.addMarker(new MarkerOptions().position(STORE_LOCATION).title("Cửa hàng Clothes"));
+        googleMap.addMarker(new MarkerOptions().position(STORE_LOCATION).title("MD6_Clothes"));
         googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(STORE_LOCATION, DEFAULT_ZOOM));
     }
 }

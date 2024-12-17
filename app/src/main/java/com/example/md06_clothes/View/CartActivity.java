@@ -120,6 +120,14 @@ public class CartActivity extends AppCompatActivity implements GioHangView {
                 finish();
             }
         });
+        ImageView imgBackEmptyCart = findViewById(R.id.img_back_empty_cart);
+        imgBackEmptyCart.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onBackPressed(); // Quay lại màn hình trước
+            }
+        });
+
     }
 
     private void DiaLogThanhToan() {

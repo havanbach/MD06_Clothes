@@ -7,6 +7,18 @@
     android:background="#FFFFFF"
     tools:context=".View.CartActivity">
 
+    <ImageView
+        android:id="@+id/img_back_empty_cart"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginStart="16dp"
+        android:src="@drawable/ic_back"
+        android:contentDescription="Back"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"/>
+
+
 
     <TextView
         android:id="@+id/tv_null_cart"

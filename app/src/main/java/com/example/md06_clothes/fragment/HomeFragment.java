@@ -35,7 +35,6 @@ import com.example.md06_clothes.Models.Product;
 import com.example.md06_clothes.R;
 import com.example.md06_clothes.View.CartActivity;
 import com.example.md06_clothes.View.CategoryActivity;
-import com.example.md06_clothes.View.ChatActivity;
 
 import com.example.md06_clothes.View.DetailSPActivity;
 import com.example.md06_clothes.View.SearchActivity;
@@ -215,14 +214,6 @@ public class HomeFragment extends Fragment {
             }
         });
 
-        imgHomeMessage.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent2 = new Intent(getContext(), ChatActivity.class);
-                intent2.putExtra("message", 2);
-                startActivity(intent2);
-            }
-        });
 
         imgHomeCart.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -589,7 +580,6 @@ public class HomeFragment extends Fragment {
         imgHomeCart = view.findViewById(R.id.img_home_cart);
         swipeHome = view.findViewById(R.id.swipe_home);
         tvNumberCart = view.findViewById(R.id.tv_number_cart);
-        imgHomeMessage = view.findViewById(R.id.img_home_message);
         edtSearchHome = view.findViewById(R.id.edt_search_home);
 
         toolbarHome = view.findViewById(R.id.toolbar_home);

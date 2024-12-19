@@ -36,7 +36,7 @@
                     android:layout_marginStart="16dp"
                     android:layout_marginEnd="8dp"
                     android:id="@+id/cir_avatar_home"
-                    android:layout_width="0dp"
+                    android:layout_width="40dp"
                     android:layout_height="40dp"
                     android:src="@drawable/slider3"/>
                 <EditText
@@ -54,21 +54,15 @@
                     android:drawablePadding="8dp"
                     android:drawableStart="@drawable/ic_search"
                     android:background="@drawable/border5"
-                    android:layout_gravity="center"
-                    android:layout_width="0dp"
-                    android:layout_height="45dp"/>
-                <RelativeLayout
-                    android:layout_marginStart="5dp"
-                    android:layout_gravity="center"
-                    android:layout_weight="1"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content">
+                    android:layout_width="200dp"
+                    android:layout_height="50dp"/>
+
 
                     <ImageView
                         android:id="@+id/img_home_cart"
-                        android:layout_width="25dp"
+                        android:layout_width="30dp"
+                        android:layout_marginLeft="10dp"
                         android:layout_height="match_parent"
-                        android:layout_centerHorizontal="true"
                         android:src="@drawable/ic_cart4" />
 
                     <TextView
@@ -82,16 +76,7 @@
                         android:textSize="8sp"
                         android:visibility="gone" />
 
-                </RelativeLayout>
 
-                <ImageView
-                    android:id="@+id/img_home_message"
-                    android:layout_marginEnd="10dp"
-                    android:layout_gravity="center"
-                    android:layout_weight="1"
-                    android:layout_width="0dp"
-                    android:layout_height="25dp"
-                    android:src="@drawable/ic_message"/>
 
 
             </LinearLayout>

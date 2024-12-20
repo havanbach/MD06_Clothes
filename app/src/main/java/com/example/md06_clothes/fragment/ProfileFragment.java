@@ -18,6 +18,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 
 import com.bumptech.glide.Glide;
@@ -43,7 +44,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 import de.hdodenhof.circleimageview.CircleImageView;
-
 
 public class ProfileFragment extends Fragment {
 
@@ -138,117 +138,110 @@ public class ProfileFragment extends Fragment {
     }
 
     private void Event() {
+        edtDate.setOnClickListener(view -> {
+            Calendar calendar = Calendar.getInstance();
+            int ngay = calendar.get(Calendar.DATE);
+            int thang = calendar.get(Calendar.MONTH);
+            int nam = calendar.get(Calendar.YEAR);
 
-        edtDate.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Calendar calendar = Calendar.getInstance();
-                int ngay = calendar.get(Calendar.DATE);
-                int thang = calendar.get(Calendar.MONTH);
-                int nam = calendar.get(Calendar.YEAR);
+            DatePickerDialog datePickerDialog = new DatePickerDialog(getContext(), (datePicker, year, month, dayOfMonth) -> {
+                Calendar selectedDate = Calendar.getInstance();
+                selectedDate.set(year, month, dayOfMonth);
 
-                DatePickerDialog datePickerDialog = new DatePickerDialog(getContext(), new DatePickerDialog.OnDateSetListener() {
-                    @Override
-                    public void onDateSet(DatePicker datePicker, int year, int month, int dayOfMonth) {
-                        Calendar selectedDate = Calendar.getInstance();
-                        selectedDate.set(year, month, dayOfMonth);
-
-                        // Kiểm tra nếu ngày được chọn nằm sau ngày hiện tại
-                        if (selectedDate.after(Calendar.getInstance())) {
-                            Toast.makeText(getContext(), "Ngày sinh phải nhỏ hơn ngày hiện tại!", Toast.LENGTH_SHORT).show();
-                        } else {
-                            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd/MM/yyyy");
-                            edtDate.setText(simpleDateFormat.format(selectedDate.getTime()));
-                        }
-                    }
-                }, nam, thang, ngay);
-
-                datePickerDialog.show();
-            }
-        });
-
-        btnUpdateprofile.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                String strFullName = edtFullName.getText().toString().trim();
-                String strAddress = edtAddress.getText().toString().trim();
-                String strSDT = edtPhoneNumber.getText().toString().trim();
-                String strDate = edtDate.getText().toString().trim();
-                String strSex;
-
-                if (rdoNam.isChecked()) {
-                    strSex = "Nam";
-                } else if (rdoNu.isChecked()) {
-                    strSex = "Nữ";
+                if (selectedDate.after(Calendar.getInstance())) {
+                    Toast.makeText(getContext(), "Ngày sinh phải nhỏ hơn ngày hiện tại!", Toast.LENGTH_SHORT).show();
                 } else {
-                    strSex = "";
+                    SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd/MM/yyyy");
+                    edtDate.setText(simpleDateFormat.format(selectedDate.getTime()));
                 }
+            }, nam, thang, ngay);
 
-                // Validate dữ liệu đầu vào
-                if (strFullName.isEmpty()) {
-                    edtFullName.setError("Vui lòng nhập tên đầy đủ!");
-                    return;
-                }
-                if (strAddress.isEmpty()) {
-                    edtAddress.setError("Vui lòng nhập địa chỉ!");
-                    return;
-                }
-                if (!strSDT.matches("^[0-9]{10,11}$")) {
-                    edtPhoneNumber.setError("Số điện thoại không hợp lệ!");
-                    return;
-                }
-                if (strDate.isEmpty()) {
-                    edtDate.setError("Vui lòng chọn ngày sinh!");
-                    return;
-                }
-                if (strSex.isEmpty()) {
-                    Toast.makeText(getContext(), "Vui lòng chọn giới tính!", Toast.LENGTH_SHORT).show();
-                    return;
-                }
-
-                progressDialog.show();
-
-                FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-                if (user != null) {
-                    UserProfileChangeRequest profileUpdates = new UserProfileChangeRequest.Builder()
-                            .setDisplayName(strFullName)
-                            .setPhotoUri(mUri)
-                            .build();
-
-                    user.updateProfile(profileUpdates).addOnCompleteListener(new OnCompleteListener<Void>() {
-                        @Override
-                        public void onComplete(@NonNull Task<Void> task) {
-                            if (task.isSuccessful()) {
-                                Toast.makeText(getContext(), "Cập nhật thông tin tài khoản thành công!", Toast.LENGTH_SHORT).show();
-                            }
-                        }
-                    });
-                }
-
-                Map<String, Object> chinh = new HashMap<>();
-                chinh.put("hoten", strFullName);
-                chinh.put("diachi", strAddress);
-                chinh.put("sdt", strSDT);
-                chinh.put("ngaysinh", strDate);
-                chinh.put("gioitinh", strSex);
-
-                firestore.collection("User").document(FirebaseAuth.getInstance().getCurrentUser().getUid())
-                        .collection("Profile").document(key)
-                        .update(chinh)
-                        .addOnCompleteListener(new OnCompleteListener<Void>() {
-                            @Override
-                            public void onComplete(@NonNull Task<Void> task) {
-                                progressDialog.dismiss();
-                                if (task.isSuccessful()) {
-                                    Toast.makeText(getContext(), "Cập nhật thông tin thành công!", Toast.LENGTH_SHORT).show();
-                                    LoadInfo();
-                                } else {
-                                    Toast.makeText(getContext(), "Đã xảy ra lỗi khi cập nhật!", Toast.LENGTH_SHORT).show();
-                                }
-                            }
-                        });
-            }
+            datePickerDialog.show();
         });
+
+        btnUpdateprofile.setOnClickListener(view -> {
+            String strFullName = edtFullName.getText().toString().trim();
+            String strAddress = edtAddress.getText().toString().trim();
+            String strSDT = edtPhoneNumber.getText().toString().trim();
+            String strDate = edtDate.getText().toString().trim();
+            String strSex;
+
+            if (rdoNam.isChecked()) {
+                strSex = "Nam";
+            } else if (rdoNu.isChecked()) {
+                strSex = "Nữ";
+            } else {
+                strSex = "";
+            }
+
+            if (strFullName.isEmpty()) {
+                edtFullName.setError("Vui lòng nhập tên đầy đủ!");
+                return;
+            }
+            if (strAddress.isEmpty()) {
+                edtAddress.setError("Vui lòng nhập địa chỉ!");
+                return;
+            }
+            if (!strSDT.matches("^[0-9]{10,11}$")) {
+                edtPhoneNumber.setError("Số điện thoại không hợp lệ!");
+                return;
+            }
+            if (strDate.isEmpty()) {
+                edtDate.setError("Vui lòng chọn ngày sinh!");
+                return;
+            }
+            if (strSex.isEmpty()) {
+                Toast.makeText(getContext(), "Vui lòng chọn giới tính!", Toast.LENGTH_SHORT).show();
+                return;
+            }
+
+            new AlertDialog.Builder(getContext())
+                    .setTitle("Xác nhận cập nhật")
+                    .setMessage("Bạn có chắc chắn muốn cập nhật thông tin không?")
+                    .setPositiveButton("Tiếp tục", (dialog, which) -> {
+                        updateProfile(strFullName, strAddress, strSDT, strDate, strSex);
+                    })
+                    .setNegativeButton("Hủy bỏ", (dialog, which) -> dialog.dismiss())
+                    .show();
+        });
+    }
+
+    private void updateProfile(String fullName, String address, String phoneNumber, String date, String sex) {
+        progressDialog.show();
+
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        if (user != null) {
+            UserProfileChangeRequest profileUpdates = new UserProfileChangeRequest.Builder()
+                    .setDisplayName(fullName)
+                    .setPhotoUri(mUri)
+                    .build();
+
+            user.updateProfile(profileUpdates).addOnCompleteListener(task -> {
+                if (task.isSuccessful()) {
+                    Toast.makeText(getContext(), "Cập nhật thông tin tài khoản thành công!", Toast.LENGTH_SHORT).show();
+                }
+            });
+        }
+
+        Map<String, Object> chinh = new HashMap<>();
+        chinh.put("hoten", fullName);
+        chinh.put("diachi", address);
+        chinh.put("sdt", phoneNumber);
+        chinh.put("ngaysinh", date);
+        chinh.put("gioitinh", sex);
+
+        firestore.collection("User").document(FirebaseAuth.getInstance().getCurrentUser().getUid())
+                .collection("Profile").document(key)
+                .update(chinh)
+                .addOnCompleteListener(task -> {
+                    progressDialog.dismiss();
+                    if (task.isSuccessful()) {
+                        Toast.makeText(getContext(), "Cập nhật thông tin thành công!", Toast.LENGTH_SHORT).show();
+                        LoadInfo();
+                    } else {
+                        Toast.makeText(getContext(), "Đã xảy ra lỗi khi cập nhật!", Toast.LENGTH_SHORT).show();
+                    }
+                });
     }
 
     private void InitWidget() {

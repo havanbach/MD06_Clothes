@@ -57,27 +57,33 @@
                     android:layout_width="200dp"
                     android:layout_height="50dp"/>
 
+                <RelativeLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
 
+                    <!-- Biểu tượng giỏ hàng -->
                     <ImageView
                         android:id="@+id/img_home_cart"
-                        android:layout_width="30dp"
+                        android:layout_width="35dp"
+                        android:layout_height="30dp"
                         android:layout_marginLeft="10dp"
-                        android:layout_height="match_parent"
+                        android:layout_marginTop="12dp"
                         android:src="@drawable/ic_cart4" />
 
+                    <!-- TextView hiển thị số lượng -->
                     <TextView
                         android:id="@+id/tv_number_cart"
-                        android:layout_width="15dp"
-                        android:layout_height="15dp"
-                        android:background="@drawable/boder_score"
+                        android:layout_width="16dp"
+                        android:layout_height="16dp"
+                        android:layout_alignTop="@id/img_home_cart"
+                        android:layout_alignEnd="@id/img_home_cart"
+                        android:background="@drawable/soluongcart"
                         android:gravity="center"
-                        android:padding="2dp"
-                        android:textColor="@color/white"
-                        android:textSize="8sp"
-                        android:visibility="gone" />
-
-
-
+                        android:textColor="@android:color/white"
+                        android:textSize="12sp"
+                        android:text="0"
+                        android:visibility="visible" />
+                </RelativeLayout>
 
             </LinearLayout>
 

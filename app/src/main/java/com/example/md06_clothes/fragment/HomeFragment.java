@@ -64,6 +64,7 @@ public class HomeFragment extends Fragment {
     private SwipeRefreshLayout swipeHome;
     private Product product;
 
+
     // Data Product
     private  ArrayList<Product> arr_ds_sp,arr_sp_nb,arr_sp_du,arr_sp_hq,arr_sp_mc,arr_sp_yt,arr_sp_lau,arr_sp_gy;
     private ProductAdapter productDSAdapter,productNBAdapter,productDUAdapter,productHQAdapter,productMCAdapter,productYTAdapter,productLauAdapter,productGYAdapter;
@@ -91,9 +92,10 @@ public class HomeFragment extends Fragment {
     //Search Data
     private EditText edtSearchHome;
 
-    private ImageView imgHomeMessage, imgHomeCart;
+    private ImageView imgHomeCart;
 
-    private TextView tvNumberCart;
+    private TextView tvNumberCart; // Hiển thị số lượng sản phẩm trong giỏ hàng
+    private String userId; // ID của người dùng hiện tại
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -101,6 +103,8 @@ public class HomeFragment extends Fragment {
         ((AppCompatActivity)getActivity()).setSupportActionBar(toolbarHome);
         setHasOptionsMenu(true);
         InitWidget();
+        listenToCartChanges(); // Lắng nghe thay đổi trong thời gian thực
+        loadCartCount();
         Event();
         if (NetworkUtil.isNetworkConnected(getContext())){
             LoadInfor();
@@ -233,10 +237,8 @@ public class HomeFragment extends Fragment {
                     public void run() {
                         swipeHome.setRefreshing(false);
                         LoadFavorite();
-//                        getFragmentManager().beginTransaction().detach(HomeFragment.this).attach(HomeFragment.this).commit();
-//                        Toast.makeText(getContext(), "Swipe", Toast.LENGTH_SHORT).show();
                     }
-                }, 500);
+                }, 1000);
 
             }
         });
@@ -253,6 +255,69 @@ public class HomeFragment extends Fragment {
         arr_sp_lau = new ArrayList<>();
         arr_sp_gy = new ArrayList<>();
     }
+
+    // Firestore Snapshot Listener để cập nhật liên tục
+    private void listenToCartChanges() {
+        firestore.collection("GioHang")
+                .document(userId)
+                .collection("ALL")
+                .addSnapshotListener((queryDocumentSnapshots, e) -> {
+                    if (e != null) {
+                        Log.e("CartError", "Không thể lắng nghe thay đổi giỏ hàng", e);
+                        return;
+                    }
+                    int totalQuantity = 0;
+                    if (queryDocumentSnapshots != null) {
+                        for (QueryDocumentSnapshot doc : queryDocumentSnapshots) {
+                            Long quantity = doc.getLong("soluong");
+                            if (quantity != null) {
+                                totalQuantity += quantity;
+                            }
+                        }
+                    }
+                    updateCartCount(totalQuantity); // Cập nhật số lượng
+                });
+    }
+
+
+
+
+    private void loadCartCount() {
+        // Truy cập sub-collection "ALL" trong document của người dùng
+        firestore.collection("GioHang")
+                .document(userId)
+                .collection("ALL")
+                .get()
+                .addOnSuccessListener(queryDocumentSnapshots -> {
+                    int totalQuantity = 0; // Biến để lưu tổng số lượng sản phẩm
+                    for (QueryDocumentSnapshot doc : queryDocumentSnapshots) {
+                        // Lấy số lượng từ trường "soluong"
+                        Long quantity = doc.getLong("soluong");
+                        if (quantity != null) {
+                            totalQuantity += quantity; // Cộng dồn vào tổng
+                        }
+                    }
+                    updateCartCount(totalQuantity); // Cập nhật số lượng lên giao diện
+                })
+                .addOnFailureListener(e -> {
+                    Log.e("CartError", "Không thể tải dữ liệu giỏ hàng", e);
+                });
+    }
+
+    /**
+     * Hàm cập nhật số lượng giỏ hàng lên giao diện
+     */
+    private void updateCartCount(int totalQuantity) {
+        tvNumberCart.setVisibility(View.VISIBLE); // Luôn hiển thị
+        if (totalQuantity > 0) {
+            tvNumberCart.setText(String.valueOf(totalQuantity)); // Cập nhật số lượng
+        } else {
+            tvNumberCart.setText("0"); // Hiển thị "0" nếu không có sản phẩm
+        }
+    }
+
+
+
     // Danh sách Product
     public  void  GetDataDSSanPham(){
         firestore.collection("SanPham").
@@ -602,6 +667,8 @@ public class HomeFragment extends Fragment {
         rcvSPYT = view.findViewById(R.id.rcv_sp_yeuthich);
         rcvSPLau = view.findViewById(R.id.rcv_sp_lau);
         rcvSPGY = view.findViewById(R.id.rcv_sp_goiy);
+        // Lấy ID người dùng hiện tại từ Firebase Authentication
+        userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
 
     }
 

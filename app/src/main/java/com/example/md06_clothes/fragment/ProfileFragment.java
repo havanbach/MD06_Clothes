@@ -10,9 +10,13 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.location.Address;
+import android.location.Geocoder;
+import android.location.Location;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Looper;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -29,6 +33,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
@@ -39,6 +44,10 @@ import com.example.md06_clothes.R;
 import com.example.md06_clothes.SignInActivity;
 import com.example.md06_clothes.ultil.NetworkUtil;
 import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationCallback;
+import com.google.android.gms.location.LocationRequest;
+import com.google.android.gms.location.LocationResult;
+import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
@@ -58,10 +67,13 @@ import com.squareup.picasso.Picasso;
 
 import java.io.ByteArrayOutputStream;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.io.InputStream;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.HashMap;
+import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 import de.hdodenhof.circleimageview.CircleImageView;
@@ -72,6 +84,8 @@ public class ProfileFragment extends Fragment {
     private ProgressDialog progressDialog;
     private MainActivity mMainActivity;
     private FusedLocationProviderClient fusedLocationClient;
+    private Geocoder geocoder;
+
 
     private View view;
     private CircleImageView imgAvatar;
@@ -237,6 +251,9 @@ public class ProfileFragment extends Fragment {
     private void Init() {
         progressDialog = new ProgressDialog(getActivity());
         mMainActivity = (MainActivity) getActivity();
+        fusedLocationClient = LocationServices.getFusedLocationProviderClient(getContext());
+        geocoder = new Geocoder(getContext(), Locale.getDefault());
+
     }
 
     private void Event() {
@@ -289,6 +306,52 @@ public class ProfileFragment extends Fragment {
             }
         });
 
+        // địa chỉ
+        edtAddress.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                // Kiểm tra quyền vị trí
+                if (ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
+                        && ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                    // Yêu cầu quyền vị trí
+                    ActivityCompat.requestPermissions(getActivity(),
+                            new String[]{Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION}, 101);
+                    return;
+                }
+
+                // Khởi tạo FusedLocationProviderClient
+                FusedLocationProviderClient fusedLocationClient = LocationServices.getFusedLocationProviderClient(getContext());
+
+                // Lấy vị trí hiện tại (chỉ lấy một lần)
+                fusedLocationClient.getLastLocation()
+                        .addOnSuccessListener(new OnSuccessListener<Location>() {
+                            @Override
+                            public void onSuccess(Location location) {
+                                if (location != null) {
+                                    double latitude = location.getLatitude();
+                                    double longitude = location.getLongitude();
+
+                                    // Chuyển tọa độ thành địa chỉ (Geocoder)
+                                    Geocoder geocoder = new Geocoder(getContext(), Locale.getDefault());
+                                    try {
+                                        List<Address> addresses = geocoder.getFromLocation(latitude, longitude, 1);
+                                        if (addresses != null && !addresses.isEmpty()) {
+                                            String address = addresses.get(0).getAddressLine(0);
+                                            edtAddress.setText(address);  // Hiển thị địa chỉ
+                                        } else {
+                                            Toast.makeText(getContext(), "Không tìm thấy địa chỉ", Toast.LENGTH_SHORT).show();
+                                        }
+                                    } catch (IOException e) {
+                                        e.printStackTrace();
+                                        Toast.makeText(getContext(), "Lỗi khi lấy địa chỉ", Toast.LENGTH_SHORT).show();
+                                    }
+                                } else {
+                                    Toast.makeText(getContext(), "Không thể lấy vị trí hiện tại", Toast.LENGTH_SHORT).show();
+                                }
+                            }
+                        });
+            }
+        });
 
         btnUpdateprofile.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -444,6 +507,17 @@ public class ProfileFragment extends Fragment {
         intent.setType("image/*");
         startActivityForResult(intent,123);
     }
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        if (requestCode == 101) {
+            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                Toast.makeText(getContext(), "Quyền truy cập vị trí đã được cấp", Toast.LENGTH_SHORT).show();
+            } else {
+                Toast.makeText(getContext(), "Vui lòng cấp quyền để sử dụng chức năng này", Toast.LENGTH_SHORT).show();
+            }
+        }
+    }
+
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {

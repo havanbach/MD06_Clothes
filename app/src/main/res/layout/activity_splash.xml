@@ -5,27 +5,30 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity"
     android:orientation="vertical"
     android:gravity="center"
     android:background="@drawable/backgroud"
-    >
-    <LinearLayout
+    tools:context=".MainActivity">
+
+    <!-- Logo Image -->
+    <ImageView
+        android:id="@+id/logo"
+        android:layout_width="150dp"
+        android:layout_height="150dp"
+        android:src="@drawable/logoapp"
+        android:layout_marginBottom="16dp" />
+
+    <!-- Text -->
+    <TextView
+        android:id="@+id/textView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
+        android:text="MD6_Clothes"
+        android:textColor="@color/Orange"
+        android:textSize="45dp"
+        android:textStyle="italic"
+        android:fontFamily="serif"
         android:layout_gravity="center"
-        >
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Clothes"
-            android:textColor="@color/Orange"
-            android:textSize="60sp"
-            android:textStyle="italic"
-            android:layout_margin="10dp"
-            android:layout_gravity="center"
-            android:fontFamily="serif"
-            />
-    </LinearLayout>
+        android:layout_marginTop="16dp" />
+
 </LinearLayout>

@@ -10,6 +10,7 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.md06_clothes.Models.Product;
@@ -60,10 +61,11 @@ public class HoaDonDaGiaoAdapter extends RecyclerView.Adapter<HoaDonDaGiaoAdapte
         Log.d("abc", "onBind");
         Product product = list.get(position);
         holder.tvTen.setText(product.getTensp());
-        holder.tvsize.setText(product.getsize());
-        holder.tvSoluong.setText(product.getSoluong() + "");
         holder.tvDongia.setText(NumberFormat.getInstance().format(product.getGiatien()));
-        holder.tvTotal.setText(NumberFormat.getInstance().format(product.getGiatien() * product.getSoluong()));
+        // Thiết lập RecyclerView hiển thị danh sách size
+        SizeAdapter sizeAdapter = new SizeAdapter(product.getSizes(),null);
+        holder.rcvSizes.setLayoutManager(new LinearLayoutManager(context, RecyclerView.VERTICAL, false));
+        holder.rcvSizes.setAdapter(sizeAdapter);
         Picasso.get().load(product.getHinhanh()).into(holder.img);
 
         holder.constraintDongDanhGia.setOnClickListener(new View.OnClickListener() {
@@ -108,21 +110,21 @@ public class HoaDonDaGiaoAdapter extends RecyclerView.Adapter<HoaDonDaGiaoAdapte
     public class ViewHolder extends RecyclerView.ViewHolder {
 
         private ConstraintLayout constraintDongDanhGia;
-        private TextView tvTen, tvsize, tvSoluong, tvDongia, tvTotal;
+        private TextView tvTen, tvDongia, tvTotal;
         private CircleImageView img;
         private Button btnDongDanhGia;
+        private RecyclerView rcvSizes;
 
         public ViewHolder(@NonNull @NotNull View itemView) {
             super(itemView);
 
             tvTen = itemView.findViewById(R.id.tv_name_dong_danhgia);
-            tvsize = itemView.findViewById(R.id.tv_size_dong_danhgia);
-            tvSoluong = itemView.findViewById(R.id.tv_number_dong_danhgia);
             tvDongia = itemView.findViewById(R.id.tv_giatien_dong_danhgia);
             tvTotal = itemView.findViewById(R.id.tv_total_dong_danhgia);
             img = itemView.findViewById(R.id.img_dong_danhgia);
             constraintDongDanhGia = itemView.findViewById(R.id.constraint_dong_danhgia);
             btnDongDanhGia = itemView.findViewById(R.id.btn_dong_danhgia);
+            rcvSizes = itemView.findViewById(R.id.rcv_sizes);
         }
     }
 }

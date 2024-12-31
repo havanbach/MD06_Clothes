@@ -19,6 +19,7 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import com.example.md06_clothes.Adapter.LichSuSearchAdapter;
 import com.example.md06_clothes.Adapter.SearchAdapter;
 import com.example.md06_clothes.Models.Product;
+import com.example.md06_clothes.Models.SizeQuantity;
 import com.example.md06_clothes.Presenter.ProductPresenter;
 import com.example.md06_clothes.Presenter.StoryPresenter;
 import com.example.md06_clothes.R;
@@ -31,6 +32,7 @@ import com.google.firebase.firestore.QueryDocumentSnapshot;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Locale;
 
 public class SearchActivity extends AppCompatActivity implements ProductView, StoryView {
@@ -199,10 +201,9 @@ public class SearchActivity extends AppCompatActivity implements ProductView, St
     public void OnFail() {
     }
 
-    // Nhận dữ liệu sản phẩm từ Firestore
     @Override
-    public void getDataProduct(String id, String ten, Long gia, String hinhanh, String loaisp, String mota, Long soluong, String size, Long type, String chatlieu) {
-        mlistsearch.add(new Product(id, ten, gia, hinhanh, loaisp, mota, soluong, size, type, chatlieu)); // Thêm sản phẩm vào danh sách
+    public void getDataProduct(String id, String ten, Long gia, String hinhanh, String loaisp, String mota, List<SizeQuantity> sizes, Long type, String chatlieu) {
+        mlistsearch.add(new Product(id, ten, gia, hinhanh, loaisp, mota, sizes, type, chatlieu)); // Thêm sản phẩm vào danh sách
         mlistAuto.add(new Product(ten)); // Thêm sản phẩm vào danh sách tự động hoàn thành
 
         // Khởi tạo adapter và gán cho RecyclerView
@@ -232,6 +233,9 @@ public class SearchActivity extends AppCompatActivity implements ProductView, St
             }
         });
     }
+
+
+
 
     // Nhận dữ liệu lịch sử tìm kiếm từ Firestore, Lọc trùng khi hiển thị danh sách lịch sử tìm kiếm
     @Override

@@ -148,22 +148,38 @@ public class HoaDon implements Serializable {
     }
 
     // TK user: lấy ra hóa đơn của tk user hiện tại, với điều kiện trạng thái nào
-    public  void HandleReadDataStatus(int status){
-        db.collection("HoaDon").whereEqualTo("UID", FirebaseAuth.getInstance().getCurrentUser().getUid())
-                .whereEqualTo("trangthai", status).get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
-                    @Override
-                    public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
-                        if (queryDocumentSnapshots.size() > 0){
-                            for(QueryDocumentSnapshot c : queryDocumentSnapshots){
-                                Log.d("currenthd", c.getString("UID"));
-                                callback.getDataHD(c.getId(),c.getString("UID"),c.getString("ghichu"), c.getString("diachi"),
-                                        c.getString("hoten"),c.getString("ngaydat"),c.getString("phuongthuc"),c.getString("sdt"),
-                                        c.getString("tongtien"),c.getLong("trangthai"));
-                            }
+    public void HandleReadDataStatus(int status) {
+        db.collection("HoaDon")
+                .whereEqualTo("UID", FirebaseAuth.getInstance().getCurrentUser().getUid())
+                .whereEqualTo("trangthai", status)
+                .addSnapshotListener((queryDocumentSnapshots, e) -> {
+                    if (e != null) {
+                        Log.e("RealtimeData", "Lỗi khi lắng nghe dữ liệu", e);
+                        return;
+                    }
+
+                    if (queryDocumentSnapshots != null && !queryDocumentSnapshots.isEmpty()) {
+                        for (QueryDocumentSnapshot c : queryDocumentSnapshots) {
+                            Log.d("currenthd", c.getString("UID"));
+                            callback.getDataHD(
+                                    c.getId(),
+                                    c.getString("UID"),
+                                    c.getString("ghichu"),
+                                    c.getString("diachi"),
+                                    c.getString("hoten"),
+                                    c.getString("ngaydat"),
+                                    c.getString("phuongthuc"),
+                                    c.getString("sdt"),
+                                    c.getString("tongtien"),
+                                    c.getLong("trangthai")
+                            );
                         }
+                    } else {
+                        Log.d("RealtimeData", "Không có dữ liệu phù hợp");
                     }
                 });
     }
+
 
     // TK admin: update trạng thái bill với id hóa đơn nào, và i tương ứng với trạng thái nào
     public void HandleUpdateStatusBill(int i,String id) {

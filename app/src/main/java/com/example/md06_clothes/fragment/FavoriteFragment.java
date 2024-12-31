@@ -20,6 +20,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.md06_clothes.Adapter.FavoriteAdapter;
 import com.example.md06_clothes.Models.Favorite;
 import com.example.md06_clothes.Models.Product;
+import com.example.md06_clothes.Models.SizeQuantity;
 import com.example.md06_clothes.Presenter.FavoritePresenter;
 import com.example.md06_clothes.Presenter.ProductPresenter;
 import com.example.md06_clothes.R;
@@ -32,6 +33,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class FavoriteFragment extends Fragment implements ProductView, FavoriteView {
     private View view;
@@ -135,14 +137,13 @@ public class FavoriteFragment extends Fragment implements ProductView, FavoriteV
     }
 
     @Override
-    public void getDataProduct(String id, String ten, Long gia, String hinhanh, String loaisp, String mota, Long soluong, String size, Long type, String chatlieu) {
-        mlistProduct.add(new Product(id, ten, gia, hinhanh, loaisp, mota, soluong, size, type, chatlieu));
+    public void getDataProduct(String id, String ten, Long gia, String hinhanh, String loaisp, String mota, List<SizeQuantity> sizes, Long type, String chatlieu) {
+        mlistProduct.add(new Product(id, ten, gia, hinhanh, loaisp, mota, sizes, type, chatlieu));
         if (mlistFavorite.size() != 0){
             tvNullFavorite.setVisibility(View.GONE);
         } else {
             tvNullFavorite.setVisibility(View.VISIBLE);
         }
-//        progressBar.setVisibility(View.GONE);
         adapter = new FavoriteAdapter(getContext(), mlistProduct, new IClickCTHD() {
             @Override
             public void onClickCTHD(int pos) {
@@ -156,4 +157,7 @@ public class FavoriteFragment extends Fragment implements ProductView, FavoriteV
         rcvFavorite.setLayoutManager(new LinearLayoutManager(getContext(), RecyclerView.VERTICAL, false));
         rcvFavorite.setAdapter(adapter);
     }
+
+
+
 }

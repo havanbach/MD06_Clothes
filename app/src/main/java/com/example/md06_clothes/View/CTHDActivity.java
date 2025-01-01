@@ -77,16 +77,13 @@ public class CTHDActivity extends AppCompatActivity implements GioHangView, HoaD
         btnCapnhat.setOnClickListener(view -> {
             // Cập nhật trạng thái đơn hàng
             hoaDonPreSenter.CapNhatTrangThai(4, hoaDon.getId());
-
+            mlist.clear();
             // Cập nhật lại số lượng tồn kho cho tất cả các size của sản phẩm
             updateProductStock(mlist);
-
-            mlist.clear();
             hoaDonDaGiaoAdapter.notifyDataSetChanged();
             Toast.makeText(CTHDActivity.this, "Đã hủy đơn hàng và cập nhật tồn kho", Toast.LENGTH_SHORT).show();
             finish();
         });
-
 
     }
 
@@ -179,6 +176,33 @@ public class CTHDActivity extends AppCompatActivity implements GioHangView, HoaD
         rcvCTHD = findViewById(R.id.rcv_cthd);
         btnCapnhat = findViewById(R.id.btn_capnhat_cthd);
         hoaDonDaGiaoAdapter = new HoaDonDaGiaoAdapter();
+    }
+
+    @Override
+    public void getDataSanPham(String id, String id_product, String tensp, Long giatien, String hinhanh, String loaisp, String mota, List<SizeQuantity> sizes, Long type, String chatlieu) {
+        mlist.add(new Product(id, id_product, tensp, giatien, hinhanh, loaisp, mota, sizes, type, chatlieu));
+
+        Log.d("cm", "cm: " + cm+"");
+        if (cm){
+            hoaDonDaGiaoAdapter.setDataHoaDonDaGiao(this, mlist, 1, new IClickCTHD() {
+                @Override
+                public void onClickCTHD(int pos) {
+                    if (cm){
+                        ShowDialog(pos);
+                    }
+                }
+            });
+        } else {
+            hoaDonDaGiaoAdapter.setDataHoaDonDaGiao(this, mlist, 0, new IClickCTHD() {
+                @Override
+                public void onClickCTHD(int pos) {
+                }
+            });
+        }
+
+        rcvCTHD.setLayoutManager(new LinearLayoutManager(this));
+        rcvCTHD.setAdapter(hoaDonDaGiaoAdapter);
+
     }
 
 
@@ -292,30 +316,5 @@ public class CTHDActivity extends AppCompatActivity implements GioHangView, HoaD
 
     }
 
-    @Override
-    public void getDataSanPham(String id, String id_product, String tensp, Long giatien, String hinhanh, String loaisp, String mota, List<SizeQuantity> sizes, Long type, String chatlieu) {
-        mlist.add(new Product(id, id_product, tensp, giatien, hinhanh, loaisp, mota, sizes, type, chatlieu));
 
-        Log.d("cm", "cm: " + cm+"");
-        if (cm){
-            hoaDonDaGiaoAdapter.setDataHoaDonDaGiao(this, mlist, 1, new IClickCTHD() {
-                @Override
-                public void onClickCTHD(int pos) {
-                    if (cm){
-                        ShowDialog(pos);
-                    }
-                }
-            });
-        } else {
-            hoaDonDaGiaoAdapter.setDataHoaDonDaGiao(this, mlist, 0, new IClickCTHD() {
-                @Override
-                public void onClickCTHD(int pos) {
-                }
-            });
-        }
-
-        rcvCTHD.setLayoutManager(new LinearLayoutManager(this));
-        rcvCTHD.setAdapter(hoaDonDaGiaoAdapter);
-
-    }
 }

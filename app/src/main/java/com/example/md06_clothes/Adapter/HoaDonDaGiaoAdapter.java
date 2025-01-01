@@ -47,7 +47,7 @@ public class HoaDonDaGiaoAdapter extends RecyclerView.Adapter<HoaDonDaGiaoAdapte
 
     @NotNull
     @Override
-    public ViewHolder onCreateViewHolder(@NonNull @NotNull ViewGroup parent, int viewType) {
+    public HoaDonDaGiaoAdapter.ViewHolder onCreateViewHolder(@NonNull @NotNull ViewGroup parent, int viewType) {
         View view;
         if (type == 1){
             view = LayoutInflater.from(parent.getContext()).inflate(R.layout.dong_hoadon_dagiao, parent, false);
@@ -68,12 +68,12 @@ public class HoaDonDaGiaoAdapter extends RecyclerView.Adapter<HoaDonDaGiaoAdapte
         holder.rcvSizes.setAdapter(sizeAdapter);
         Picasso.get().load(product.getHinhanh()).into(holder.img);
 
-        holder.constraintDongDanhGia.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                iClickCTHD.onClickCTHD(position);
-            }
-        });
+//        holder.constraintDongDanhGia.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                iClickCTHD.onClickCTHD(position);
+//            }
+//        });
 
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         db.collection("BinhLuan").whereEqualTo("iduser", FirebaseAuth.getInstance().getCurrentUser().getUid())
@@ -96,11 +96,7 @@ public class HoaDonDaGiaoAdapter extends RecyclerView.Adapter<HoaDonDaGiaoAdapte
                 iClickCTHD.onClickCTHD(position);
             }
         });
-
-
     }
-
-
 
     @Override
     public int getItemCount() {

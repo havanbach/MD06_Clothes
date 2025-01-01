@@ -68,12 +68,6 @@ public class HoaDonDaGiaoAdapter extends RecyclerView.Adapter<HoaDonDaGiaoAdapte
         holder.rcvSizes.setAdapter(sizeAdapter);
         Picasso.get().load(product.getHinhanh()).into(holder.img);
 
-//        holder.constraintDongDanhGia.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                iClickCTHD.onClickCTHD(position);
-//            }
-//        });
 
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         db.collection("BinhLuan").whereEqualTo("iduser", FirebaseAuth.getInstance().getCurrentUser().getUid())

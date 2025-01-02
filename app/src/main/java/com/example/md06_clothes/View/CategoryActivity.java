@@ -88,7 +88,6 @@ public class CategoryActivity extends AppCompatActivity {
                                 currentList.add(new Product(
                                         d.getId(),
                                         d.getString("tensp"),
-                                        d.getId(),
                                         d.getLong("giatien"),
                                         d.getString("hinhanh"),
                                         d.getString("loaisp"),

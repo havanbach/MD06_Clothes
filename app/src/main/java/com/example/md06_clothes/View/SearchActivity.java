@@ -97,15 +97,17 @@ public class SearchActivity extends AppCompatActivity implements ProductView, St
         });
 
         // Làm mới lịch sử tìm kiếm khi người dùng kéo xuống
+        // Cập nhật phương thức setdata thành setData
         swipeSearch.setOnRefreshListener(() -> new Handler().postDelayed(() -> {
             mlistStory.clear(); // Xóa danh sách lịch sử cũ
             storyPresenter.HandleGetStory(FirebaseAuth.getInstance().getCurrentUser().getUid()); // Lấy lại lịch sử từ Firestore
-            lichSuSearchAdapter.setdata(SearchActivity.this, mlistStory, pos -> {
+            lichSuSearchAdapter.setData(SearchActivity.this, mlistStory, pos -> {
                 String s = mlistStory.get(pos); // Tự động điền từ khóa vào thanh tìm kiếm khi chọn
                 searchView.setQuery(s, false);
             });
             swipeSearch.setRefreshing(false); // Dừng hiệu ứng làm mới
         }, 1000));
+
     }
 
     // Lưu lịch sử tìm kiếm , lọc trùng từ khóa
@@ -243,7 +245,7 @@ public class SearchActivity extends AppCompatActivity implements ProductView, St
         if (!mlistStory.contains(noidung)) { // Chỉ thêm từ khóa nếu chưa tồn tại trong danh sách
             mlistStory.add(noidung);
         }
-        lichSuSearchAdapter.setdata(SearchActivity.this, mlistStory, pos -> {
+        lichSuSearchAdapter.setData(SearchActivity.this, mlistStory, pos -> {
             String s = mlistStory.get(pos); // Lấy từ khóa được chọn
             searchView.setQuery(s, false); // Tự động điền vào thanh tìm kiếm
         });
@@ -253,6 +255,7 @@ public class SearchActivity extends AppCompatActivity implements ProductView, St
         rcvLichSuSearch.setLayoutManager(manager);
         rcvLichSuSearch.setAdapter(lichSuSearchAdapter);
     }
+
 
 
     // Xử lý kết quả trả về từ mic (giọng nói)

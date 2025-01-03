@@ -16,6 +16,7 @@ import com.example.md06_clothes.Models.Product;
 import com.example.md06_clothes.Models.SizeQuantity;
 import com.example.md06_clothes.R;
 import com.example.md06_clothes.View.CartActivity;
+import com.example.md06_clothes.my_interface.IClickOpenBottomSheet;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
@@ -32,6 +33,7 @@ public class GiohangAdapter extends RecyclerView.Adapter<GiohangAdapter.ViewHold
     private ArrayList<Product> mListGiohang;
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
     private CartActivity cartActivity;
+    ;
 
     public GiohangAdapter(Context context, ArrayList<Product> mListGiohang, CartActivity cartActivity) {
         this.context = context;
@@ -49,10 +51,9 @@ public class GiohangAdapter extends RecyclerView.Adapter<GiohangAdapter.ViewHold
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         Product product = mListGiohang.get(position);
-
         holder.tvTenGiohang.setText(product.getTensp());
         holder.tvGiatienGiohang.setText(NumberFormat.getInstance().format(product.getGiatien()) + " VNĐ");
-        holder.tvchatlieuGiohang.setText(product.getChatlieu());
+        holder.tvchatlieuGiohang.setText("Chất liệu: "+product.getChatlieu());
         Picasso.get().load(product.getHinhanh()).into(holder.imgGiohang);
 
         // Clear any previously added size views
@@ -125,7 +126,7 @@ public class GiohangAdapter extends RecyclerView.Adapter<GiohangAdapter.ViewHold
         for (SizeQuantity size : product.getSizes()) {
             total += product.getGiatien() * size.getSoluong();
         }
-        holder.tvTotalGiohang.setText(NumberFormat.getInstance().format(total) + " VNĐ");
+        holder.tvTotalGiohang.setText("Giá tiền: "+NumberFormat.getInstance().format(total) + " VNĐ");
     }
 
     @Override
@@ -146,6 +147,7 @@ public class GiohangAdapter extends RecyclerView.Adapter<GiohangAdapter.ViewHold
             tvTotalGiohang = itemView.findViewById(R.id.tv_total_giohang);
             imgGiohang = itemView.findViewById(R.id.img_giohang);
             sizeContainer = itemView.findViewById(R.id.size_container); // Add this in layout
+
         }
     }
 }

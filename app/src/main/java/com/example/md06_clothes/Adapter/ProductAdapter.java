@@ -106,14 +106,7 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ViewHold
             super(itemView);
 
             // tên, giá, ảnh sẽ được ánh xạ chung giữa các view
-            tvTenProduct = itemView.findViewById(R.id.tv_ten_product);
-            tvGiaProduct = itemView.findViewById(R.id.tv_giatien_product);
-            imgProduct = itemView.findViewById(R.id.img_product);
 
-            tvchatlieuProduct = itemView.findViewById(R.id.tv_chatlieu_giohang);
-            tvSoluongProduct = itemView.findViewById(R.id.tv_number_giohang);
-
-            layoutProduct = itemView.findViewById(R.id.layout_product);
         }
     }
 }

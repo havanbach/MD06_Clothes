@@ -25,6 +25,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.md06_clothes.Adapter.HoaDonDaGiaoAdapter;
 import com.example.md06_clothes.Models.HoaDon;
 import com.example.md06_clothes.Models.Product;
+import com.example.md06_clothes.Models.SizeQuantity;
 import com.example.md06_clothes.Presenter.GioHangPresenter;
 import com.example.md06_clothes.Presenter.HoaDonPreSenter;
 import com.example.md06_clothes.R;
@@ -39,6 +40,7 @@ import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 public class CTHDActivity extends AppCompatActivity implements GioHangView, HoaDonView {
 
@@ -72,16 +74,60 @@ public class CTHDActivity extends AppCompatActivity implements GioHangView, HoaD
             }
         });
 
-        btnCapnhat.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                hoaDonPreSenter.CapNhatTrangThai(4, hoaDon.getId());
-                mlist.clear();
-                hoaDonDaGiaoAdapter.notifyDataSetChanged();
-                Toast.makeText(CTHDActivity.this, "Đã hủy đơn hàng", Toast.LENGTH_SHORT).show();
-                finish();
-            }
+        btnCapnhat.setOnClickListener(view -> {
+            // Cập nhật trạng thái đơn hàng
+            hoaDonPreSenter.CapNhatTrangThai(4, hoaDon.getId());
+            mlist.clear();
+            // Cập nhật lại số lượng tồn kho cho tất cả các size của sản phẩm
+            updateProductStock(mlist);
+            hoaDonDaGiaoAdapter.notifyDataSetChanged();
+            Toast.makeText(CTHDActivity.this, "Đã hủy đơn hàng và cập nhật tồn kho", Toast.LENGTH_SHORT).show();
+            finish();
         });
+
+    }
+
+    private void updateProductStock(ArrayList<Product> products) {
+        for (Product product : products) {
+            String productId = product.getIdsp(); // Lấy ID sản phẩm
+            List<SizeQuantity> sizesToUpdate = product.getSizes(); // Lấy danh sách size cần cập nhật
+
+            db.collection("SanPham").document(productId).get()
+                    .addOnSuccessListener(documentSnapshot -> {
+                        if (documentSnapshot.exists()) {
+                            // Lấy danh sách size từ Firestore
+                            List<HashMap<String, Object>> stockSizes =
+                                    (List<HashMap<String, Object>>) documentSnapshot.get("sizes");
+
+                            if (stockSizes != null) {
+                                boolean isUpdated = false;
+
+                                for (SizeQuantity sizeToUpdate : sizesToUpdate) {
+                                    for (HashMap<String, Object> stock : stockSizes) {
+                                        if (stock.get("size").equals(sizeToUpdate.getSize())) {
+                                            int currentStock = ((Long) stock.get("soluong")).intValue();
+                                            int updatedStock = currentStock + sizeToUpdate.getSoluong(); // Cộng lại số lượng hủy
+                                            stock.put("soluong", updatedStock);
+                                            isUpdated = true;
+                                            break; // Tiếp tục với size tiếp theo
+                                        }
+                                    }
+                                }
+
+                                if (isUpdated) {
+                                    // Cập nhật lại toàn bộ danh sách size vào Firestore
+                                    db.collection("SanPham").document(productId)
+                                            .update("sizes", stockSizes)
+                                            .addOnSuccessListener(aVoid -> Log.d("UpdateStock", "Tồn kho đã được cập nhật cho sản phẩm: " + productId))
+                                            .addOnFailureListener(e -> Log.e("UpdateStock", "Lỗi khi cập nhật tồn kho cho sản phẩm: " + productId, e));
+                                } else {
+                                    Log.w("UpdateStock", "Không tìm thấy size phù hợp để cập nhật cho sản phẩm: " + productId);
+                                }
+                            }
+                        }
+                    })
+                    .addOnFailureListener(e -> Log.e("UpdateStock", "Lỗi khi lấy dữ liệu sản phẩm: " + productId, e));
+        }
     }
 
     private void Init() {
@@ -116,8 +162,6 @@ public class CTHDActivity extends AppCompatActivity implements GioHangView, HoaD
         gioHangPresenter = new GioHangPresenter(this);
         gioHangPresenter.HandlegetDataCTHD(hoaDon.getId(),hoaDon.getUid());
 
-
-
     }
 
     private void InitWidget() {
@@ -135,8 +179,8 @@ public class CTHDActivity extends AppCompatActivity implements GioHangView, HoaD
     }
 
     @Override
-    public void getDataSanPham(String id, String idsp, String tensp, Long giatien, String hinhanh, String loaisp, String mota, Long soluong, String size, Long type, String chatlieu) {
-        mlist.add(new Product(id,idsp,tensp,giatien,hinhanh,loaisp,mota,soluong,size,type,chatlieu));
+    public void getDataSanPham(String id, String id_product, String tensp, Long giatien, String hinhanh, String loaisp, String mota, List<SizeQuantity> sizes, Long type, String chatlieu) {
+        mlist.add(new Product(id, id_product, tensp, giatien, hinhanh, loaisp, mota, sizes, type, chatlieu));
 
         Log.d("cm", "cm: " + cm+"");
         if (cm){
@@ -156,12 +200,11 @@ public class CTHDActivity extends AppCompatActivity implements GioHangView, HoaD
             });
         }
 
-
         rcvCTHD.setLayoutManager(new LinearLayoutManager(this));
         rcvCTHD.setAdapter(hoaDonDaGiaoAdapter);
 
-
     }
+
 
     private void ShowDialog(int pos){
         Product product = mlist.get(pos);
@@ -187,10 +230,9 @@ public class CTHDActivity extends AppCompatActivity implements GioHangView, HoaD
 
         Picasso.get().load(product.getHinhanh()).into(imgDanhgia);
         tvNameDanhgia.setText(product.getTensp());
-        tvNumberDanhgia.setText(product.getSoluong()+"");
+        tvNumberDanhgia.setText(String.valueOf(product.getSizes().get(0).getSoluong()));
         rdgDanhgia.clearCheck();
         edtDanhgiaKhac.setEnabled(false);
-//        danhgia = edtDanhgiaKhac.getText().toString();
         rdgDanhgia.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(RadioGroup radioGroup, int i) {
@@ -243,7 +285,6 @@ public class CTHDActivity extends AppCompatActivity implements GioHangView, HoaD
                 db.collection("BinhLuan").add(map).addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
                     @Override
                     public void onSuccess(DocumentReference documentReference) {
-//                        hoaDonDaGiaoAdapter.TrangThaiDaGiao(false);
                         hoaDonDaGiaoAdapter.notifyDataSetChanged();
                         Toast.makeText(CTHDActivity.this, "Đánh giá thành công", Toast.LENGTH_SHORT).show();
                         dialog.cancel();
@@ -274,4 +315,6 @@ public class CTHDActivity extends AppCompatActivity implements GioHangView, HoaD
     public void OnFail() {
 
     }
+
+
 }

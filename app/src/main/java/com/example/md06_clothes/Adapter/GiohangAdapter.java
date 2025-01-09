@@ -1,39 +1,39 @@
 package com.example.md06_clothes.Adapter;
 
 import android.content.Context;
-import android.util.Log;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.md06_clothes.Models.Product;
+import com.example.md06_clothes.Models.SizeQuantity;
 import com.example.md06_clothes.R;
 import com.example.md06_clothes.View.CartActivity;
-import com.google.android.gms.tasks.OnSuccessListener;
+import com.example.md06_clothes.View.DetailSPActivity;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
-import com.google.firebase.firestore.QuerySnapshot;
 import com.squareup.picasso.Picasso;
-
-import org.jetbrains.annotations.NotNull;
 
 import java.text.NumberFormat;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 
 public class GiohangAdapter extends RecyclerView.Adapter<GiohangAdapter.ViewHolder> {
 
     private Context context;
     private ArrayList<Product> mListGiohang;
-    private int number;
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
     private CartActivity cartActivity;
+    ;
 
     public GiohangAdapter(Context context, ArrayList<Product> mListGiohang, CartActivity cartActivity) {
         this.context = context;
@@ -41,135 +41,130 @@ public class GiohangAdapter extends RecyclerView.Adapter<GiohangAdapter.ViewHold
         this.cartActivity = cartActivity;
     }
 
-    public void updateListGioHang(ArrayList<Product> newArr) {
-        this.mListGiohang.clear();
-        this.mListGiohang.addAll(newArr);
-        this.notifyDataSetChanged();
-    }
-
+    @NonNull
     @Override
-    public ViewHolder onCreateViewHolder(@NotNull ViewGroup parent, int viewType) {
+    public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(context).inflate(R.layout.dong_giohang, parent, false);
         return new ViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(@NotNull ViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         Product product = mListGiohang.get(position);
-
         holder.tvTenGiohang.setText(product.getTensp());
-        holder.tvGiatienGiohang.setText(String.valueOf(product.getGiatien()));
-        holder.tvNumberGiohang.setText(String.valueOf(product.getSoluong()));
-        holder.tvchatlieuGiohang.setText(product.getchatlieu());
+        holder.tvGiatienGiohang.setText(NumberFormat.getInstance().format(product.getGiatien()) + " VNĐ");
+        holder.tvchatlieuGiohang.setText("Chất liệu: "+product.getChatlieu());
         Picasso.get().load(product.getHinhanh()).into(holder.imgGiohang);
 
-        // Tăng số lượng
-        holder.btnPlusGiohang.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                String soluong = holder.tvNumberGiohang.getText().toString();
-                number = Integer.parseInt(soluong) + 1;
-                product.setSoluong((long) number);
+        // Xóa tất cả các view cũ của sizes trong container (tránh trùng lặp khi tái sử dụng ViewHolder)
+        holder.sizeContainer.removeAllViews();
 
-                db.collection("GioHang").document(FirebaseAuth.getInstance().getCurrentUser().getUid())
-                        .collection("ALL").whereEqualTo("id_product", product.getIdsp()).get()
-                        .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
-                            @Override
-                            public void onSuccess(@NonNull QuerySnapshot queryDocumentSnapshots) {
-                                if (!queryDocumentSnapshots.isEmpty()) {
-                                    for (QueryDocumentSnapshot d : queryDocumentSnapshots) {
-                                        db.collection("GioHang").document(FirebaseAuth.getInstance().getCurrentUser().getUid())
-                                                .collection("ALL").document(d.getId()).update("soluong", product.getSoluong());
-                                    }
-                                }
-                            }
-                        });
+        // Duyệt qua danh sách size và số lượng của sản phẩm
+        for (SizeQuantity size : product.getSizes()) {
+            View sizeView = LayoutInflater.from(context).inflate(R.layout.item_size_quantity, holder.sizeContainer, false);
 
-                holder.btnMinusGiohang.setVisibility(View.VISIBLE);
-                holder.tvNumberGiohang.setText(String.valueOf(number));
-                updateTotal(holder);
-                cartActivity.TongTienGioHang();
-            }
-        });
+            TextView tvSize = sizeView.findViewById(R.id.tv_size);
+            TextView tvQuantity = sizeView.findViewById(R.id.tv_quantity);
+            ImageView btnPlus = sizeView.findViewById(R.id.btn_plus);
+            ImageView btnMinus = sizeView.findViewById(R.id.btn_minus);
 
-        // Giảm số lượng sp
-        holder.btnMinusGiohang.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                String soluong = holder.tvNumberGiohang.getText().toString();
-                number = Integer.parseInt(soluong) - 1;
+            // Gán dữ liệu size và số lượng
+            tvSize.setText("Size: " + size.getSize());
+            tvQuantity.setText(String.valueOf(size.getSoluong()));
 
-                // Đảm bảo số lượng tối thiểu là 1
-                if (number < 1) {
-                    number = 1;
-                }
-                product.setSoluong((long) number);
+            // Nút tăng số lượng
+            btnPlus.setOnClickListener(v -> updateQuantity(product, size, tvQuantity, 1));
 
-                db.collection("GioHang").document(FirebaseAuth.getInstance().getCurrentUser().getUid())
-                        .collection("ALL").whereEqualTo("id_product", product.getIdsp()).get()
-                        .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
-                            @Override
-                            public void onSuccess(@NonNull QuerySnapshot queryDocumentSnapshots) {
-                                if (!queryDocumentSnapshots.isEmpty()) {
-                                    for (QueryDocumentSnapshot d : queryDocumentSnapshots) {
-                                        db.collection("GioHang").document(FirebaseAuth.getInstance().getCurrentUser().getUid())
-                                                .collection("ALL").document(d.getId()).update("soluong", product.getSoluong());
-                                    }
-                                }
-                            }
-                        });
+            // Nút giảm số lượng
+            btnMinus.setOnClickListener(v -> updateQuantity(product, size, tvQuantity, -1));
 
-                if (number == 1) {
-                    holder.btnMinusGiohang.setVisibility(View.GONE);
-                } else {
-                    holder.btnMinusGiohang.setVisibility(View.VISIBLE);
-                }
+            // Ẩn nút giảm nếu số lượng <= 1
+            btnMinus.setVisibility(size.getSoluong() <= 1 ? View.GONE : View.VISIBLE);
 
-                holder.tvNumberGiohang.setText(String.valueOf(number));
-                updateTotal(holder);
-                cartActivity.TongTienGioHang();
-            }
-        });
-
-        // Hiển thị tổng tiền sản phẩm
-        updateTotal(holder);
-
-        // Ẩn nút giảm nếu số lượng là 1
-        if (product.getSoluong() == 1) {
-            holder.btnMinusGiohang.setVisibility(View.GONE);
-        } else {
-            holder.btnMinusGiohang.setVisibility(View.VISIBLE);
+            // Thêm sizeView vào container
+            holder.sizeContainer.addView(sizeView);
         }
+
+        // Cập nhật tổng giá tiền cho sản phẩm
+        updateTotal(holder, product);
+
+        // click image_product hiển thị chi tiết sp đó
+        holder.imgGiohang.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(context, DetailSPActivity.class);
+                intent.putExtra("search", product);
+                intent.putExtra("from_cart", true);
+                // Truyền thông tin sản phẩm vào Intent
+                context.startActivity(intent);
+            }
+        });
     }
 
+    private void updateQuantity(Product product, SizeQuantity size, TextView tvQuantity, int delta) {
+        int newQuantity = Math.max(1, size.getSoluong() + delta); // Cập nhật số lượng size sản phẩm, đảm bảo >= 1
+        size.setSoluong(newQuantity);
+
+        // Update Firestore
+        db.collection("GioHang").document(FirebaseAuth.getInstance().getCurrentUser().getUid())
+                .collection("ALL")
+                .whereEqualTo("id_product", product.getIdsp())
+                .get()
+                .addOnSuccessListener(queryDocumentSnapshots -> {
+                    for (QueryDocumentSnapshot doc : queryDocumentSnapshots) {
+                        List<HashMap<String, Object>> existingSizes = (List<HashMap<String, Object>>) doc.get("sizes");
+                        if (existingSizes != null) {
+                            for (HashMap<String, Object> sizeData : existingSizes) {
+                                if (sizeData.get("size").equals(size.getSize())) {
+                                    sizeData.put("soluong", newQuantity);// Cập nhật số lượng
+                                    break;
+                                }
+                            }
+
+                            // Update Firestore document
+                            db.collection("GioHang").document(FirebaseAuth.getInstance().getCurrentUser().getUid())
+                                    .collection("ALL").document(doc.getId())
+                                    .update("sizes", existingSizes)
+                                    .addOnSuccessListener(aVoid -> {
+                                        // Cập nhật giao diện sau khi lưu thành công
+                                        tvQuantity.setText(String.valueOf(newQuantity));
+                                        cartActivity.UpdateCartSummary();// Cập nhật tổng giá giỏ hàng
+                                        notifyDataSetChanged();// Làm mới danh sách
+                                    });
+                        }
+                    }
+                });
+    }
+
+    private void updateTotal(ViewHolder holder, Product product) {
+        // Tính tổng giá tiền cho sản phẩm (dựa trên giá và số lượng)
+        int total = 0;
+        for (SizeQuantity size : product.getSizes()) {
+            total += product.getGiatien() * size.getSoluong();
+        }
+        holder.tvTotalGiohang.setText("Giá tiền: "+NumberFormat.getInstance().format(total) + " VNĐ");
+    }
 
     @Override
     public int getItemCount() {
+        // Trả về số lượng sản phẩm trong giỏ hàng
         return mListGiohang.size();
     }
 
-
-    // Cập nhật tổng tiền hiển thị cho từng sản phẩm
-    private void updateTotal(ViewHolder holder) {
-        int numberCurrent = Integer.parseInt(holder.tvNumberGiohang.getText().toString());
-        int costCurrent = Integer.parseInt(holder.tvGiatienGiohang.getText().toString());
-        holder.tvTotalGiohang.setText(NumberFormat.getInstance().format(numberCurrent * costCurrent));
-    }
-
     public static class ViewHolder extends RecyclerView.ViewHolder {
-        private TextView tvTenGiohang, tvchatlieuGiohang, tvNumberGiohang, tvGiatienGiohang, tvTotalGiohang;
-        private ImageView btnMinusGiohang, btnPlusGiohang, imgGiohang;
+        private TextView tvTenGiohang, tvchatlieuGiohang, tvGiatienGiohang, tvTotalGiohang;
+        private ImageView imgGiohang;
+        private LinearLayout sizeContainer; // Container for sizes
 
-        public ViewHolder(@NotNull View itemView) {
+        public ViewHolder(@NonNull View itemView) {
             super(itemView);
             tvTenGiohang = itemView.findViewById(R.id.tv_ten_giohang);
             tvchatlieuGiohang = itemView.findViewById(R.id.tv_chatlieu_giohang);
-            tvNumberGiohang = itemView.findViewById(R.id.tv_number_giohang);
             tvGiatienGiohang = itemView.findViewById(R.id.tv_giatien_giohang);
             tvTotalGiohang = itemView.findViewById(R.id.tv_total_giohang);
             imgGiohang = itemView.findViewById(R.id.img_giohang);
-            btnMinusGiohang = itemView.findViewById(R.id.btn_minus_giohang);
-            btnPlusGiohang = itemView.findViewById(R.id.btn_plus_giohang);
+            sizeContainer = itemView.findViewById(R.id.size_container);
+
         }
     }
 }

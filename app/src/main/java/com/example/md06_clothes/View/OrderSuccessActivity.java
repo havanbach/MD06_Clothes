@@ -1,22 +1,28 @@
 package com.example.md06_clothes.View;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.ActivityCompat;
-
 import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.TextView;
+
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+
 import com.example.md06_clothes.Models.Product;
 import com.example.md06_clothes.R;
+
 import java.text.DateFormat;
+import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 public class OrderSuccessActivity extends AppCompatActivity {
     private TextView tvIDHoadon, tvDateHoadon, tvSanphamHoadon,
@@ -69,11 +75,9 @@ public class OrderSuccessActivity extends AppCompatActivity {
         sdt = intent.getStringExtra("sdt");
         phuongthuc = intent.getStringExtra("phuongthuc");
         ghichu = intent.getStringExtra("ghichu");
-        sanpham = intent.getStringExtra("sanpham");
         tienthanhtoan = intent.getStringExtra("tienthanhtoan");
 
-        mlist = new ArrayList<>();
-        mlist = (ArrayList<Product>) intent.getSerializableExtra("serialzable");
+
 
 
         tvIDHoadon.setText(idhoadon);
@@ -83,7 +87,6 @@ public class OrderSuccessActivity extends AppCompatActivity {
         tvSDTHoadon.setText(sdt);
         tvPhuongthucHoadon.setText(phuongthuc);
         tvGhichuHoadon.setText(ghichu);
-        tvSanphamHoadon.setText(sanpham);
         tvTongtienHoadon.setText(tienthanhtoan);
 
 
@@ -92,9 +95,39 @@ public class OrderSuccessActivity extends AppCompatActivity {
 
 
         bmp = BitmapFactory.decodeResource(getResources(), R.drawable.pizzahead);
+        mlist = new ArrayList<>();
         scalebmp = Bitmap.createScaledBitmap(bmp, 1200, 518, false);
-
+        ArrayList<Product> receivedList = (ArrayList<Product>) intent.getSerializableExtra("sanpham");
+        if (receivedList != null) {
+            mlist.clear();
+            mlist.addAll(receivedList);
+            displayProducts(mlist);
+        }
     }
+
+
+    private void displayProducts(List<Product> products) {
+        LinearLayout productContainer = findViewById(R.id.ll_sanpham_hoadon);
+        productContainer.removeAllViews(); // Xóa sản phẩm cũ nếu có
+
+        for (Product product : products) {
+            View productView = LayoutInflater.from(this).inflate(R.layout.item_order_product, productContainer, false);
+
+            TextView tvProductName = productView.findViewById(R.id.tv_product_name);
+            TextView tvProductQuantity = productView.findViewById(R.id.tv_product_quantity);
+            TextView tvProductPrice = productView.findViewById(R.id.tv_product_price);
+
+            tvProductName.setText(product.getTensp());
+            for (int i = 0; i < product.getSizes().size(); i++) {
+                num += product.getSizes().get(i).getSoluong();
+            }
+            tvProductQuantity.setText("x" + num);
+            tvProductPrice.setText(NumberFormat.getInstance().format(product.getGiatien()) + " đ");
+
+            productContainer.addView(productView);
+        }
+    }
+
 
     private void InitWidget() {
         tvIDHoadon = findViewById(R.id.tv_id_hoadon);
@@ -104,8 +137,7 @@ public class OrderSuccessActivity extends AppCompatActivity {
         tvSDTHoadon = findViewById(R.id.tv_sdt_hoadon);
         tvPhuongthucHoadon = findViewById(R.id.tv_phuongthuc_hoadon);
         tvGhichuHoadon = findViewById(R.id.tv_ghichu_hoadon);
-        tvSanphamHoadon = findViewById(R.id.tv_sanpham_hoadon);
-        tvTongtienHoadon = findViewById(R.id.tv_tongtien_hoadon);
         btnHoanthanhHoadon = findViewById(R.id.btn_hoanthanh_hoadon);
+        tvTongtienHoadon = findViewById(R.id.tv_tongtien_hoadon);
     }
 }

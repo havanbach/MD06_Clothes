@@ -26,16 +26,12 @@ import com.example.md06_clothes.R;
 import com.example.md06_clothes.my_interface.BinhLuanView;
 import com.example.md06_clothes.my_interface.GioHangView;
 import com.example.md06_clothes.my_interface.IClickCTHD;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.appbar.CollapsingToolbarLayout;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.firestore.DocumentReference;
-import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
-import com.google.firebase.firestore.QuerySnapshot;
 import com.squareup.picasso.Picasso;
 
 import java.text.NumberFormat;
@@ -43,7 +39,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-public class DetailSPActivity extends AppCompatActivity implements GioHangView , BinhLuanView {
+public class DetailSPActivity extends AppCompatActivity implements GioHangView, BinhLuanView {
 
     private AppCompatToggleButton toggleButtonFavorite;
     private FloatingActionButton btnAddCartDetail;
@@ -68,6 +64,7 @@ public class DetailSPActivity extends AppCompatActivity implements GioHangView ,
     private ImageView imgBottom, btnMinusBottom, btnPlusBottom;
     private Button btnBottom;
     private int slBottom = 1;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -79,32 +76,28 @@ public class DetailSPActivity extends AppCompatActivity implements GioHangView ,
     }
 
     private void Event() {
-        linearShowAllCmt.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(DetailSPActivity.this, CommentActivity.class);
-                intent.putExtra("allcmt", product);
-                startActivity(intent);
-            }
+        linearShowAllCmt.setOnClickListener(view -> {
+            Intent intent = new Intent(DetailSPActivity.this, CommentActivity.class);
+            intent.putExtra("allcmt", product);
+            startActivity(intent);
         });
+
         btnAddCartDetail.setOnClickListener(view -> {
-            if(sizeQuantity.getSize() == null){
+            if (sizeQuantity.getSize() == null) {
                 Toast.makeText(this, "Vui lòng chọn size!", Toast.LENGTH_SHORT).show();
                 return;
             }
             setBottomSheetDialog();
             tvTenBottom.setText(product.getTensp());
-            tvGiaBottom.setText(NumberFormat.getInstance().format(product.getGiatien())+"");
+            tvGiaBottom.setText(NumberFormat.getInstance().format(product.getGiatien()) + "");
             tvMotaBottom.setText(product.getMota());
             Picasso.get().load(product.getHinhanh()).into(imgBottom);
             initBottomSheet();
             bottomSheetDialog.show();
-
         });
-
     }
-    private void setBottomSheetDialog(){
-        // Bottom sheet Dialog
+
+    private void setBottomSheetDialog() {
         bottomSheetDialog = new BottomSheetDialog(this);
         bottomSheetDialog.setContentView(R.layout.layout_persistent_bottom_sheet);
         tvTenBottom = bottomSheetDialog.findViewById(R.id.tv_ten_bottom);
@@ -116,59 +109,42 @@ public class DetailSPActivity extends AppCompatActivity implements GioHangView ,
         tvMotaBottom = bottomSheetDialog.findViewById(R.id.tv_mota_bottom);
         btnBottom = bottomSheetDialog.findViewById(R.id.btn_bottom);
     }
+
     public void initBottomSheet() {
         btnMinusBottom.setVisibility(View.GONE);
-        btnMinusBottom.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                slBottom = Integer.parseInt(tvSoluongBottom.getText().toString()) - 1;
-                tvSoluongBottom.setText(String.valueOf(slBottom));
-                if (slBottom < 2) {
-                    btnMinusBottom.setVisibility(View.GONE);
-                } else btnMinusBottom.setVisibility(View.VISIBLE);
-            }
-        });
-        btnPlusBottom.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                slBottom = Integer.parseInt(tvSoluongBottom.getText().toString()) + 1;
-                tvSoluongBottom.setText(String.valueOf(slBottom));
-
-                if (slBottom < 2) {
-                    btnMinusBottom.setVisibility(View.GONE);
-                } else btnMinusBottom.setVisibility(View.VISIBLE);
-
-            }
+        btnMinusBottom.setOnClickListener(view -> {
+            slBottom = Integer.parseInt(tvSoluongBottom.getText().toString()) - 1;
+            tvSoluongBottom.setText(String.valueOf(slBottom));
+            btnMinusBottom.setVisibility(slBottom < 2 ? View.GONE : View.VISIBLE);
         });
 
-        btnBottom.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                int selectedQuantity = Integer.parseInt(tvSoluongBottom.getText().toString());
-                // Kiểm tra số lượng có sẵn
-                if (sizeQuantity.getSoluong() < selectedQuantity) {
-                    Toast.makeText(DetailSPActivity.this, "Số lượng sản phẩm không đủ!", Toast.LENGTH_SHORT).show();
-                } else {
-                    // Thêm vào giỏ hàng
-                    gioHangPresenter.AddCart(product.getId(), sizeQuantity.getSize(), (long) selectedQuantity);
-                    bottomSheetDialog.dismiss();
-                    Toast.makeText(DetailSPActivity.this, "Đã thêm vào giỏ hàng", Toast.LENGTH_SHORT).show();
-                }
-            }
+        btnPlusBottom.setOnClickListener(view -> {
+            slBottom = Integer.parseInt(tvSoluongBottom.getText().toString()) + 1;
+            tvSoluongBottom.setText(String.valueOf(slBottom));
+            btnMinusBottom.setVisibility(slBottom < 2 ? View.GONE : View.VISIBLE);
         });
 
+        btnBottom.setOnClickListener(view -> {
+            int selectedQuantity = Integer.parseInt(tvSoluongBottom.getText().toString());
+            if (sizeQuantity.getSoluong() < selectedQuantity) {
+                Toast.makeText(DetailSPActivity.this, "Số lượng sản phẩm không đủ!", Toast.LENGTH_SHORT).show();
+            } else {
+                gioHangPresenter.AddCart(product.getId(), sizeQuantity.getSize(), (long) selectedQuantity);
+                bottomSheetDialog.dismiss();
+                Toast.makeText(DetailSPActivity.this, "Đã thêm vào giỏ hàng", Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
     private void Init() {
         Intent intent = getIntent();
         product = (Product) intent.getSerializableExtra("search");
-        Boolean isFromCart = intent.getBooleanExtra("from_cart", false);
-        if(isFromCart){
+        boolean isFromCart = intent.getBooleanExtra("from_cart", false);
+        if (isFromCart) {
             getProductById(product.getIdsp());
-        }else{
+        } else {
             getProductById(product.getId());
         }
-
     }
 
     private void InitWidget() {
@@ -185,12 +161,9 @@ public class DetailSPActivity extends AppCompatActivity implements GioHangView ,
         collapsingToolbarLayout = findViewById(R.id.collapsing_toolbar);
         mListBinhluan = new ArrayList<>();
 
-        // Ánh xạ nút Back
         ImageView btnBack = findViewById(R.id.btn_back);
 
-        // Xử lý sự kiện nhấn nút Back
         btnBack.setOnClickListener(v -> finish());
-
     }
 
     @Override
@@ -219,69 +192,46 @@ public class DetailSPActivity extends AppCompatActivity implements GioHangView ,
 
     @Override
     public void getDataSanPham(String id, String id_product, String tensp, Long giatien, String hinhanh, String loaisp, String mota, List<SizeQuantity> sizes, Long type, String chatlieu) {
-
     }
 
     public void onDefaultToggleClick(View view) {
-        final String[] idlove = {""};
         boolean ToggleButtonState = toggleButtonFavorite.isChecked();
-        if (ToggleButtonState){
-            // Nếu thích thì làm gì và ngược lại
+        if (ToggleButtonState) {
             HashMap<String, String> map = new HashMap<>();
             map.put("idproduct", product.getId());
             map.put("iduser", FirebaseAuth.getInstance().getCurrentUser().getUid());
-            db.collection("Favorite").add(map).addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
-                @Override
-                public void onSuccess(DocumentReference documentReference) {
-                    idlove[0] = documentReference.getId();
-                }
-            });
-
+            db.collection("Favorite").add(map).addOnSuccessListener(documentReference -> {});
         } else {
             db.collection("Favorite").whereEqualTo("idproduct", product.getId())
-                    .whereEqualTo("iduser", FirebaseAuth.getInstance().getCurrentUser().getUid()).get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
-                        @Override
-                        public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
-                            for (QueryDocumentSnapshot q : queryDocumentSnapshots){
-                                db.collection("Favorite").document(q.getId()).delete();
-                            }
+                    .whereEqualTo("iduser", FirebaseAuth.getInstance().getCurrentUser().getUid()).get().addOnSuccessListener(queryDocumentSnapshots -> {
+                        for (QueryDocumentSnapshot q : queryDocumentSnapshots) {
+                            db.collection("Favorite").document(q.getId()).delete();
                         }
                     });
         }
     }
 
     public void getProductById(String productId) {
-        FirebaseFirestore db = FirebaseFirestore.getInstance();
         db.collection("SanPham").document(productId).get()
-                .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
-                    @Override
-                    public void onSuccess(DocumentSnapshot document) {
-                        if (document.exists()) {
-                            product = document.toObject(Product.class);
-                            updateUIWithProduct(product);
-                            Log.e("DetailSPActivity", "tìm thấy sản phẩm với ID: " + productId);
-                        } else {
-                            Log.e("DetailSPActivity", "Không tìm thấy sản phẩm với ID: " + productId);
-                        }
+                .addOnSuccessListener(document -> {
+                    if (document.exists()) {
+                        product = document.toObject(Product.class);
+                        updateUIWithProduct(product);
+                        Log.e("DetailSPActivity", "tìm thấy sản phẩm với ID: " + productId);
+                    } else {
+                        Log.e("DetailSPActivity", "Không tìm thấy sản phẩm với ID: " + productId);
                     }
                 })
-                .addOnFailureListener(e -> {
-                    Log.e("DetailSPActivity", "Lỗi khi lấy sản phẩm: " + e.getMessage());
-                });
+                .addOnFailureListener(e -> Log.e("DetailSPActivity", "Lỗi khi lấy sản phẩm: " + e.getMessage()));
     }
-
 
     private void updateUIWithProduct(Product product) {
         if (product != null) {
-
             db.collection("Favorite").whereEqualTo("iduser", FirebaseAuth.getInstance().getCurrentUser().getUid())
-                    .get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
-                        @Override
-                        public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
-                            for (QueryDocumentSnapshot q : queryDocumentSnapshots){
-                                if (q.getString("idproduct").equals(product.getId())){
-                                    toggleButtonFavorite.setChecked(true);
-                                }
+                    .get().addOnSuccessListener(queryDocumentSnapshots -> {
+                        for (QueryDocumentSnapshot q : queryDocumentSnapshots) {
+                            if (q.getString("idproduct").equals(product.getId())) {
+                                toggleButtonFavorite.setChecked(true);
                             }
                         }
                     });

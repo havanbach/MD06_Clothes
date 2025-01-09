@@ -35,7 +35,11 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ViewHold
         this.iClickOpenBottomSheet = iClickOpenBottomSheet;
     }
 
-
+    public ProductAdapter(Context context, ArrayList<Product> arrayList, int type) {
+        this.context = context;
+        this.arrayList = arrayList;
+        this.type = type;
+    }
 
     @NonNull
     @NotNull

@@ -34,7 +34,7 @@ import com.squareup.picasso.Picasso;
 
 public class MainActivity extends AppCompatActivity {
     // Khai báo các thành phần
-    private BottomNavigationView bottomNavigationView;
+    private BottomNavigationView bottomNavigationView;// Thanh điều hướng
 
     public  static CountDownTimer countDownTimer;
     private static final int TIME_DELAY = 2000;

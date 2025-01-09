@@ -1,6 +1,5 @@
 package com.example.md06_clothes.View;
 
-import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -33,6 +32,7 @@ import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
@@ -162,35 +162,11 @@ public class DetailSPActivity extends AppCompatActivity implements GioHangView ,
     private void Init() {
         Intent intent = getIntent();
         product = (Product) intent.getSerializableExtra("search");
-
-        if (product != null) {
-
-            db.collection("Favorite").whereEqualTo("iduser", FirebaseAuth.getInstance().getCurrentUser().getUid())
-                    .get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
-                        @Override
-                        public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
-                            for (QueryDocumentSnapshot q : queryDocumentSnapshots){
-                                if (q.getString("idproduct").equals(product.getId())){
-                                    toggleButtonFavorite.setChecked(true);
-                                }
-                            }
-                        }
-                    });
-
-            collapsingToolbarLayout.setTitle(product.getTensp());
-            tvGiaDetail.setText(NumberFormat.getInstance().format(product.getGiatien()));
-            tvChatlieuDetail.setText(product.getChatlieu());
-            tvMoTaDetail.setText(product.getMota());
-            Picasso.get().load(product.getHinhanh()).into(imgDetail);
-            sizes = product.getSizes();
-            sizeAdapter = new SizeAdapter(sizes, position -> {
-                sizeQuantity = sizes.get(position);
-                Log.d("SIZE", " - Size: " + sizeQuantity.getSize() + " - Số lượng: " + sizeQuantity.getSoluong());
-            });
-            rcvSizes.setLayoutManager(new LinearLayoutManager(this, RecyclerView.HORIZONTAL, false));
-            rcvSizes.setAdapter(sizeAdapter);
-            binhLuanPresenter = new BinhLuanPresenter(this);
-            binhLuanPresenter.HandleGetBinhLuanLimit(product.getId());
+        Boolean isFromCart = intent.getBooleanExtra("from_cart", false);
+        if(isFromCart){
+            getProductById(product.getIdsp());
+        }else{
+            getProductById(product.getId());
         }
 
     }
@@ -271,6 +247,59 @@ public class DetailSPActivity extends AppCompatActivity implements GioHangView ,
                             }
                         }
                     });
+        }
+    }
+
+    public void getProductById(String productId) {
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        db.collection("SanPham").document(productId).get()
+                .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                    @Override
+                    public void onSuccess(DocumentSnapshot document) {
+                        if (document.exists()) {
+                            product = document.toObject(Product.class);
+                            updateUIWithProduct(product);
+                            Log.e("DetailSPActivity", "tìm thấy sản phẩm với ID: " + productId);
+                        } else {
+                            Log.e("DetailSPActivity", "Không tìm thấy sản phẩm với ID: " + productId);
+                        }
+                    }
+                })
+                .addOnFailureListener(e -> {
+                    Log.e("DetailSPActivity", "Lỗi khi lấy sản phẩm: " + e.getMessage());
+                });
+    }
+
+
+    private void updateUIWithProduct(Product product) {
+        if (product != null) {
+
+            db.collection("Favorite").whereEqualTo("iduser", FirebaseAuth.getInstance().getCurrentUser().getUid())
+                    .get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+                        @Override
+                        public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+                            for (QueryDocumentSnapshot q : queryDocumentSnapshots){
+                                if (q.getString("idproduct").equals(product.getId())){
+                                    toggleButtonFavorite.setChecked(true);
+                                }
+                            }
+                        }
+                    });
+
+            collapsingToolbarLayout.setTitle(product.getTensp());
+            tvGiaDetail.setText(NumberFormat.getInstance().format(product.getGiatien()));
+            tvChatlieuDetail.setText(product.getChatlieu());
+            tvMoTaDetail.setText(product.getMota());
+            Picasso.get().load(product.getHinhanh()).into(imgDetail);
+            sizes = product.getSizes();
+            sizeAdapter = new SizeAdapter(sizes, position -> {
+                sizeQuantity = sizes.get(position);
+                Log.d("SIZE", " - Size: " + sizeQuantity.getSize() + " - Số lượng: " + sizeQuantity.getSoluong());
+            });
+            rcvSizes.setLayoutManager(new LinearLayoutManager(this, RecyclerView.HORIZONTAL, false));
+            rcvSizes.setAdapter(sizeAdapter);
+            binhLuanPresenter = new BinhLuanPresenter(this);
+            binhLuanPresenter.HandleGetBinhLuanLimit(product.getId());
         }
     }
 }

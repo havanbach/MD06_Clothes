@@ -93,7 +93,9 @@ public class GiohangAdapter extends RecyclerView.Adapter<GiohangAdapter.ViewHold
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(context, DetailSPActivity.class);
-                intent.putExtra("search", product); // Truyền thông tin sản phẩm vào Intent
+                intent.putExtra("search", product);
+                intent.putExtra("from_cart", true);
+                // Truyền thông tin sản phẩm vào Intent
                 context.startActivity(intent);
             }
         });

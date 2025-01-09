@@ -11,6 +11,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+
 import com.example.md06_clothes.Models.Product;
 import com.example.md06_clothes.R;
 import com.example.md06_clothes.my_interface.IClickOpenBottomSheet;
@@ -21,110 +22,97 @@ import org.jetbrains.annotations.NotNull;
 import java.text.NumberFormat;
 import java.util.ArrayList;
 
-public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ViewHolder> {
-
+public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ViewHolder>{
     private Context context;
     private ArrayList<Product> arrayList;
-    private ProductType type;
+    private  int type = 0;
     private IClickOpenBottomSheet iClickOpenBottomSheet;
 
-    // Enum cho các loại sản phẩm
-    public enum ProductType {
-        DEFAULT, DS_PRODUCT, NOIBAT, DO_UONG, THOITRANG1, MICAY, YEUTHICH, LAU, GOIY, GIOHANG
-    }
-
-    public ProductAdapter(Context context, ArrayList<Product> arrayList, ProductType type, IClickOpenBottomSheet iClickOpenBottomSheet) {
+    public ProductAdapter(Context context, ArrayList<Product> arrayList, int type, IClickOpenBottomSheet iClickOpenBottomSheet) {
         this.context = context;
         this.arrayList = arrayList;
         this.type = type;
         this.iClickOpenBottomSheet = iClickOpenBottomSheet;
     }
 
+    public ProductAdapter(Context context, ArrayList<Product> arrayList, int type) {
+        this.context = context;
+        this.arrayList = arrayList;
+        this.type = type;
+    }
+
     @NonNull
     @NotNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull @NotNull ViewGroup parent, int viewType) {
-        int layoutId;
-        // Chọn layout dựa trên loại sản phẩm
-        switch (type) {
-            case DS_PRODUCT:
-                layoutId = R.layout.dong_ds_product;
-                break;
-            case NOIBAT:
-                layoutId = R.layout.dong_product_noibat;
-                break;
-            case DO_UONG:
-                layoutId = R.layout.dong_do_uong;
-                break;
-            case THOITRANG1:
-                layoutId = R.layout.dong_sp_thoitrang1;
-                break;
-            case MICAY:
-                layoutId = R.layout.dong_sp_micay;
-                break;
-            case YEUTHICH:
-                layoutId = R.layout.dong_sp_yeuthich;
-                break;
-            case LAU:
-                layoutId = R.layout.dong_sp_lau;
-                break;
-            case GOIY:
-                layoutId = R.layout.dong_sp_goiy;
-                break;
-            case GIOHANG:
-                layoutId = R.layout.dong_giohang;
-                break;
-            default:
-                layoutId = R.layout.dong_ds_product;
+        View view;
+        if (type == 1){
+            view = LayoutInflater.from(context).inflate(R.layout.dong_ds_product, parent, false);
+        } else if(type ==2){
+            view = LayoutInflater.from(context).inflate(R.layout.dong_product_noibat,parent,false);
+        }else if(type ==3){
+            view = LayoutInflater.from(context).inflate(R.layout.dong_do_uong,parent,false);
+        }else if(type ==4){
+            view = LayoutInflater.from(context).inflate(R.layout.dong_sp_thoitrang1,parent,false);
+        }else if(type ==5){
+            view = LayoutInflater.from(context).inflate(R.layout.dong_sp_micay,parent,false);
+        }else if(type ==6){
+            view = LayoutInflater.from(context).inflate(R.layout.dong_sp_yeuthich,parent,false);
+        }else if(type ==7){
+            view = LayoutInflater.from(context).inflate(R.layout.dong_sp_lau,parent,false);
+        }else if(type ==8){
+            view = LayoutInflater.from(context).inflate(R.layout.dong_sp_goiy,parent,false);
         }
-
-        View view = LayoutInflater.from(context).inflate(layoutId, parent, false);
+        else {
+            view = LayoutInflater.from(context).inflate(R.layout.dong_giohang,parent,false);
+        }
         return new ViewHolder(view);
     }
 
     @Override
     public void onBindViewHolder(@NonNull @NotNull ViewHolder holder, int position) {
+
         Product product = arrayList.get(position);
-
-        // Hiển thị thông tin sản phẩm
         holder.tvTenProduct.setText(product.getTensp());
-        holder.tvGiaProduct.setText(NumberFormat.getInstance().format(product.getGiatien()));
-
-        // Hiển thị hình ảnh với Picasso
+        holder.tvGiaProduct.setText(NumberFormat.getInstance().format(product.getGiatien())+"");
         Picasso.get().load(product.getHinhanh()).into(holder.imgProduct);
 
-        // Chỉ hiển thị thông tin đặc biệt nếu là giỏ hàng
-        if (type == ProductType.GIOHANG) {
+        if(type==0){
             holder.tvchatlieuProduct.setText(product.getchatlieu());
-            holder.tvSoluongProduct.setText(String.valueOf(product.getSoluong()));
+            holder.tvSoluongProduct.setText(product.getSoluong()+"");
         }
 
-        // Xử lý sự kiện click
-        holder.layoutProduct.setOnClickListener(view -> {
-            if (iClickOpenBottomSheet != null) {
+        holder.layoutProduct.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
                 iClickOpenBottomSheet.onClickOpenBottomSheet(position);
             }
         });
+
     }
 
     @Override
     public int getItemCount() {
-        return arrayList != null ? arrayList.size() : 0;
+        return arrayList.size();
     }
 
-    // ViewHolder class
-    public static class ViewHolder extends RecyclerView.ViewHolder {
+    public class ViewHolder extends RecyclerView.ViewHolder {
+
         private TextView tvTenProduct, tvGiaProduct, tvchatlieuProduct, tvSoluongProduct;
         private ImageView imgProduct;
         private LinearLayout layoutProduct;
 
         public ViewHolder(@NonNull @NotNull View itemView) {
             super(itemView);
+
+            // tên, giá, ảnh sẽ được ánh xạ chung giữa các view
             tvTenProduct = itemView.findViewById(R.id.tv_ten_product);
             tvGiaProduct = itemView.findViewById(R.id.tv_giatien_product);
             imgProduct = itemView.findViewById(R.id.img_product);
+
             tvchatlieuProduct = itemView.findViewById(R.id.tv_chatlieu_giohang);
             tvSoluongProduct = itemView.findViewById(R.id.tv_number_giohang);
+
             layoutProduct = itemView.findViewById(R.id.layout_product);
         }
     }

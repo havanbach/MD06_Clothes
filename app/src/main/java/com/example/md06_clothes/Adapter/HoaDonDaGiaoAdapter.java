@@ -99,20 +99,6 @@ public class HoaDonDaGiaoAdapter extends RecyclerView.Adapter<HoaDonDaGiaoAdapte
     }
 
 
-    public void onBindViewHolder(@NonNull @NotNull ProductAdapter.ViewHolder holder, int position) {
-
-        Product product = list.get(position);
-
-
-
-        if(type==0){
-            View itemView = holder.itemView;
-        }
-
-
-
-    }
-
     @Override
     public int getItemCount() {
         return list.size();

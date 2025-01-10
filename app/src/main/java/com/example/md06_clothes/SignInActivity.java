@@ -231,7 +231,6 @@ public class SignInActivity extends AppCompatActivity {
         registerReceiver(MyReceiver, new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION));
 
     }
-
     @Override
     protected void onPause() {
         super.onPause();

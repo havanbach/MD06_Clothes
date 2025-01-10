@@ -45,7 +45,8 @@ import java.util.ArrayList;
 import de.hdodenhof.circleimageview.CircleImageView;
 
 public class SignInActivity extends AppCompatActivity {
-    private boolean isPasswordVisible = false;
+    //Thuoc tinh cua tung lop
+    private boolean isPasswordVisible = false; //Theo doi an hien mat khau
     private EditText edt_passin, edt_mailin;
     private ImageView hidein;
     private Button btn_signin;
@@ -58,9 +59,10 @@ public class SignInActivity extends AppCompatActivity {
     private static final int TIME_DELAY = 2000;
     private static long back_pressed;
     private String sosanh;
-    private ProgressDialog progressDialog;
+    private ProgressDialog progressDialog; //Xu ly tien trinh khi dang nhap
 
-    private BroadcastReceiver MyReceiver = null;
+    // Check Internet
+    private BroadcastReceiver MyReceiver = null; //Kiem tra mang
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -73,9 +75,11 @@ public class SignInActivity extends AppCompatActivity {
         btnDangKy = findViewById(R.id.btn_dangky);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         InitWidget();
-        MyReceiver = new MyReceiver();
-        broadcastIntent();
+        MyReceiver = new MyReceiver();      // Check Internet
+        //Dang ky Broadcast kiem tra mang
+        broadcastIntent();                  // Check Internet
         if (NetworkUtil.isNetworkConnected(this)) {
+            //Neu co ket noi mang goi phuong thuc Event()
             Event();
         }
 
@@ -83,12 +87,14 @@ public class SignInActivity extends AppCompatActivity {
         edt_passin = findViewById(R.id.edt_matkhau_user);
         btnDangNhap = findViewById(R.id.btn_dangnhap);
         btnDangKy = findViewById(R.id.btn_dangky);
+        //Xu ly su kien dang ky
         btnDangKy.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 startActivity(new Intent(SignInActivity.this,SignUpActivity.class));
             }
         });
+        //Xu ly su kien an hien mat khau
         hidein.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -104,6 +110,7 @@ public class SignInActivity extends AppCompatActivity {
             }
         });
     }
+    //Phuong thuc Event()
     private void Event() {
         btnDangNhap.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -111,11 +118,14 @@ public class SignInActivity extends AppCompatActivity {
                 progressDialog.show();
                 progressDialog.setContentView(R.layout.layout_loading);
                 progressDialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
+                //Lay mail va mat khau tu giao dien
                 String strEmail = edtEmailUser.getText().toString().trim();
                 String strMatKhau = edtMatKhauUser.getText().toString().trim();
                 ArrayList<Admin> arrayList = new ArrayList<>();
+                //Kiem tra mail va mat khau
                 if (strEmail.length() > 0) {
                     if (strMatKhau.length() > 0) {
+                        //Kiem tra tai khoan firestore
                         FirebaseFirestore db = FirebaseFirestore.getInstance();
                         db.collection("Admin").get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
                             @Override
@@ -151,6 +161,7 @@ public class SignInActivity extends AppCompatActivity {
                                                     startActivity(intent);
                                                     finishAffinity();
                                                     progressDialog.dismiss();
+                                                    //Kiem tra dinh dang email
                                                 } else if (!isEmailValid(strEmail) && !sosanh.equals(strEmail)) {
                                                     progressDialog.dismiss();
                                                     Toast.makeText(SignInActivity.this, "Email định dạng không đúng", Toast.LENGTH_SHORT).show();
@@ -191,6 +202,7 @@ public class SignInActivity extends AppCompatActivity {
     private boolean isEmailValid(CharSequence email) {
         return android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches();
     }
+    //Su kien 2 lan Back thoat app
     @Override
     public void onBackPressed() {
         progressDialog.dismiss();
@@ -205,6 +217,7 @@ public class SignInActivity extends AppCompatActivity {
 
     }
     private void InitWidget() {
+        //Anh xa
         btnDangNhap = findViewById(R.id.btn_dangnhap);
         btnDangKy = findViewById(R.id.btn_dangky);
         edtEmailUser = findViewById(R.id.edt_email_user);
@@ -218,6 +231,7 @@ public class SignInActivity extends AppCompatActivity {
         registerReceiver(MyReceiver, new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION));
 
     }
+
     @Override
     protected void onPause() {
         super.onPause();

@@ -84,18 +84,18 @@ public class ProfileFragment extends Fragment {
     private ProgressDialog progressDialog;// Đối tượng ProgressDialog để hiển thị quá trình tải.
     private MainActivity mMainActivity;// Đối tượng MainActivity tham chiếu đến hoạt động chính của ứng dụng.
     private FusedLocationProviderClient fusedLocationClient;// Đối tượng để lấy thông tin vị trí người dùng.
-    private Geocoder geocoder;
+    private Geocoder geocoder;// Đối tượng để chuyển đổi thông tin vị trí (latitude và longitude) thành địa chỉ.
 
 
-    private View view;
-    private CircleImageView imgAvatar;
-    private EditText edtFullName, edtAddress, edtPhoneNumber, edtDate;
-    private TextView tvEmail;
-    private RadioButton rdoNam, rdoNu;
-    private RadioGroup rdoGroup;
-    private Button btnUpdateprofile;
-    private LinearLayout layoutLogout;
-    private FirebaseFirestore firestore = FirebaseFirestore.getInstance();
+    private View view;// Giao diện của Fragment.
+    private CircleImageView imgAvatar;// ImageView để hiển thị ảnh đại diện của người dùng.
+    private EditText edtFullName, edtAddress, edtPhoneNumber, edtDate;// Các EditText cho thông tin cá nhân của người dùng.
+    private TextView tvEmail;// TextView để hiển thị email của người dùng.
+    private RadioButton rdoNam, rdoNu;// RadioButton cho giới tính (Nam hoặc Nữ).
+    private RadioGroup rdoGroup;// RadioGroup chứa các RadioButton cho giới tính.
+    private Button btnUpdateprofile;// Nút để người dùng cập nhật thông tin hồ sơ.
+    private LinearLayout layoutLogout;// Layout chứa nút đăng xuất.
+    private FirebaseFirestore firestore = FirebaseFirestore.getInstance();// Tham chiếu đến Firestore để tương tác với cơ sở dữ liệu.
 
     private StorageReference storageReference;
     private  String key = "";

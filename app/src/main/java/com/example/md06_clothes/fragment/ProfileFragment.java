@@ -80,10 +80,10 @@ import de.hdodenhof.circleimageview.CircleImageView;
 
 public class ProfileFragment extends Fragment {
 
-    private Uri mUri;
-    private ProgressDialog progressDialog;
-    private MainActivity mMainActivity;
-    private FusedLocationProviderClient fusedLocationClient;
+    private Uri mUri;// Dùng để lưu trữ đường dẫn đến ảnh đại diện của người dùng.
+    private ProgressDialog progressDialog;// Đối tượng ProgressDialog để hiển thị quá trình tải.
+    private MainActivity mMainActivity;// Đối tượng MainActivity tham chiếu đến hoạt động chính của ứng dụng.
+    private FusedLocationProviderClient fusedLocationClient;// Đối tượng để lấy thông tin vị trí người dùng.
     private Geocoder geocoder;
 
 

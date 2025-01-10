@@ -108,8 +108,8 @@ public class ProfileFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_profile, container, false);
-        InitWidget();
-        Init();
+        InitWidget();// Gọi hàm khởi tạo các widget trên giao diện (chưa được định nghĩa trong đoạn mã).
+        Init();// Gọi hàm khởi tạo ban đầu (chưa được định nghĩa trong đoạn mã).
 
         if (NetworkUtil.isNetworkConnected(getContext())){
             reloadData = true;

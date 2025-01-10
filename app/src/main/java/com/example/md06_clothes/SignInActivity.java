@@ -61,8 +61,7 @@ public class SignInActivity extends AppCompatActivity {
     private String sosanh;
     private ProgressDialog progressDialog; //Xu ly tien trinh khi dang nhap
 
-    // Check Internet
-    private BroadcastReceiver MyReceiver = null; //Kiem tra mang
+    private BroadcastReceiver MyReceiver = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -75,11 +74,9 @@ public class SignInActivity extends AppCompatActivity {
         btnDangKy = findViewById(R.id.btn_dangky);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         InitWidget();
-        MyReceiver = new MyReceiver();      // Check Internet
-        //Dang ky Broadcast kiem tra mang
-        broadcastIntent();                  // Check Internet
+        MyReceiver = new MyReceiver();
+        broadcastIntent();
         if (NetworkUtil.isNetworkConnected(this)) {
-            //Neu co ket noi mang goi phuong thuc Event()
             Event();
         }
 
@@ -87,14 +84,12 @@ public class SignInActivity extends AppCompatActivity {
         edt_passin = findViewById(R.id.edt_matkhau_user);
         btnDangNhap = findViewById(R.id.btn_dangnhap);
         btnDangKy = findViewById(R.id.btn_dangky);
-        //Xu ly su kien dang ky
         btnDangKy.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 startActivity(new Intent(SignInActivity.this,SignUpActivity.class));
             }
         });
-        //Xu ly su kien an hien mat khau
         hidein.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -110,7 +105,6 @@ public class SignInActivity extends AppCompatActivity {
             }
         });
     }
-    //Phuong thuc Event()
     private void Event() {
         btnDangNhap.setOnClickListener(new View.OnClickListener() {
             @Override

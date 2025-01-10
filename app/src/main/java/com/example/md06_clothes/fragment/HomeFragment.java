@@ -381,7 +381,7 @@ public class HomeFragment extends Fragment {
                     }
                 });
     }
-    // Sản phẩm đồ uống
+
     public  void  GetDataSPDoUong(){
         firestore.collection("SanPham").
                 whereEqualTo("type",3).
@@ -414,7 +414,7 @@ public class HomeFragment extends Fragment {
                 });
     }
 
-    // Sản phẩm Hàn Quốc
+
     public  void  GetDataSPHanQuoc(){
         firestore.collection("SanPham").
                 whereEqualTo("type",4).
@@ -446,7 +446,7 @@ public class HomeFragment extends Fragment {
                     }
                 });
     }
-    // Sản phẩm Mì cay
+
     public  void  GetDataSPMiCay(){
         firestore.collection("SanPham").
                 whereEqualTo("type",5).

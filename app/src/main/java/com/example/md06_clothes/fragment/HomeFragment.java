@@ -446,7 +446,7 @@ public class HomeFragment extends Fragment {
                     }
                 });
     }
-    // Sản phẩm Mì cay
+
     public  void  GetDataSPMiCay(){
         firestore.collection("SanPham").
                 whereEqualTo("type",5).

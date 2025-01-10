@@ -23,13 +23,10 @@ public class NavigationActivity extends AppCompatActivity {
     ViewPager.OnPageChangeListener viewPagerListener = new ViewPager.OnPageChangeListener() {
         @Override
         public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-
         }
         @Override
         public void onPageSelected(int position) {
-
             setDotIndicator(position);
-
             if (position > 0) {
                 backButton.setVisibility(View.VISIBLE);
             } else {
@@ -43,19 +40,16 @@ public class NavigationActivity extends AppCompatActivity {
         }
         @Override
         public void onPageScrollStateChanged(int state) {
-
         }
     };
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_navigation);
-// Ảnh xa
+        // Ảnh xa
         backButton = findViewById(R.id.backButton);
         nextButton = findViewById(R.id.nextButton);
         skipButton = findViewById(R.id.skipButton);
-
         backButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -64,7 +58,6 @@ public class NavigationActivity extends AppCompatActivity {
                 }
             }
         });
-
         nextButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -77,7 +70,6 @@ public class NavigationActivity extends AppCompatActivity {
                 }
             }
         });
-
         skipButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -86,22 +78,18 @@ public class NavigationActivity extends AppCompatActivity {
                 finish();
             }
         });
-
         slideViewPager = (ViewPager) findViewById(R.id.slideViewPager);
         dotIndicator = (LinearLayout) findViewById(R.id.dotIndicator);
         // Tao 1 instance cua onboard
         onboardingPagerAdapter = new OnboardingPagerAdapter(this);
         slideViewPager.setAdapter(onboardingPagerAdapter);
-
         setDotIndicator(0);
         slideViewPager.addOnPageChangeListener(viewPagerListener);
     }
-
     public void setDotIndicator(int position) {
         //Cap nhat chi bao dau cham
         dots = new TextView[3];
         dotIndicator.removeAllViews();
-
         for (int i = 0; i < dots.length; i++) {
             dots[i] = new TextView(this);
             dots[i].setText(Html.fromHtml("&#8226", Html.FROM_HTML_MODE_LEGACY));
@@ -111,7 +99,6 @@ public class NavigationActivity extends AppCompatActivity {
         }
         dots[position].setTextColor(getResources().getColor(R.color.lavender, getApplicationContext().getTheme()));
     }
-
     private int getItem(int i) {
         return slideViewPager.getCurrentItem() + i;
     }

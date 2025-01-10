@@ -1,9 +1,14 @@
 package com.example.md06_clothes.Presenter;
 
 
+import static com.itextpdf.kernel.pdf.PdfName.List;
+
 import com.example.md06_clothes.Models.Product;
+import com.example.md06_clothes.Models.SizeQuantity;
 import com.example.md06_clothes.my_interface.IProduct;
 import com.example.md06_clothes.my_interface.ProductView;
+
+import java.util.List;
 
 public class ProductPresenter implements IProduct {
 
@@ -33,7 +38,8 @@ public class ProductPresenter implements IProduct {
     }
 
     @Override
-    public void getDataProduct(String id, String ten, Long gia, String hinhanh, String loaisp, String mota, Long soluong, String size, Long type, String chatlieu) {
-        callback.getDataProduct(id, ten, gia, hinhanh, loaisp, mota, soluong, size, type, chatlieu);
+    public void getDataProduct(String id, String tensp, long giatien, String hinhanh, String loaisp, String mota, java.util.List<SizeQuantity> sizes, long type, String chatlieu) {
+        callback.getDataProduct(id,  tensp,  giatien, hinhanh,  loaisp,  mota, sizes,  type,  chatlieu);
     }
+
 }

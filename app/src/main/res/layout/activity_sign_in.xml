@@ -47,7 +47,7 @@
 
                 <EditText
                     android:id="@+id/edt_email_user"
-                    android:hint="Nhập Email"
+                    android:hint="Vui lòng nhập email"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:inputType="textEmailAddress"
@@ -80,7 +80,7 @@
 
                 <EditText
                     android:id="@+id/edt_matkhau_user"
-                    android:hint="Nhập Pass"
+                    android:hint="Vui lòng nhập password"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:inputType="textPassword"

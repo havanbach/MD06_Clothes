@@ -16,6 +16,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.md06_clothes.Adapter.CategoryAdapter;
 import com.example.md06_clothes.Models.Product;
+import com.example.md06_clothes.Models.SizeQuantity;
 import com.example.md06_clothes.R;
 import com.example.md06_clothes.my_interface.IClickOpenBottomSheet;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -25,6 +26,8 @@ import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
 public class CategoryActivity extends AppCompatActivity {
     private ImageView imgBack;
@@ -75,6 +78,13 @@ public class CategoryActivity extends AppCompatActivity {
                     public void onSuccess(@NonNull QuerySnapshot queryDocumentSnapshots) {
                         if (!queryDocumentSnapshots.isEmpty()) {
                             for (QueryDocumentSnapshot d : queryDocumentSnapshots) {
+                                List<SizeQuantity> sizes = new ArrayList<>();
+                                List<Map<String, Object>> sizesData = (List<Map<String, Object>>) d.get("sizes");
+                                if (sizesData != null) {
+                                    for (Map<String, Object> size : sizesData) {
+                                        sizes.add(new SizeQuantity((String) size.get("size"), ((Long) size.get("soluong")).intValue()));
+                                    }
+                                }
                                 currentList.add(new Product(
                                         d.getId(),
                                         d.getString("tensp"),
@@ -82,8 +92,7 @@ public class CategoryActivity extends AppCompatActivity {
                                         d.getString("hinhanh"),
                                         d.getString("loaisp"),
                                         d.getString("mota"),
-                                        d.getLong("soluong"),
-                                        d.getString("size"),
+                                        sizes,
                                         d.getLong("type"),
                                         d.getString("chatlieu")
                                 ));

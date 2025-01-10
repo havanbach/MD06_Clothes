@@ -3,10 +3,12 @@ package com.example.md06_clothes.Presenter;
 
 import com.example.md06_clothes.Models.Giohang;
 import com.example.md06_clothes.Models.Product;
+import com.example.md06_clothes.Models.SizeQuantity;
 import com.example.md06_clothes.my_interface.GioHangView;
 import com.example.md06_clothes.my_interface.IGioHang;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class GioHangPresenter implements IGioHang {
     private Giohang giohang;
@@ -17,8 +19,8 @@ public class GioHangPresenter implements IGioHang {
         giohang = new Giohang(this);
     }
 
-    public  void AddCart(String idsp, Long soluong){
-        giohang.AddCart(idsp, soluong);
+    public  void AddCart(String idsp,String size, Long soluong){
+        giohang.AddCart(idsp, size,soluong);
     }
 
     public  void  HandlegetDataGioHang(){
@@ -43,16 +45,11 @@ public class GioHangPresenter implements IGioHang {
     }
 
     @Override
-    public void getDataSanPham(String id, String idsp,String tensp, Long giatien, String hinhanh, String loaisp, String mota, Long soluong, String size, Long type, String chatlieu) {
-        callback.getDataSanPham(id,idsp,tensp,giatien,hinhanh,loaisp,mota,soluong,size,type,chatlieu);
+    public void getDataSanPham(String id, String id_product, String tensp, Long giatien, String hinhanh, String loaisp, String mota, List<SizeQuantity> sizes, Long type, String chatlieu) {
+        callback.getDataSanPham(id,id_product,tensp,giatien,hinhanh,loaisp,mota,sizes,type,chatlieu);
     }
 
-    public void HandlegetDataCTHD(String id) {
-        giohang.HandleGetDataCTHD(id);
-
-    }
     public void HandlegetDataCTHD(String id,String uid) {
         giohang.HandleGetDataCTHD(id,uid);
-
     }
 }

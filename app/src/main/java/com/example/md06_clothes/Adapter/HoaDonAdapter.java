@@ -57,7 +57,7 @@ public class HoaDonAdapter extends RecyclerView.Adapter<HoaDonAdapter.ViewHodler
     }
 
     public class ViewHodler extends RecyclerView.ViewHolder{
-        TextView tvHoten,tvSdt,tvDiachi,tvNgaydat,tvTongtien, tvTrangthai;
+        TextView tvHoten,tvSdt,tvDiachi,tvNgaydat,tvTongtien;
         LinearLayout layoutHoadon;
 
         public ViewHodler(@NonNull View itemView) {

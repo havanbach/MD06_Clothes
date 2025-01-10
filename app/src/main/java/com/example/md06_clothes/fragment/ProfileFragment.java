@@ -10,9 +10,13 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.location.Address;
+import android.location.Geocoder;
+import android.location.Location;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Looper;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -29,16 +33,21 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
-
 
 import com.bumptech.glide.Glide;
 import com.example.md06_clothes.MainActivity;
 import com.example.md06_clothes.R;
 import com.example.md06_clothes.SignInActivity;
 import com.example.md06_clothes.ultil.NetworkUtil;
+import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationCallback;
+import com.google.android.gms.location.LocationRequest;
+import com.google.android.gms.location.LocationResult;
+import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
@@ -58,10 +67,13 @@ import com.squareup.picasso.Picasso;
 
 import java.io.ByteArrayOutputStream;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.io.InputStream;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.HashMap;
+import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 import de.hdodenhof.circleimageview.CircleImageView;
@@ -71,6 +83,9 @@ public class ProfileFragment extends Fragment {
     private Uri mUri;
     private ProgressDialog progressDialog;
     private MainActivity mMainActivity;
+    private FusedLocationProviderClient fusedLocationClient;
+    private Geocoder geocoder;
+
 
     private View view;
     private CircleImageView imgAvatar;
@@ -94,7 +109,6 @@ public class ProfileFragment extends Fragment {
         view = inflater.inflate(R.layout.fragment_profile, container, false);
         InitWidget();
         Init();
-//        Log.e("ep", mainActivity.Password());
 
         if (NetworkUtil.isNetworkConnected(getContext())){
             reloadData = true;
@@ -147,22 +161,6 @@ public class ProfileFragment extends Fragment {
             onAttach(getContext());
         }
     }
-
-//    @Override
-//    public void onAttach(@NonNull @NotNull Context context) {
-//        super.onAttach(context);
-//        Log.d("fmt", "onAttach");
-//        if (NetworkUtil.isNetworkConnected(getContext())){
-//            reloadData = true;
-//            LoadInfo();
-//            setUserInformation();
-//            Event();
-//            getFragmentManager().beginTransaction().detach(this).attach(this).commit();
-//        } else {
-//            reloadData = false;
-//            getFragmentManager().beginTransaction().detach(this).attach(this).commit();
-//        }
-//    }
 
     private void LoadInfo() {
         firestore.collection("User").document(FirebaseAuth.getInstance().getCurrentUser().getUid())
@@ -253,6 +251,9 @@ public class ProfileFragment extends Fragment {
     private void Init() {
         progressDialog = new ProgressDialog(getActivity());
         mMainActivity = (MainActivity) getActivity();
+        fusedLocationClient = LocationServices.getFusedLocationProviderClient(getContext());
+        geocoder = new Geocoder(getContext(), Locale.getDefault());
+
     }
 
     private void Event() {
@@ -280,67 +281,98 @@ public class ProfileFragment extends Fragment {
                 int ngay = calendar.get(Calendar.DATE);
                 int thang = calendar.get(Calendar.MONTH);
                 int nam = calendar.get(Calendar.YEAR);
+
                 DatePickerDialog datePickerDialog = new DatePickerDialog(getContext(), new DatePickerDialog.OnDateSetListener() {
                     @Override
                     public void onDateSet(DatePicker datePicker, int i, int i1, int i2) {
-                        // i:năm - i1:tháng - i2:ngày
-                        calendar.set(i, i1, i2);
-                        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd/MM/yyyy");
-                        edtDate.setText(simpleDateFormat.format(calendar.getTime()));
+                        // i: năm, i1: tháng, i2: ngày
+                        Calendar selectedDate = Calendar.getInstance();
+                        selectedDate.set(i, i1, i2);
+
+                        Calendar currentDate = Calendar.getInstance();
+
+                        if (selectedDate.after(currentDate)) {
+                            // Ngày sinh không hợp lệ
+                            Toast.makeText(getContext(), "Ngày sinh phải nhỏ hơn ngày hiện tại", Toast.LENGTH_SHORT).show();
+                        } else {
+                            // Ngày sinh hợp lệ
+                            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd/MM/yyyy");
+                            edtDate.setText(simpleDateFormat.format(selectedDate.getTime()));
+                        }
                     }
                 }, nam, thang, ngay);
+
                 datePickerDialog.show();
+            }
+        });
+
+        // địa chỉ
+        edtAddress.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                // Kiểm tra quyền vị trí
+                if (ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
+                        && ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                    // Yêu cầu quyền vị trí
+                    ActivityCompat.requestPermissions(getActivity(),
+                            new String[]{Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION}, 101);
+                    return;
+                }
+
+                // Khởi tạo FusedLocationProviderClient
+                FusedLocationProviderClient fusedLocationClient = LocationServices.getFusedLocationProviderClient(getContext());
+
+                // Lấy vị trí hiện tại (chỉ lấy một lần)
+                fusedLocationClient.getLastLocation()
+                        .addOnSuccessListener(new OnSuccessListener<Location>() {
+                            @Override
+                            public void onSuccess(Location location) {
+                                if (location != null) {
+                                    double latitude = location.getLatitude();
+                                    double longitude = location.getLongitude();
+
+                                    // Chuyển tọa độ thành địa chỉ (Geocoder)
+                                    Geocoder geocoder = new Geocoder(getContext(), Locale.getDefault());
+                                    try {
+                                        List<Address> addresses = geocoder.getFromLocation(latitude, longitude, 1);
+                                        if (addresses != null && !addresses.isEmpty()) {
+                                            String address = addresses.get(0).getAddressLine(0);
+                                            edtAddress.setText(address);  // Hiển thị địa chỉ
+                                        } else {
+                                            Toast.makeText(getContext(), "Không tìm thấy địa chỉ", Toast.LENGTH_SHORT).show();
+                                        }
+                                    } catch (IOException e) {
+                                        e.printStackTrace();
+                                        Toast.makeText(getContext(), "Lỗi khi lấy địa chỉ", Toast.LENGTH_SHORT).show();
+                                    }
+                                } else {
+                                    Toast.makeText(getContext(), "Không thể lấy vị trí hiện tại", Toast.LENGTH_SHORT).show();
+                                }
+                            }
+                        });
             }
         });
 
         btnUpdateprofile.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
                 String strFullName = edtFullName.getText().toString().trim();
                 String strAddress = edtAddress.getText().toString().trim();
                 String strSDT = edtPhoneNumber.getText().toString().trim();
                 String strDate = edtDate.getText().toString().trim();
                 String strSex;
-
-                if (rdoNam.isChecked()) {
+                if (rdoNam.isChecked()){
                     strSex = "Nam";
-                } else if (rdoNu.isChecked()) {
-                    strSex = "Nữ";
                 } else {
-                    strSex = "";
-                }
-
-                // Validate dữ liệu đầu vào
-                if (strFullName.isEmpty()) {
-                    edtFullName.setError("Vui lòng nhập tên đầy đủ!");
-                    return;
-                }
-                if (strAddress.isEmpty()) {
-                    edtAddress.setError("Vui lòng nhập địa chỉ!");
-                    return;
-                }
-                if (!strSDT.matches("^[0-9]{10,11}$")) {
-                    edtPhoneNumber.setError("Số điện thoại không hợp lệ!");
-                    return;
-                }
-                if (strDate.isEmpty()) {
-                    edtDate.setError("Vui lòng chọn ngày sinh!");
-                    return;
-                }
-                if (strSex.isEmpty()) {
-                    Toast.makeText(getContext(), "Vui lòng chọn giới tính!", Toast.LENGTH_SHORT).show();
-                    return;
+                    strSex = "Nữ";
                 }
 
                 FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-                if (user == null) {
-                    Toast.makeText(getContext(), "Không tìm thấy thông tin người dùng!", Toast.LENGTH_SHORT).show();
+                if (user == null){
                     return;
                 }
-
                 progressDialog.show();
-
-                // Cập nhật User Profile
                 UserProfileChangeRequest profileUpdates = new UserProfileChangeRequest.Builder()
                         .setDisplayName(strFullName)
                         .setPhotoUri(mUri)
@@ -349,13 +381,13 @@ public class ProfileFragment extends Fragment {
                 user.updateProfile(profileUpdates).addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
+                        progressDialog.dismiss();
                         if (task.isSuccessful()) {
-                            Toast.makeText(getContext(), "Cập nhật thông tin tài khoản thành công!", Toast.LENGTH_SHORT).show();
+                            mMainActivity.setProFile();
                         }
                     }
                 });
 
-                // Cập nhật Firestore
                 Map<String, Object> chinh = new HashMap<>();
                 chinh.put("hoten", strFullName);
                 chinh.put("diachi", strAddress);
@@ -365,21 +397,18 @@ public class ProfileFragment extends Fragment {
 
                 firestore.collection("User").document(FirebaseAuth.getInstance().getCurrentUser().getUid())
                         .collection("Profile").document(key)
-                        .update(chinh)
-                        .addOnCompleteListener(new OnCompleteListener<Void>() {
+                        .update(chinh).addOnCompleteListener(new OnCompleteListener<Void>() {
                             @Override
                             public void onComplete(@NonNull Task<Void> task) {
-                                progressDialog.dismiss();
-                                if (task.isSuccessful()) {
-                                    Toast.makeText(getContext(), "Cập nhật thông tin thành công!", Toast.LENGTH_SHORT).show();
-                                    LoadInfo();
-                                } else {
-                                    Toast.makeText(getContext(), "Đã xảy ra lỗi khi cập nhật!", Toast.LENGTH_SHORT).show();
+                                if(task.isSuccessful()){
+                                    Toast.makeText(getContext(), "Cập nhật thông tin thành công", Toast.LENGTH_SHORT).show();
+
                                 }
+
                             }
                         });
 
-                // Cập nhật Realtime Database
+                // Import vào Realtime của Firebase
                 reference = FirebaseDatabase.getInstance().getReference("Users").child(FirebaseAuth.getInstance().getCurrentUser().getUid());
                 HashMap<String, Object> map = new HashMap<>();
                 map.put("iduser", FirebaseAuth.getInstance().getCurrentUser().getUid());
@@ -388,7 +417,6 @@ public class ProfileFragment extends Fragment {
                 reference.updateChildren(map);
             }
         });
-
 
         layoutLogout.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -479,6 +507,17 @@ public class ProfileFragment extends Fragment {
         intent.setType("image/*");
         startActivityForResult(intent,123);
     }
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        if (requestCode == 101) {
+            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                Toast.makeText(getContext(), "Quyền truy cập vị trí đã được cấp", Toast.LENGTH_SHORT).show();
+            } else {
+                Toast.makeText(getContext(), "Vui lòng cấp quyền để sử dụng chức năng này", Toast.LENGTH_SHORT).show();
+            }
+        }
+    }
+
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {

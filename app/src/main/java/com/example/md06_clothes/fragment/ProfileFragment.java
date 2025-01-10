@@ -112,10 +112,10 @@ public class ProfileFragment extends Fragment {
         Init();// Gọi hàm khởi tạo ban đầu (chưa được định nghĩa trong đoạn mã).
 
         if (NetworkUtil.isNetworkConnected(getContext())){
-            reloadData = true;
-            LoadInfo();
-            setUserInformation();
-            Event();
+            reloadData = true;// Nếu có kết nối mạng, thiết lập reloadData là true.
+            LoadInfo();// Tải thông tin người dùng từ Firestore.
+            setUserInformation();// Cập nhật thông tin người dùng vào giao diện (chưa định nghĩa trong đoạn mã).
+            Event();// Xử lý các sự kiện người dùng (chưa định nghĩa trong đoạn mã).
         } else {
             reloadData = false;
         }

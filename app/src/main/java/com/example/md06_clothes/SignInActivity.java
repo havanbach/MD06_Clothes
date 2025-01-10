@@ -87,20 +87,22 @@ public class SignInActivity extends AppCompatActivity {
         edt_passin = findViewById(R.id.edt_matkhau_user);
         btnDangNhap = findViewById(R.id.btn_dangnhap);
         btnDangKy = findViewById(R.id.btn_dangky);
+        //Xu ly su kien dang ky
         btnDangKy.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 startActivity(new Intent(SignInActivity.this,SignUpActivity.class));
             }
         });
+        //Xu ly su kien an hien mat khau
         hidein.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (isPasswordVisible) {
-                    edt_passin.setTransformationMethod(PasswordTransformationMethod.getInstance());
+                    edt_passin.setTransformationMethod(PasswordTransformationMethod.getInstance()); //An mat khau
                     hidein.setImageResource(R.drawable.hide);
                 } else {
-                    edt_passin.setTransformationMethod(HideReturnsTransformationMethod.getInstance());
+                    edt_passin.setTransformationMethod(HideReturnsTransformationMethod.getInstance()); // Hien mat khau
                     hidein.setImageResource(R.drawable.hideon);
                 }
                 isPasswordVisible = !isPasswordVisible;

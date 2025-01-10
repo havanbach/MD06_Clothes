@@ -51,7 +51,7 @@ public class NavigationActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_navigation);
-
+// Ảnh xa
         backButton = findViewById(R.id.backButton);
         nextButton = findViewById(R.id.nextButton);
         skipButton = findViewById(R.id.skipButton);
@@ -89,7 +89,7 @@ public class NavigationActivity extends AppCompatActivity {
 
         slideViewPager = (ViewPager) findViewById(R.id.slideViewPager);
         dotIndicator = (LinearLayout) findViewById(R.id.dotIndicator);
-
+        // Tao 1 instance cua onboard
         onboardingPagerAdapter = new OnboardingPagerAdapter(this);
         slideViewPager.setAdapter(onboardingPagerAdapter);
 
@@ -98,7 +98,7 @@ public class NavigationActivity extends AppCompatActivity {
     }
 
     public void setDotIndicator(int position) {
-
+        //Cap nhat chi bao dau cham
         dots = new TextView[3];
         dotIndicator.removeAllViews();
 

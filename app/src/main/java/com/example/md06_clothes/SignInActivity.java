@@ -202,7 +202,6 @@ public class SignInActivity extends AppCompatActivity {
     private boolean isEmailValid(CharSequence email) {
         return android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches();
     }
-    //Su kien 2 lan Back thoat app
     @Override
     public void onBackPressed() {
         progressDialog.dismiss();
@@ -217,7 +216,6 @@ public class SignInActivity extends AppCompatActivity {
 
     }
     private void InitWidget() {
-        //Anh xa
         btnDangNhap = findViewById(R.id.btn_dangnhap);
         btnDangKy = findViewById(R.id.btn_dangky);
         edtEmailUser = findViewById(R.id.edt_email_user);

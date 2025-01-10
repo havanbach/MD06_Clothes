@@ -103,8 +103,8 @@ public class ProfileFragment extends Fragment {
 
     private boolean reloadData = false;// Biến kiểm tra có cần tải lại dữ liệu hay không.
 
-    DatabaseReference reference;
-    FirebaseUser firebaseUser;
+    DatabaseReference reference;// Tham chiếu đến cơ sở dữ liệu Realtime Database.
+    FirebaseUser firebaseUser;// Tham chiếu đến người dùng Firebase hiện tại.
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_profile, container, false);

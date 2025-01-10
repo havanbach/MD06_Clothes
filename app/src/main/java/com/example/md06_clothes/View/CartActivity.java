@@ -34,12 +34,19 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.text.NumberFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+
+import vn.momo.momo_partner.AppMoMoLib;
 
 public class CartActivity extends AppCompatActivity implements GioHangView {
 
@@ -47,13 +54,14 @@ public class CartActivity extends AppCompatActivity implements GioHangView {
     private TextView tvNullCart, tvDongia, tvPhiVanChuyen, tvTongTien, btnThanhToan;
     private ImageView imgBackCart, imgback;
     private RecyclerView rcvGioHang;
+    Number number;
 
     private GiohangAdapter giohangAdapter;
     private GioHangPresenter gioHangPresenter;
     private ArrayList<Product> listGiohang;
 
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
-    private final String[] paymentMethods = {"Thanh toán khi nhận hàng"};
+    private final String[] paymentMethods = {"Thanh toán khi nhận hàng","Thanh toán MOMO"};
     private String tienthanhtoan, hoten, diachi, sdt, ghichu, ngaydat, phuongthuc;
 
     @Override
@@ -201,6 +209,7 @@ public class CartActivity extends AppCompatActivity implements GioHangView {
                 .show();
     }
 
+
     private void ShowPaymentDialog() {
         Dialog dialog = new Dialog(this);
         dialog.setContentView(R.layout.dialog_thanhtoan);
@@ -239,6 +248,7 @@ public class CartActivity extends AppCompatActivity implements GioHangView {
             sdt = edtsdt.getText().toString().trim();
             ghichu = edtghichu.getText().toString().trim();
             phuongthuc = spinnerPhuongthuc.getSelectedItem().toString();
+
             tienthanhtoan = tvtongtien.getText().toString();
 
             if (hoten.isEmpty() || diachi.isEmpty() || sdt.isEmpty()) {
@@ -336,6 +346,64 @@ public class CartActivity extends AppCompatActivity implements GioHangView {
                         Toast.makeText(this, "Đặt hàng thất bại!", Toast.LENGTH_SHORT).show();
                     }
                 });
+    }
+
+    //thanh toán momo
+    private void requestPayment() {
+
+        AppMoMoLib.getInstance().setEnvironment(AppMoMoLib.ENVIRONMENT.DEVELOPMENT);
+        AppMoMoLib.getInstance().setAction(AppMoMoLib.ACTION.MAP);
+        AppMoMoLib.getInstance().setAction(AppMoMoLib.ACTION.PAYMENT);
+        AppMoMoLib.getInstance().setActionType(AppMoMoLib.ACTION_TYPE.GET_TOKEN);
+        Map<String, Object> eventValue = new HashMap<>();
+        //client Required
+        long mahd =   System.currentTimeMillis();
+        try {
+            number = NumberFormat.getInstance().parse(tienthanhtoan);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        eventValue.put("merchantname", "Afforda Company - Nguyen Van Chinh"); //Tên đối tác. được đăng ký tại   . VD: Google, Apple, Tiki , CGV Cinemas
+        eventValue.put("merchantcode", "MOMO1NRV20220112"); //Mã đối tác, được cung cấp bởi MoMo tại https://business.momo.vn
+        eventValue.put("amount", Integer.parseInt(String.valueOf(number))); //Kiểu integer
+        eventValue.put("orderId", "order"+mahd); //uniqueue id cho Bill order, giá trị duy nhất cho mỗi đơn hàng
+        eventValue.put("orderLabel", "Mã đơn hàng"); //gán nhãn
+
+        //client Optional - bill info
+        eventValue.put("merchantnamelabel", "Dịch vụ");//gán nhãn
+
+        eventValue.put("fee", Integer.parseInt(String.valueOf(number))); //Kiểu integer
+        eventValue.put("description", "Mô tả"); //mô tả đơn hàng - short description
+
+        //client extra data
+        eventValue.put("requestId",  "MOMO1NRV20220112"+"merchant_billId_"+System.currentTimeMillis());
+        eventValue.put("partnerCode", "MOMO1NRV20220112");
+        Log.d("end", "end1");
+        //Example extra data
+        JSONObject objExtraData = new JSONObject();
+        try {
+            objExtraData.put("site_code", "008");
+            objExtraData.put("site_name", "Thanh Toán Food");
+            objExtraData.put("screen_code", 0);
+            objExtraData.put("screen_name", "Đặc Biệt");
+            String name ="";
+            for(Product sanPham : listGiohang){
+                name+=sanPham.getTensp()+",";
+
+            }
+            objExtraData.put("movie_name", name);
+            objExtraData.put("movie_format", "Đồ ăn");
+            Log.d("end", "end2");
+        } catch (JSONException e) {
+            e.printStackTrace();
+            Log.d("end", "Lỗi: " + e);
+        }
+        eventValue.put("extraData", objExtraData.toString());
+        eventValue.put("extra", "");
+        Log.d("end", "end3");
+        AppMoMoLib.getInstance().requestMoMoCallBack(CartActivity.this, eventValue);
+        Log.d("end", "end4");
+
     }
 
     // Hàm trừ số lượng sản phẩm trong Firestore

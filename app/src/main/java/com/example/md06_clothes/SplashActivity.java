@@ -21,9 +21,9 @@ public class SplashActivity extends AppCompatActivity {
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
-                startActivity(new Intent(SplashActivity.this, NavigationActivity.class));
+                startActivity(new Intent(SplashActivity.this, NavigationActivity.class)); //Tu man hinh nay chuyen sang man hinh Onboard
             }
-        },3000);
+        },3000); //Chuyen man hinh sau 3 giay
 
     }
 }

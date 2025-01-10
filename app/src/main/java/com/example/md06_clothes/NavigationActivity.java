@@ -9,9 +9,9 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.viewpager.widget.ViewPager;
+import androidx.viewpager.widget.ViewPager;// Dieu hướng theo dạng slide
 
-import com.example.md06_clothes.Adapter.OnboardingPagerAdapter;
+import com.example.md06_clothes.Adapter.OnboardingPagerAdapter;// lop adapter cho view paper
 
 public class NavigationActivity extends AppCompatActivity {
 

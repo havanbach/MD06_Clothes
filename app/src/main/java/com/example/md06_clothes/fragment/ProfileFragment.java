@@ -97,10 +97,11 @@ public class ProfileFragment extends Fragment {
     private LinearLayout layoutLogout;// Layout chứa nút đăng xuất.
     private FirebaseFirestore firestore = FirebaseFirestore.getInstance();// Tham chiếu đến Firestore để tương tác với cơ sở dữ liệu.
 
-    private StorageReference storageReference;
-    private  String key = "";
+    private StorageReference storageReference;// Dùng để tham chiếu tới Firebase Storage cho việc tải ảnh lên.
+    private  String key = "";// Lưu trữ ID của tài liệu trong Firestore (hồ sơ người dùng).
 
-    private boolean reloadData = false;
+
+    private boolean reloadData = false;// Biến kiểm tra có cần tải lại dữ liệu hay không.
 
     DatabaseReference reference;
     FirebaseUser firebaseUser;

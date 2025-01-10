@@ -508,7 +508,7 @@ public class HomeFragment extends Fragment {
                     }
                 });
     }
-    // Sản phẩm Lẩu
+
     public  void  GetDataSPLau(){
         firestore.collection("SanPham").
                 whereEqualTo("type",7).

@@ -15,10 +15,10 @@ import com.example.md06_clothes.Adapter.OnboardingPagerAdapter;// lop adapter ch
 
 public class NavigationActivity extends AppCompatActivity {
 
-    ViewPager slideViewPager;
+    ViewPager slideViewPager; //Thanh phan hien thi cac slide
     LinearLayout dotIndicator;
-    Button backButton, nextButton, skipButton;
-    TextView[] dots;
+    Button backButton, nextButton, skipButton; //Cac nut dieu huong
+    TextView[] dots;//Mang dau cham
     OnboardingPagerAdapter onboardingPagerAdapter;
     ViewPager.OnPageChangeListener viewPagerListener = new ViewPager.OnPageChangeListener() {
         @Override

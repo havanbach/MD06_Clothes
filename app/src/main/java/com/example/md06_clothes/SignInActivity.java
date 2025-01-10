@@ -45,7 +45,8 @@ import java.util.ArrayList;
 import de.hdodenhof.circleimageview.CircleImageView;
 
 public class SignInActivity extends AppCompatActivity {
-    private boolean isPasswordVisible = false;
+    //Thuoc tinh cua tung lop
+    private boolean isPasswordVisible = false; //Theo doi an hien mat khau
     private EditText edt_passin, edt_mailin;
     private ImageView hidein;
     private Button btn_signin;
@@ -58,10 +59,10 @@ public class SignInActivity extends AppCompatActivity {
     private static final int TIME_DELAY = 2000;
     private static long back_pressed;
     private String sosanh;
-    private ProgressDialog progressDialog;
+    private ProgressDialog progressDialog; //Xu ly tien trinh khi dang nhap
 
     // Check Internet
-    private BroadcastReceiver MyReceiver = null;
+    private BroadcastReceiver MyReceiver = null; //Kiem tra mang
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

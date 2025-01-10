@@ -15,7 +15,6 @@ public class SplashActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        EdgeToEdge.enable(this);
         setContentView(R.layout.activity_splash);
 
         new Handler().postDelayed(new Runnable() {
@@ -23,7 +22,7 @@ public class SplashActivity extends AppCompatActivity {
             public void run() {
                 startActivity(new Intent(SplashActivity.this, NavigationActivity.class)); //Tu man hinh nay chuyen sang man hinh Onboard
             }
-        },3000);
+        },3000); //Chuyen man hinh sau 3 giay
 
 
     }

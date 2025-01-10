@@ -1,8 +1,8 @@
 package com.example.md06_clothes;
 
 
-import android.content.Intent;
-import android.os.Bundle;
+import android.content.Intent; //Chuyen doi giữa các Activity
+import android.os.Bundle;// Lưu trạng thái của Activity
 import android.text.Html;
 import android.view.View;
 import android.widget.Button;

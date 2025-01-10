@@ -23,7 +23,8 @@ public class SplashActivity extends AppCompatActivity {
             public void run() {
                 startActivity(new Intent(SplashActivity.this, NavigationActivity.class)); //Tu man hinh nay chuyen sang man hinh Onboard
             }
-        },3000); //Chuyen man hinh sau 3 giay
+        },3000);
+
 
     }
 }

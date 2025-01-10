@@ -110,6 +110,7 @@ public class SignInActivity extends AppCompatActivity {
             }
         });
     }
+    //Phuong thuc Event()
     private void Event() {
         btnDangNhap.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -117,11 +118,14 @@ public class SignInActivity extends AppCompatActivity {
                 progressDialog.show();
                 progressDialog.setContentView(R.layout.layout_loading);
                 progressDialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
+                //Lay mail va mat khau tu giao dien
                 String strEmail = edtEmailUser.getText().toString().trim();
                 String strMatKhau = edtMatKhauUser.getText().toString().trim();
                 ArrayList<Admin> arrayList = new ArrayList<>();
+                //Kiem tra mail va mat khau
                 if (strEmail.length() > 0) {
                     if (strMatKhau.length() > 0) {
+                        //Kiem tra tai khoan firestore
                         FirebaseFirestore db = FirebaseFirestore.getInstance();
                         db.collection("Admin").get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
                             @Override
@@ -144,6 +148,7 @@ public class SignInActivity extends AppCompatActivity {
                                         tk = 2;
                                     }
                                 }
+                                //xu ly ket qua
                                 switch (tk) {
                                     case 1:
                                     case 2:
@@ -156,6 +161,7 @@ public class SignInActivity extends AppCompatActivity {
                                                     startActivity(intent);
                                                     finishAffinity();
                                                     progressDialog.dismiss();
+                                                    //Kiem tra dinh dang email
                                                 } else if (!isEmailValid(strEmail) && !sosanh.equals(strEmail)) {
                                                     progressDialog.dismiss();
                                                     Toast.makeText(SignInActivity.this, "Email định dạng không đúng", Toast.LENGTH_SHORT).show();

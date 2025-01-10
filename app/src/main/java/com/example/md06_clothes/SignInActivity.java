@@ -76,8 +76,10 @@ public class SignInActivity extends AppCompatActivity {
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         InitWidget();
         MyReceiver = new MyReceiver();      // Check Internet
+        //Dang ky Broadcast kiem tra mang
         broadcastIntent();                  // Check Internet
         if (NetworkUtil.isNetworkConnected(this)) {
+            //Neu co ket noi mang goi phuong thuc Event()
             Event();
         }
 

@@ -122,11 +122,11 @@ public class ProfileFragment extends Fragment {
         getFragmentManager().beginTransaction().detach(this).attach(this).commit();
         Log.d("fmt", "onCreateView");
         reload();
-        return view;
+        return view;// Trả về view đã được tạo.
     }
 
     void reload(){
-        if (reloadData){
+        if (reloadData){// Nếu reloadData là true, thực hiện tải lại dữ liệu.
             FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
             Fragment currentFragment = fragmentManager.findFragmentByTag("main_fragment");
             FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();

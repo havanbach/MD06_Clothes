@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -17,7 +18,8 @@ import com.google.firebase.auth.FirebaseAuth;
 
 public class ForgotPasswordActivity extends AppCompatActivity {
     private EditText edtEmailForgot;
-    private Button btnForgot, btnBack;
+    private Button btnForgot;
+    private ImageButton btnBack;
     private FirebaseAuth mFirebaseAuth;
 
     @Override

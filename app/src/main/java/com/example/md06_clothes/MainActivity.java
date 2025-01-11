@@ -31,9 +31,10 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.squareup.picasso.Picasso;
-
+//
 public class MainActivity extends AppCompatActivity {
-    private BottomNavigationView bottomNavigationView;
+    // Khai báo các thành phần
+    private BottomNavigationView bottomNavigationView;// Thanh điều hướng
 
     public  static CountDownTimer countDownTimer;
     private static final int TIME_DELAY = 2000;
@@ -44,6 +45,7 @@ public class MainActivity extends AppCompatActivity {
     private BroadcastReceiver MyReceiver = null;
 
 
+    //
     private int mCountProduct;
 
     @Override
@@ -86,7 +88,6 @@ public class MainActivity extends AppCompatActivity {
                         case R.id.donhang:
                             selectedFragment = new BillFragment();
                             break;
-//                            tính năng phát triển
                         case R.id.khac:
                             selectedFragment = new NotifyFragment();
                             break;
@@ -146,8 +147,6 @@ public class MainActivity extends AppCompatActivity {
     @SuppressLint("WrongViewCast")
 
 
-
-
     public int getmCountProduct() {
         return mCountProduct;
     }
@@ -157,8 +156,6 @@ public class MainActivity extends AppCompatActivity {
         transaction.replace(R.id.frame, fragment);
         transaction.commit();
     }
-
-
 
     @Override
     public void onBackPressed() {
@@ -175,7 +172,6 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onRestart() {
         super.onRestart();
-//        editsearch.setText("");
         if(countDownTimer!=null){
             countDownTimer.start();
         }
@@ -187,29 +183,4 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-
-
-//    private void status(String stastus){
-//        reference = FirebaseDatabase.getInstance().getReference("Users").child(FirebaseAuth.getInstance().getCurrentUser().getUid());
-//
-//        HashMap<String, Object> hashMap = new HashMap<>();
-//        hashMap.put("status", stastus);
-//
-//        reference.updateChildren(hashMap);
-//    }
-//
-//    @Override
-//    protected void onResume() {
-//        super.onResume();
-//        status("online");
-//        IntentFilter filter = new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION);
-//        registerReceiver(MyReceiver, filter);
-//    }
-//    // Check Internet
-//    @Override
-//    protected void onPause() {
-//        super.onPause();
-//        status("offline");
-//        unregisterReceiver(MyReceiver);
-//    }
 }

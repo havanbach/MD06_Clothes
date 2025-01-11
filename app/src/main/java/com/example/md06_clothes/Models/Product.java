@@ -2,7 +2,6 @@ package com.example.md06_clothes.Models;
 
 import androidx.annotation.NonNull;
 
-
 import com.example.md06_clothes.my_interface.IProduct;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.firestore.DocumentSnapshot;
@@ -11,37 +10,37 @@ import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
-public class Product implements Serializable{
+public class Product implements Serializable {
 
-    private  String id;
-    private  String idsp;
-    private  String tensp;
-    private  long giatien;
-    private  String hinhanh;
-    private  String loaisp;
-    private  String mota;
-    private  long soluong;
-    private  String size;
-    private  long type;
-    private  String chatlieu;
+    private String id;
+    private String idsp;
+    private String tensp;
+    private long giatien;
+    private String hinhanh;
+    private String loaisp;
+    private String mota;
+    private List<SizeQuantity> sizes; // Danh sách kích thước và số lượng
+    private long type;
+    private String chatlieu;
 
     private IProduct callback;
     private FirebaseFirestore db;
 
     public Product() {
+        this.sizes = new ArrayList<>();
     }
 
     public Product(IProduct callback) {
-        this.callback=callback;
-        db=FirebaseFirestore.getInstance();
+        this.callback = callback;
+        db = FirebaseFirestore.getInstance();
+        this.sizes = new ArrayList<>();
     }
 
-    public Product(String tensp) {
-        this.tensp = tensp;
-    }
-
-    public Product(String id, String idsp, String tensp, long giatien, String hinhanh, String loaisp, String mota, long soluong, String size, long type, String chatlieu) {
+    public Product(String id, String idsp, String tensp, long giatien, String hinhanh, String loaisp, String mota, List<SizeQuantity> sizes, long type, String chatlieu) {
         this.id = id;
         this.idsp = idsp;
         this.tensp = tensp;
@@ -49,24 +48,28 @@ public class Product implements Serializable{
         this.hinhanh = hinhanh;
         this.loaisp = loaisp;
         this.mota = mota;
-        this.soluong = soluong;
-        this.size = size;
+        this.sizes = sizes;
         this.type = type;
         this.chatlieu = chatlieu;
     }
 
-    public Product(String id, String tensp, long giatien, String hinhanh, String loaisp, String mota, long soluong, String size, long type, String chatlieu) {
+    public Product(String id, String ten, Long gia, String hinhanh, String loaisp, String mota, List<SizeQuantity> sizes, Long type, String chatlieu) {
         this.id = id;
-        this.tensp = tensp;
-        this.giatien = giatien;
+        this.tensp = ten;
+        this.giatien = gia;
         this.hinhanh = hinhanh;
         this.loaisp = loaisp;
         this.mota = mota;
-        this.soluong = soluong;
-        this.size = size;
+        this.sizes = sizes;
         this.type = type;
         this.chatlieu = chatlieu;
     }
+
+    public Product(String ten) {
+        this.tensp = ten;
+    }
+
+
 
     public String getId() {
         return id;
@@ -124,20 +127,12 @@ public class Product implements Serializable{
         this.mota = mota;
     }
 
-    public long getSoluong() {
-        return soluong;
+    public List<SizeQuantity> getSizes() {
+        return sizes;
     }
 
-    public void setSoluong(long soluong) {
-        this.soluong = soluong;
-    }
-
-    public String getsize() {
-        return size;
-    }
-
-    public void setsize(String size) {
-        this.size = size;
+    public void setSizes(List<SizeQuantity> sizes) {
+        this.sizes = sizes;
     }
 
     public long getType() {
@@ -148,45 +143,70 @@ public class Product implements Serializable{
         this.type = type;
     }
 
-    public String getchatlieu() {
+    public String getChatlieu() {
         return chatlieu;
     }
 
-    public void setchatlieu(String chatlieu) {
+    public void setChatlieu(String chatlieu) {
         this.chatlieu = chatlieu;
     }
 
-
-    public void HandleGetDataProduct(){
-        db.collection("SanPham").
-                get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+    public void HandleGetDataProduct() {
+        db.collection("SanPham")
+                .get()
+                .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
                     @Override
                     public void onSuccess(@NonNull QuerySnapshot queryDocumentSnapshots) {
-                        if(queryDocumentSnapshots.size()>0){
-                            for(QueryDocumentSnapshot d : queryDocumentSnapshots){
-                                callback.getDataProduct(d.getId(),d.getString("tensp"),
-                                        d.getLong("giatien"),d.getString("hinhanh"),
-                                        d.getString("loaisp"),d.getString("mota"),
-                                        d.getLong("soluong"),d.getString("size"),
-                                        d.getLong("type"),d.getString("chatlieu"));
+                        if (queryDocumentSnapshots.size() > 0) {
+                            for (QueryDocumentSnapshot d : queryDocumentSnapshots) {
+                                List<SizeQuantity> sizes = new ArrayList<>();
+                                List<Map<String, Object>> sizesData = (List<Map<String, Object>>) d.get("sizes");
+                                if (sizesData != null) {
+                                    for (Map<String, Object> size : sizesData) {
+                                        sizes.add(new SizeQuantity((String) size.get("size"), ((Long) size.get("soluong")).intValue()));
+                                    }
+                                }
 
+                                callback.getDataProduct(
+                                        d.getId(),
+                                        d.getString("tensp"),
+                                        d.getLong("giatien"),
+                                        d.getString("hinhanh"),
+                                        d.getString("loaisp"),
+                                        d.getString("mota"),
+                                        sizes,
+                                        d.getLong("type"),
+                                        d.getString("chatlieu")
+                                );
                             }
                         }
-
                     }
                 });
     }
 
-    public void HandleGetWithIDProduct(String idproduct){
+    public void HandleGetWithIDProduct(String idproduct) {
         db.collection("SanPham").document(idproduct).get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
             @Override
             public void onSuccess(DocumentSnapshot d) {
-                callback.getDataProduct(idproduct,d.getString("tensp"),
-                        d.getLong("giatien"),d.getString("hinhanh"),
-                        d.getString("loaisp"),d.getString("mota"),
-                        d.getLong("soluong"),d.getString("size"),
-                        d.getLong("type"),d.getString("chatlieu"));
+                List<SizeQuantity> sizes = new ArrayList<>();
+                List<Map<String, Object>> sizesData = (List<Map<String, Object>>) d.get("sizes");
+                if (sizesData != null) {
+                    for (Map<String, Object> size : sizesData) {
+                        sizes.add(new SizeQuantity((String) size.get("size"), ((Long) size.get("soluong")).intValue()));
+                    }
+                }
 
+                callback.getDataProduct(
+                        idproduct,
+                        d.getString("tensp"),
+                        d.getLong("giatien"),
+                        d.getString("hinhanh"),
+                        d.getString("loaisp"),
+                        d.getString("mota"),
+                        sizes,
+                        d.getLong("type"),
+                        d.getString("chatlieu")
+                );
             }
         });
     }

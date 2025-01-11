@@ -15,15 +15,14 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
-import org.jetbrains.annotations.NotNull;
-
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 public class Giohang {
     private String id;
     private String id_product;
-    private long soluong;
+    private List<SizeQuantity> sizes; // Danh sách size và số lượng
 
     private IGioHang callback;
     private FirebaseFirestore db;
@@ -31,18 +30,18 @@ public class Giohang {
     public Giohang() {
     }
 
-    public Giohang(String id, String id_product, long soluong) {
+    public Giohang(String id_product, List<SizeQuantity> sizes) {
+        this.id_product = id_product;
+        this.sizes = sizes;
+    }
+
+    public Giohang(String id, String id_product, List<SizeQuantity> sizes) {
         this.id = id;
         this.id_product = id_product;
-        this.soluong = soluong;
+        this.sizes = sizes;
     }
 
-    public Giohang(String id_product, long soluong) {
-        this.id_product = id_product;
-        this.soluong = soluong;
-    }
-
-    public Giohang(IGioHang callback){
+    public Giohang(IGioHang callback) {
         this.callback = callback;
         db = FirebaseFirestore.getInstance();
     }
@@ -63,215 +62,202 @@ public class Giohang {
         this.id_product = id_product;
     }
 
-    public long getSoluong() {
-        return soluong;
+    public List<SizeQuantity> getSizes() {
+        return sizes;
     }
 
-    public void setSoluong(long soluong) {
-        this.soluong = soluong;
+    public void setSizes(List<SizeQuantity> sizes) {
+        this.sizes = sizes;
     }
 
+    // Thanh toán
     public void HandleThanhToan(String ghichu, String ngaydat, String diachi, String hoten, String sdt, String phuongthuc, String tongtien, ArrayList<Product> arrayList) {
+        HashMap<String, Object> order = new HashMap<>();
+        order.put("ghichu", ghichu);
+        order.put("ngaydat", ngaydat);
+        order.put("diachi", diachi);
+        order.put("sdt", sdt);
+        order.put("hoten", hoten);
+        order.put("phuongthuc", phuongthuc);
+        order.put("tongtien", tongtien);
+        order.put("trangthai", 1);
+        order.put("UID", FirebaseAuth.getInstance().getCurrentUser().getUid());
 
-        HashMap<String,Object> hashMap = new HashMap<>();
-        hashMap.put("ghichu", ghichu);
-        hashMap.put("ngaydat",ngaydat);
-        hashMap.put("diachi",diachi);
-        hashMap.put("sdt",sdt);
-        hashMap.put("hoten",hoten);
-        hashMap.put("phuongthuc",phuongthuc);
-        hashMap.put("tongtien",tongtien);
-        hashMap.put("trangthai",1);
-        hashMap.put("UID",FirebaseAuth.getInstance().getCurrentUser().getUid());
         db.collection("HoaDon")
-                .add(hashMap).addOnCompleteListener(new OnCompleteListener<DocumentReference>() {
-                    @Override
-                    public void onComplete(@NonNull Task<DocumentReference> task) {
-                        if(task.isSuccessful()){
-                            for(Product sanPhamModels : arrayList){
-                                HashMap<String,Object> map_chitiet = new HashMap<>();
-                                map_chitiet.put("id_hoadon",task.getResult().getId());
-                                map_chitiet.put("id_product",sanPhamModels.getIdsp());
-                                map_chitiet.put("soluong",sanPhamModels.getSoluong());
-                                db.collection("ChitietHoaDon").document(FirebaseAuth.getInstance().getCurrentUser().getUid())
-                                        .collection("ALL").add(map_chitiet).addOnCompleteListener(new OnCompleteListener<DocumentReference>() {
-                                            @Override
-                                            public void onComplete(@NonNull Task<DocumentReference> task) {
-                                                if(task.isSuccessful()){
-                                                    db.collection("GioHang").document(FirebaseAuth.getInstance().getCurrentUser().getUid())
-                                                            .collection("ALL").get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
-                                                                @Override
-                                                                public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
-                                                                    for (QueryDocumentSnapshot q : queryDocumentSnapshots){
-                                                                        db.collection("GioHang").document(FirebaseAuth.getInstance().getCurrentUser().getUid())
-                                                                                .collection("ALL").document(q.getId()).delete().addOnCompleteListener(new OnCompleteListener<Void>() {
-                                                                                    @Override
-                                                                                    public void onComplete(@NonNull @NotNull Task<Void> task) {
-                                                                                        if (task.isSuccessful()) {
-                                                                                            callback.OnSucess();
-                                                                                        } else {
-                                                                                            callback.OnFail();
-                                                                                        }
-                                                                                    }
-                                                                                });
-                                                                    }
-                                                                }
-                                                            });
+                .add(order)
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        for (Product product : arrayList) {
+                            HashMap<String, Object> orderDetail = new HashMap<>();
+                            orderDetail.put("id_hoadon", task.getResult().getId());
+                            orderDetail.put("id_product", product.getIdsp());
+                            orderDetail.put("sizes", product.getSizes()); // Lưu toàn bộ sizes
 
-                                                }
-
-                                            }
-                                        });
-
-                            }
-
-                        }else{
-
+                            db.collection("ChitietHoaDon").document(FirebaseAuth.getInstance().getCurrentUser().getUid())
+                                    .collection("ALL").add(orderDetail)
+                                    .addOnCompleteListener(orderTask -> {
+                                        if (orderTask.isSuccessful()) {
+                                            callback.OnSucess();
+                                        } else {
+                                            callback.OnFail();
+                                        }
+                                    });
                         }
-
+                    } else {
+                        callback.OnFail();
                     }
                 });
     }
 
-    //check giỏ hàng đúng id user
-    public  void AddCart(String idsp, Long soluong){
+    // Thêm sản phẩm vào giỏ hàng
+    // Thêm sản phẩm vào giỏ hàng
+    public void AddCart(String idsp, String size, long soluong) {
         db.collection("GioHang").document(FirebaseAuth.getInstance().getCurrentUser().getUid())
-                .collection("ALL").whereEqualTo("id_product",idsp).get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
-                    @Override
-                    public void onSuccess(@NonNull QuerySnapshot queryDocumentSnapshots) {
-                        if(queryDocumentSnapshots.size()!=0){
-                            if(queryDocumentSnapshots.size()>0){
-                                for(QueryDocumentSnapshot d : queryDocumentSnapshots){
-                                    long   soluong_sp = d.getLong("soluong");
-                                    //check so luong sp tăng lên 1
-                                    if(soluong_sp>0){
-                                        soluong_sp = soluong_sp + soluong;
-                                        db.collection("GioHang").document(FirebaseAuth.getInstance().getCurrentUser().getUid())
-                                                .collection("ALL").document(d.getId()).update("soluong",soluong_sp).addOnCompleteListener(new OnCompleteListener<Void>() {
-                                                    @Override
-                                                    public void onComplete(@NonNull Task<Void> task) {
-                                                        if(task.isSuccessful()){
-                                                            callback.OnSucess();
-                                                        }else{
-                                                            callback.OnFail();
-                                                        }
-                                                    }
-                                                });
+                .collection("ALL").whereEqualTo("id_product", idsp)
+                .get().addOnSuccessListener(queryDocumentSnapshots -> {
+                    if (!queryDocumentSnapshots.isEmpty()) {
+                        for (QueryDocumentSnapshot doc : queryDocumentSnapshots) {
+                            List<HashMap<String, Object>> existingSizes = (List<HashMap<String, Object>>) doc.get("sizes");
+                            boolean sizeFound = false;
+
+                            if (existingSizes != null) {
+                                // Check if the size already exists
+                                for (HashMap<String, Object> sizeData : existingSizes) {
+                                    if (sizeData.get("size").equals(size)) {
+                                        long currentQuantity = (long) sizeData.get("soluong");
+                                        sizeData.put("soluong", currentQuantity + soluong); // Update quantity
+                                        sizeFound = true;
+                                        break;
                                     }
                                 }
+                            } else {
+                                existingSizes = new ArrayList<>();
                             }
-                        }else{
-                            Giohang hangModels = new Giohang(idsp,soluong);
+
+                            if (!sizeFound) {
+                                // Add a new size entry
+                                HashMap<String, Object> newSize = new HashMap<>();
+                                newSize.put("size", size);
+                                newSize.put("soluong", soluong);
+                                existingSizes.add(newSize);
+                            }
+
+                            // Update Firestore with the modified sizes array
                             db.collection("GioHang").document(FirebaseAuth.getInstance().getCurrentUser().getUid())
-                                    .collection("ALL").add(hangModels).addOnCompleteListener(new OnCompleteListener<DocumentReference>() {
-                                        @Override
-                                        public void onComplete(@NonNull Task<DocumentReference> task) {
-                                            if(task.isSuccessful()){
-                                                callback.OnSucess();
-                                            }else {
-                                                callback.OnFail();
-                                            }
+                                    .collection("ALL").document(doc.getId())
+                                    .update("sizes", existingSizes)
+                                    .addOnCompleteListener(task -> {
+                                        if (task.isSuccessful()) {
+                                            callback.OnSucess();
+                                        } else {
+                                            callback.OnFail();
                                         }
+                                    });
+                        }
+                    } else {
+                        // If no product with the given ID exists in the cart, create a new entry
+                        List<SizeQuantity> sizes = new ArrayList<>();
+                        sizes.add(new SizeQuantity(size, (int) soluong));
+
+                        Giohang giohang = new Giohang(idsp, sizes);
+                        db.collection("GioHang").document(FirebaseAuth.getInstance().getCurrentUser().getUid())
+                                .collection("ALL").add(giohang)
+                                .addOnCompleteListener(task -> {
+                                    if (task.isSuccessful()) {
+                                        callback.OnSucess();
+                                    } else {
+                                        callback.OnFail();
+                                    }
+                                });
+                    }
+                });
+    }
+
+
+    // Lấy dữ liệu giỏ hàng
+    public void HandlegetDataGioHang() {
+        db.collection("GioHang").document(FirebaseAuth.getInstance().getCurrentUser().getUid())
+                .collection("ALL").get()
+                .addOnSuccessListener(queryDocumentSnapshots -> {
+                    if (!queryDocumentSnapshots.isEmpty()) {
+                        for (QueryDocumentSnapshot doc : queryDocumentSnapshots) {
+                            List<HashMap<String, Object>> sizesData = (List<HashMap<String, Object>>) doc.get("sizes");
+                            List<SizeQuantity> sizes = new ArrayList<>();
+
+                            if (sizesData != null) {
+                                for (HashMap<String, Object> size : sizesData) {
+                                    sizes.add(new SizeQuantity((String) size.get("size"), ((Long) size.get("soluong")).intValue()));
+                                }
+                            }
+
+                            db.collection("SanPham").document(doc.getString("id_product"))
+                                    .get()
+                                    .addOnSuccessListener(productDoc -> {
+                                        callback.getDataSanPham(
+                                                doc.getId(),
+                                                doc.getString("id_product"),
+                                                productDoc.getString("tensp"),
+                                                productDoc.getLong("giatien"),
+                                                productDoc.getString("hinhanh"),
+                                                productDoc.getString("loaisp"),
+                                                productDoc.getString("mota"),
+                                                sizes,
+                                                productDoc.getLong("type"),
+                                                productDoc.getString("chatlieu")
+                                        );
                                     });
                         }
                     }
                 });
     }
 
-    public  void HandlegetDataGioHang(){
+    // Xóa sản phẩm khỏi giỏ hàng
+    public void HandleDeleteDataGioHang(String id) {
         db.collection("GioHang").document(FirebaseAuth.getInstance().getCurrentUser().getUid())
-                .collection("ALL").get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
-                    @Override
-                    public void onSuccess(@NonNull QuerySnapshot queryDocumentSnapshots) {
-                        if(queryDocumentSnapshots.size()>0){
-                            for(QueryDocumentSnapshot s : queryDocumentSnapshots){
-                                db.collection("SanPham").document(s.getString("id_product"))
-                                        .get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
-                                            @Override
-                                            public void onSuccess(@NonNull DocumentSnapshot d) {
-
-                                                callback.getDataSanPham(s.getId(),s.getString("id_product"),d.getString("tensp"),
-                                                        d.getLong("giatien"),d.getString("hinhanh"),
-                                                        d.getString("loaisp"),
-                                                        d.getString("mota"),
-                                                        s.getLong("soluong"),d.getString("size"),
-                                                        d.getLong("type"),d.getString("chatlieu"));
-
-
-                                            }
-                                        });
-                            }
-                        }
-
+                .collection("ALL").document(id).delete()
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        callback.OnSucess();
+                    } else {
+                        callback.OnFail();
                     }
                 });
     }
-    public  void HandleDeleteDataGioHang(String id){
-        db.collection("GioHang").document(FirebaseAuth.getInstance().getCurrentUser().getUid())
-                .collection("ALL").document(id).delete();
-    }
 
-    public void HandleGetDataCTHD(String id) {
+    public void HandleGetDataCTHD(String id, String uid) {
+        db.collection("ChitietHoaDon").document(uid).collection("ALL").whereEqualTo("id_hoadon", id)
+                .get()
+                .addOnSuccessListener(queryDocumentSnapshots -> {
+                    if (!queryDocumentSnapshots.isEmpty()) {
+                        for (QueryDocumentSnapshot doc : queryDocumentSnapshots) {
+                            List<HashMap<String, Object>> sizesData = (List<HashMap<String, Object>>) doc.get("sizes");
+                            List<SizeQuantity> sizes = new ArrayList<>();
 
-        db.collection("ChitietHoaDon").document(FirebaseAuth.getInstance().getCurrentUser().getUid())
-                .collection("ALL").whereEqualTo("id_hoadon",id).get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
-                    @Override
-                    public void onSuccess(@NonNull QuerySnapshot queryDocumentSnapshots) {
-                        if(queryDocumentSnapshots.size()>0){
-                            for(QueryDocumentSnapshot s : queryDocumentSnapshots){
-                                Log.d("CHECKED",s.getString("id_product"));
-                                db.collection("SanPham").document(s.getString("id_product"))
-                                        .get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
-                                            @Override
-                                            public void onSuccess(@NonNull DocumentSnapshot d) {
-                                                callback.getDataSanPham(s.getId(),s.getString("id_product"),d.getString("tensp"),
-                                                        d.getLong("giatien"),d.getString("hinhanh"),
-                                                        d.getString("loaisp"),
-                                                        d.getString("mota"),
-                                                        s.getLong("soluong"),d.getString("size"),
-                                                        1l,d.getString("chatlieu"));
-                                            }
-                                        });
-                            }
-                        }
-
-                    }
-                });
-    }
-    public void HandleGetDataCTHD(String id,String uid) {
-
-        if(uid!=null){
-            db.collection("ChitietHoaDon").document(uid)
-                    .collection("ALL").whereEqualTo("id_hoadon",id).get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
-                        @Override
-                        public void onSuccess(@NonNull QuerySnapshot queryDocumentSnapshots) {
-                            if(queryDocumentSnapshots.size()>0){
-                                for(QueryDocumentSnapshot s : queryDocumentSnapshots){
-//                            Log.d("CHECKED",s.getString("id_product"));
-                                    db.collection("SanPham").document(s.getString("id_product"))
-                                            .get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
-                                                @Override
-                                                public void onSuccess(@NonNull DocumentSnapshot d) {
-                                                    callback.getDataSanPham(s.getId(),s.getString("id_product"),d.getString("tensp"),
-                                                            d.getLong("giatien"),d.getString("hinhanh"),
-                                                            d.getString("loaisp"),
-                                                            d.getString("mota"),
-                                                            s.getLong("soluong"),d.getString("size"),
-                                                            1l,d.getString("chatlieu"));
-                                                }
-                                            });
+                            if (sizesData != null) {
+                                for (HashMap<String, Object> size : sizesData) {
+                                    sizes.add(new SizeQuantity((String) size.get("size"), ((Long) size.get("soluong")).intValue()));
                                 }
                             }
 
+                            db.collection("SanPham").document(doc.getString("id_product"))
+                                    .get()
+                                    .addOnSuccessListener(productDoc -> {
+                                        callback.getDataSanPham(
+                                                doc.getId(),
+                                                doc.getString("id_product"),
+                                                productDoc.getString("tensp"),
+                                                productDoc.getLong("giatien"),
+                                                productDoc.getString("hinhanh"),
+                                                productDoc.getString("loaisp"),
+                                                productDoc.getString("mota"),
+                                                sizes,
+                                                productDoc.getLong("type"),
+                                                productDoc.getString("chatlieu")
+                                        );
+                                    });
                         }
-                    });
-
-        }else{
-
-        }
-
+                    }
+                });
 
     }
-
-
 }

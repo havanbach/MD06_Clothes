@@ -42,10 +42,7 @@ public class ChitietHoadonAdapter extends RecyclerView.Adapter<ChitietHoadonAdap
     public void onBindViewHolder(@NonNull @NotNull ViewHolder holder, int position) {
         Product product = list.get(position);
         holder.tvTenCTHD.setText(product.getTensp());
-        holder.tvsizeCTHD.setText(product.getsize());
-        holder.tvSoluongCTHD.setText(product.getSoluong()+"");
         holder.tvDongiaCTHD.setText(NumberFormat.getInstance().format(product.getGiatien()));
-        holder.tvTotalCTHD.setText(NumberFormat.getInstance().format(product.getGiatien() * product.getSoluong()));
         Picasso.get().load(product.getHinhanh()).into(holder.imgCTHD);
 
         holder.constraintLayoutItemCTHD.setOnClickListener(new View.OnClickListener() {

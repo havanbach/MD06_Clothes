@@ -145,7 +145,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Đăng ký"
-        android:backgroundTint="#795548"
+        android:backgroundTint="#7FC7AF"
         android:textSize="20sp"
         android:textColor="#fff"
         android:layout_margin="16dp" />

@@ -45,6 +45,7 @@ public class MainActivity extends AppCompatActivity {
     private BroadcastReceiver MyReceiver = null;
 
 
+    //
     private int mCountProduct;
 
     @Override

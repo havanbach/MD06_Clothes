@@ -54,7 +54,6 @@ public class LoaiProductAdapter extends RecyclerView.Adapter<LoaiProductAdapter.
                 iClickLoaiProduct.onClickItemLoaiProduct(position);
             }
         });
-
     }
 
     @Override

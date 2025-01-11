@@ -257,7 +257,6 @@ public class HomeFragment extends Fragment {
 
 
 
-
     private void loadCartCount() {
         // Truy cập sub-collection "ALL" trong document của người dùng
         firestore.collection("GioHang")

@@ -20,8 +20,8 @@
         android:layout_height="wrap_content"
         android:text="MD6_Clothes"
         android:textColor="#7FC7AF"
-        android:textSize="45dp"
-        android:textStyle="italic"
+        android:textSize="43dp"
+        android:textStyle="italic|bold"
         android:fontFamily="serif"
         android:layout_gravity="center"
         android:layout_marginTop="16dp" />

@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/main"
     android:layout_width="match_parent"
@@ -9,26 +8,21 @@
     android:gravity="center"
     android:background="@drawable/backgroud"
     tools:context=".MainActivity">
-
-    <!-- Logo Image -->
     <ImageView
         android:id="@+id/logo"
         android:layout_width="150dp"
         android:layout_height="150dp"
         android:src="@drawable/logoapp"
         android:layout_marginBottom="16dp" />
-
-    <!-- Text -->
     <TextView
         android:id="@+id/textView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="MD6_Clothes"
-        android:textColor="@color/Orange"
-        android:textSize="45dp"
-        android:textStyle="italic"
+        android:textColor="#7FC7AF"
+        android:textSize="43dp"
+        android:textStyle="italic|bold"
         android:fontFamily="serif"
         android:layout_gravity="center"
         android:layout_marginTop="16dp" />
-
 </LinearLayout>

@@ -31,9 +31,10 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.squareup.picasso.Picasso;
-
+//
 public class MainActivity extends AppCompatActivity {
-    private BottomNavigationView bottomNavigationView;
+    // Khai báo các thành phần
+    private BottomNavigationView bottomNavigationView;// Thanh điều hướng
 
     public  static CountDownTimer countDownTimer;
     private static final int TIME_DELAY = 2000;
@@ -44,6 +45,7 @@ public class MainActivity extends AppCompatActivity {
     private BroadcastReceiver MyReceiver = null;
 
 
+    //
     private int mCountProduct;
 
     @Override

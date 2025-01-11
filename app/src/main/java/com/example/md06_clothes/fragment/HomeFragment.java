@@ -5,19 +5,27 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.view.MenuItemCompat;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import androidx.viewpager.widget.ViewPager;
+
 
 import com.example.md06_clothes.Adapter.BannerAdapter;
 import com.example.md06_clothes.Adapter.LoaiProductAdapter;
@@ -28,9 +36,14 @@ import com.example.md06_clothes.Models.SizeQuantity;
 import com.example.md06_clothes.R;
 import com.example.md06_clothes.View.CartActivity;
 import com.example.md06_clothes.View.CategoryActivity;
+
 import com.example.md06_clothes.View.DetailSPActivity;
 import com.example.md06_clothes.View.SearchActivity;
+import com.example.md06_clothes.my_interface.IClickCTHD;
+import com.example.md06_clothes.my_interface.IClickLoaiProduct;
+import com.example.md06_clothes.my_interface.IClickOpenBottomSheet;
 import com.example.md06_clothes.ultil.NetworkUtil;
+import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentSnapshot;
@@ -38,6 +51,8 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.squareup.picasso.Picasso;
+
+import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -224,12 +239,7 @@ public class HomeFragment extends Fragment {
                             intent.putExtra("search", selectedProduct);
                             startActivity(intent);
                         });
-                        // Thiết lập layout cho RecyclerView
-                        if (type == 8) { // Nếu là sản phẩm gợi ý
-                            recyclerView.setLayoutManager(new LinearLayoutManager(getContext(), RecyclerView.VERTICAL, false));
-                        } else { // Các sản phẩm khác
-                            recyclerView.setLayoutManager(new LinearLayoutManager(getContext(), RecyclerView.HORIZONTAL, false));
-                        }
+                        recyclerView.setLayoutManager(new LinearLayoutManager(getContext(), RecyclerView.HORIZONTAL, false));
                         recyclerView.setAdapter(productAdapter);
                     }
                 });

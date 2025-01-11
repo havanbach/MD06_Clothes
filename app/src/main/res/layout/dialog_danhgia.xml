@@ -47,7 +47,7 @@
                     android:id="@+id/tv_name_danhgia"
                     android:textColor="@color/black"
                     android:textStyle="bold"
-                    android:textSize="18sp"
+                    android:textSize="19sp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Sản phẩm tôt"

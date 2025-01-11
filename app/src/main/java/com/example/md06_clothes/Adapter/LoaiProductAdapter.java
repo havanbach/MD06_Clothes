@@ -70,9 +70,7 @@ public class LoaiProductAdapter extends RecyclerView.Adapter<LoaiProductAdapter.
         public ViewHolder(@NonNull @NotNull View itemView) {
             super(itemView);
 
-            tvLoaiProduct = itemView.findViewById(R.id.tv_loai_product);
-            imgLoaiProduct = itemView.findViewById(R.id.img_loai_product);
-            itemLoaiProduct = itemView.findViewById(R.id.item_loai_product);
+
 
         }
     }

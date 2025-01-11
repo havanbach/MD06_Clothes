@@ -97,32 +97,7 @@ public class HomeFragment extends Fragment {
     private TextView tvNumberCart; // Hiển thị số lượng sản phẩm trong giỏ hàng
     private String userId; // ID của người dùng hiện tại
 
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        view = inflater.inflate(R.layout.fragment_home, container, false);
-        ((AppCompatActivity)getActivity()).setSupportActionBar(toolbarHome);
-        setHasOptionsMenu(true);
-        InitWidget();
-        listenToCartChanges(); // Lắng nghe thay đổi trong thời gian thực
-        loadCartCount();
-        Event();
-        if (NetworkUtil.isNetworkConnected(getContext())){
-            LoadInfor();
-            Banner();
-            InitProduct();
-            GetDataDSSanPham();
-            GetDataSPNoiBat();
-            GetDataSPDoUong();
-            GetDataSPHanQuoc();
-            GetDataSPMiCay();
-            GetDataSPYeuThich();
-            GetDataSPLau();
-            GetDataSPGoiY();
-            LoadFavorite();
-        }
 
-        return view;
-    }
 
     private void LoadFavorite() {
         firestore.collection("Favorite").document(FirebaseAuth.getInstance().getCurrentUser().getUid())
@@ -508,7 +483,7 @@ public class HomeFragment extends Fragment {
                     }
                 });
     }
-    // Sản phẩm Lẩu
+
     public  void  GetDataSPLau(){
         firestore.collection("SanPham").
                 whereEqualTo("type",7).

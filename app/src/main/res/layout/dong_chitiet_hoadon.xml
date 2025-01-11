@@ -11,6 +11,9 @@
     android:background="@drawable/cart_background"
     android:id="@+id/constraint_item_cthd">
 
+
+
+
     <ImageView
         android:scaleType="centerCrop"
         android:id="@+id/img_cthd"

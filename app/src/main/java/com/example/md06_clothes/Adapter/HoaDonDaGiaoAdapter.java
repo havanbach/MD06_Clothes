@@ -45,7 +45,7 @@ public class HoaDonDaGiaoAdapter extends RecyclerView.Adapter<HoaDonDaGiaoAdapte
         notifyDataSetChanged();
 
     }
-
+//
     @NotNull
     @Override
     public HoaDonDaGiaoAdapter.ViewHolder onCreateViewHolder(@NonNull @NotNull ViewGroup parent, int viewType) {

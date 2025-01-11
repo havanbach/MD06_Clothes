@@ -7,6 +7,7 @@
     android:layout_marginBottom="10dp"
     android:id="@+id/item_loai_product">
 
+
     <ImageView
         android:background="@drawable/ao3"
         android:layout_width="40dp"

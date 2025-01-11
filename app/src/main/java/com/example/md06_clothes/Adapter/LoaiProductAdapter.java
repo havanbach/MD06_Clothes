@@ -56,6 +56,7 @@ public class LoaiProductAdapter extends RecyclerView.Adapter<LoaiProductAdapter.
         });
     }
 
+
     @Override
     public int getItemCount() {
         if (mList != null){

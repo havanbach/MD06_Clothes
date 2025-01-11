@@ -36,6 +36,7 @@ public class LoaiProductAdapter extends RecyclerView.Adapter<LoaiProductAdapter.
     }
 
 
+
     @Override
     public void onBindViewHolder(@NonNull @NotNull ViewHolder holder, int position) {
 

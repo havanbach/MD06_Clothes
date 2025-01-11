@@ -119,6 +119,7 @@
             android:layout_marginTop="10dp"
             android:background="@drawable/border5"
             android:gravity="top|left"
+            android:textStyle="italic"
             android:hint="Đánh giá khác ..."
             android:inputType="textMultiLine"
             android:lines="6"

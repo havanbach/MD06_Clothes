@@ -220,16 +220,7 @@ public class HomeFragment extends Fragment {
 
     }
 
-    private void InitProduct() {
-        arr_ds_sp = new ArrayList<>();
-        arr_sp_nb = new ArrayList<>();
-        arr_sp_du = new ArrayList<>();
-        arr_sp_hq = new ArrayList<>();
-        arr_sp_mc = new ArrayList<>();
-        arr_sp_yt = new ArrayList<>();
-        arr_sp_lau = new ArrayList<>();
-        arr_sp_gy = new ArrayList<>();
-    }
+
 
     // Firestore Snapshot Listener để cập nhật liên tục
     private void listenToCartChanges() {

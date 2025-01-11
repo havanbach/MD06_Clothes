@@ -339,6 +339,7 @@ public class HomeFragment extends Fragment {
     public TextView getTvEmailHome(){
         return tvEmailHome;
     }
+
     public CircleImageView getCirAvatarHome(){
         return cirAvatarHome;
     }

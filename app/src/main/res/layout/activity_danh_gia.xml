@@ -6,5 +6,5 @@
     android:layout_height="match_parent"
     tools:context=".View.DanhGiaActivity"
     android:orientation="vertical">
-
+<!--    Danh gia san pham-->
 </LinearLayout>

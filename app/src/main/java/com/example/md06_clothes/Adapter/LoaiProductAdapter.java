@@ -44,6 +44,7 @@ public class LoaiProductAdapter extends RecyclerView.Adapter<LoaiProductAdapter.
             return;
         }
 
+
         holder.tvLoaiProduct.setText(loaiProduct.getTenloai());
         Picasso.get().load(loaiProduct.getHinhanh()).into(holder.imgLoaiProduct);
 

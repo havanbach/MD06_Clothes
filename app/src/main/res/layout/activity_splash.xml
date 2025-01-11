@@ -9,16 +9,12 @@
     android:gravity="center"
     android:background="@drawable/backgroud"
     tools:context=".MainActivity">
-
-    <!-- Logo Image -->
     <ImageView
         android:id="@+id/logo"
         android:layout_width="150dp"
         android:layout_height="150dp"
         android:src="@drawable/logoapp"
         android:layout_marginBottom="16dp" />
-
-    <!-- Text -->
     <TextView
         android:id="@+id/textView"
         android:layout_width="wrap_content"

@@ -25,30 +25,27 @@ import java.util.ArrayList;
 import de.hdodenhof.circleimageview.CircleImageView;
 
 public class BinhLuanAdapter extends RecyclerView.Adapter<BinhLuanAdapter.ViewHolder> {
-
     private Context context;
     private ArrayList<Binhluan> mlist;
     private IClickCTHD iClickCTHD;
-
     public BinhLuanAdapter(Context context, ArrayList<Binhluan> mlist, IClickCTHD iClickCTHD) {
         this.context = context;
         this.mlist = mlist;
         this.iClickCTHD = iClickCTHD;
     }
-
     @NotNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull @NotNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.dong_binhluan, parent, false);
         return new ViewHolder(view);
     }
-
     @Override
     public void onBindViewHolder(@NonNull @NotNull ViewHolder holder, int position) {
 
         Binhluan binhluan = mlist.get(position);
         holder.tvBinhLuan.setText(binhluan.getNoidung());
         holder.tvRate.setText(binhluan.getRate());
+
 
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         db.collection("User").document(binhluan.getIduser()).collection("Profile").get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
@@ -69,17 +66,13 @@ public class BinhLuanAdapter extends RecyclerView.Adapter<BinhLuanAdapter.ViewHo
             }
         });
     }
-
     @Override
     public int getItemCount() {
         return mlist.size();
     }
-
     public class ViewHolder extends RecyclerView.ViewHolder {
-
         private CircleImageView cirHinhAnhBinhLuan;
         private TextView tvBinhLuan, tvRate, tvNameBinhLuan;
-
         public ViewHolder(@NonNull @NotNull View itemView) {
             super(itemView);
             cirHinhAnhBinhLuan = itemView.findViewById(R.id.cir_hinhanh_binhluan);

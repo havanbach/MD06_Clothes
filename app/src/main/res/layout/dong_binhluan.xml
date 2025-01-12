@@ -4,7 +4,6 @@
     android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/relative_item_binhluan">
-
     <androidx.cardview.widget.CardView
         android:layout_marginTop="10dp"
         android:layout_marginEnd="10dp"
@@ -13,7 +12,6 @@
         android:layout_width="350dp"
         android:layout_height="wrap_content"
         app:cardCornerRadius="10dp">
-
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -30,7 +28,6 @@
                     android:layout_width="50dp"
                     android:layout_height="50dp"
                     android:src="@drawable/ic_user"/>
-
                 <TextView
                     android:maxLines="1"
                     android:singleLine="true"
@@ -54,7 +51,6 @@
                     android:layout_width="20dp"
                     android:layout_height="20dp"
                     android:src="@drawable/ic_star"/>
-
                 <TextView
                     android:id="@+id/tv_rate"
                     android:layout_marginStart="5dp"
@@ -62,7 +58,6 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="5"/>
-
                 <TextView
                     android:textStyle="bold"
                     android:layout_marginStart="5dp"

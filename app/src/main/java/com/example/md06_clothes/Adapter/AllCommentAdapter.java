@@ -24,17 +24,15 @@ import org.jetbrains.annotations.NotNull;
 import java.util.ArrayList;
 
 import de.hdodenhof.circleimageview.CircleImageView;
-
+//Bách Comittt
 public class AllCommentAdapter extends RecyclerView.Adapter<AllCommentAdapter.ViewHolder>{
     //
     private Context context;
     private ArrayList<Binhluan> mlist;
-
     public AllCommentAdapter(Context context, ArrayList<Binhluan> mlist) {
         this.context = context;
         this.mlist = mlist;
     }
-
     @NotNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull @NotNull ViewGroup parent, int viewType) {
@@ -42,7 +40,6 @@ public class AllCommentAdapter extends RecyclerView.Adapter<AllCommentAdapter.Vi
         view = LayoutInflater.from(parent.getContext()).inflate(R.layout.dong_all_comment, parent, false);
         return new ViewHolder(view);
     }
-
     @Override
     public void onBindViewHolder(@NonNull @NotNull ViewHolder holder, int position) {
 
@@ -62,7 +59,6 @@ public class AllCommentAdapter extends RecyclerView.Adapter<AllCommentAdapter.Vi
                     } else {
                         Picasso.get().load(q.getString("avatar")).into(holder.imgDongAllCmt);
                     }
-
                 }
             }
         });

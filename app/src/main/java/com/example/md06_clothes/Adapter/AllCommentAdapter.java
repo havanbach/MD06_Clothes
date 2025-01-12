@@ -28,7 +28,7 @@ import de.hdodenhof.circleimageview.CircleImageView;
 public class AllCommentAdapter extends RecyclerView.Adapter<AllCommentAdapter.ViewHolder>{
     //
     private Context context;
-    private ArrayList<Binhluan> mlist;
+    private ArrayList<Binhluan> mlist; //Mo ta danh sách cac doi tuong
     public AllCommentAdapter(Context context, ArrayList<Binhluan> mlist) {
         this.context = context;
         this.mlist = mlist;
@@ -66,7 +66,6 @@ public class AllCommentAdapter extends RecyclerView.Adapter<AllCommentAdapter.Vi
         holder.ratingBarDongAllCmt.setRating(Float.parseFloat(binhluan.getRate()));
         holder.ratingBarDongAllCmt.setIsIndicator(true); //Không cho phép thay đổi giá trị ratingbar
     }
-
     @Override
     public int getItemCount() {
         return mlist.size();

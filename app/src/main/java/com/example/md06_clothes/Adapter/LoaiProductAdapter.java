@@ -35,12 +35,18 @@ public class LoaiProductAdapter extends RecyclerView.Adapter<LoaiProductAdapter.
         return new ViewHolder(view);
     }
 
+
+
     @Override
     public void onBindViewHolder(@NonNull @NotNull ViewHolder holder, int position) {
+
+
         LoaiProduct loaiProduct = mList.get(position);
         if (loaiProduct == null){
             return;
         }
+
+
 
         holder.tvLoaiProduct.setText(loaiProduct.getTenloai());
         Picasso.get().load(loaiProduct.getHinhanh()).into(holder.imgLoaiProduct);
@@ -52,8 +58,8 @@ public class LoaiProductAdapter extends RecyclerView.Adapter<LoaiProductAdapter.
                 iClickLoaiProduct.onClickItemLoaiProduct(position);
             }
         });
-
     }
+
 
     @Override
     public int getItemCount() {

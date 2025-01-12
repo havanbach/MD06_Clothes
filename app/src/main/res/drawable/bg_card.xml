@@ -1,0 +1,20 @@
+<!-- res/drawable/bg_card.xml -->
+<shape xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- Màu nền -->
+    <solid android:color="#FFFFFF" />
+
+    <!-- Góc bo tròn -->
+    <corners android:radius="12dp" />
+
+    <!-- Viền (stroke) -->
+    <stroke
+        android:width="1dp"
+        android:color="#E0E0E0" />
+
+    <!-- Đổ bóng -->
+    <padding
+        android:top="8dp"
+        android:bottom="8dp"
+        android:left="8dp"
+        android:right="8dp" />
+</shape>

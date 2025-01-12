@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<shape xmlns:android="http://schemas.android.com/apk/res/android">
+    <solid android:color="@android:color/white"/> <!-- Màu nền của border, có thể thay đổi -->
+    <corners android:radius="16dp"/> <!-- Bo góc -->
+    <stroke android:color="@android:color/black" android:width="2dp"/> <!-- Viền ngoài của border -->
+</shape>

@@ -80,52 +80,53 @@ import de.hdodenhof.circleimageview.CircleImageView;
 
 public class ProfileFragment extends Fragment {
 
-    private Uri mUri;
-    private ProgressDialog progressDialog;
-    private MainActivity mMainActivity;
-    private FusedLocationProviderClient fusedLocationClient;
-    private Geocoder geocoder;
+    private Uri mUri;// Dùng để lưu trữ đường dẫn đến ảnh đại diện của người dùng.
+    private ProgressDialog progressDialog;// Đối tượng ProgressDialog để hiển thị quá trình tải.
+    private MainActivity mMainActivity;// Đối tượng MainActivity tham chiếu đến hoạt động chính của ứng dụng.
+    private FusedLocationProviderClient fusedLocationClient;// Đối tượng để lấy thông tin vị trí người dùng.
+    private Geocoder geocoder;// Đối tượng để chuyển đổi thông tin vị trí (latitude và longitude) thành địa chỉ.
 
 
-    private View view;
-    private CircleImageView imgAvatar;
-    private EditText edtFullName, edtAddress, edtPhoneNumber, edtDate;
-    private TextView tvEmail;
-    private RadioButton rdoNam, rdoNu;
-    private RadioGroup rdoGroup;
-    private Button btnUpdateprofile;
-    private LinearLayout layoutLogout;
-    private FirebaseFirestore firestore = FirebaseFirestore.getInstance();
+    private View view;// Giao diện của Fragment.
+    private CircleImageView imgAvatar;// ImageView để hiển thị ảnh đại diện của người dùng.
+    private EditText edtFullName, edtAddress, edtPhoneNumber, edtDate;// Các EditText cho thông tin cá nhân của người dùng.
+    private TextView tvEmail;// TextView để hiển thị email của người dùng.
+    private RadioButton rdoNam, rdoNu;// RadioButton cho giới tính (Nam hoặc Nữ).
+    private RadioGroup rdoGroup;// RadioGroup chứa các RadioButton cho giới tính.
+    private Button btnUpdateprofile;// Nút để người dùng cập nhật thông tin hồ sơ.
+    private LinearLayout layoutLogout;// Layout chứa nút đăng xuất.
+    private FirebaseFirestore firestore = FirebaseFirestore.getInstance();// Tham chiếu đến Firestore để tương tác với cơ sở dữ liệu.
 
-    private StorageReference storageReference;
-    private  String key = "";
+    private StorageReference storageReference;// Dùng để tham chiếu tới Firebase Storage cho việc tải ảnh lên.
+    private  String key = "";// Lưu trữ ID của tài liệu trong Firestore (hồ sơ người dùng).
 
-    private boolean reloadData = false;
 
-    DatabaseReference reference;
-    FirebaseUser firebaseUser;
+    private boolean reloadData = false;// Biến kiểm tra có cần tải lại dữ liệu hay không.
+
+    DatabaseReference reference;// Tham chiếu đến cơ sở dữ liệu Realtime Database.
+    FirebaseUser firebaseUser;// Tham chiếu đến người dùng Firebase hiện tại.
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_profile, container, false);
-        InitWidget();
-        Init();
+        InitWidget();// Gọi hàm khởi tạo các widget trên giao diện (chưa được định nghĩa trong đoạn mã).
+        Init();// Gọi hàm khởi tạo ban đầu (chưa được định nghĩa trong đoạn mã).
 
         if (NetworkUtil.isNetworkConnected(getContext())){
-            reloadData = true;
-            LoadInfo();
-            setUserInformation();
-            Event();
+            reloadData = true;// Nếu có kết nối mạng, thiết lập reloadData là true.
+            LoadInfo();// Tải thông tin người dùng từ Firestore.
+            setUserInformation();// Cập nhật thông tin người dùng vào giao diện (chưa định nghĩa trong đoạn mã).
+            Event();// Xử lý các sự kiện người dùng (chưa định nghĩa trong đoạn mã).
         } else {
             reloadData = false;
         }
         getFragmentManager().beginTransaction().detach(this).attach(this).commit();
         Log.d("fmt", "onCreateView");
         reload();
-        return view;
+        return view;// Trả về view đã được tạo.
     }
 
     void reload(){
-        if (reloadData){
+        if (reloadData){// Nếu reloadData là true, thực hiện tải lại dữ liệu.
             FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
             Fragment currentFragment = fragmentManager.findFragmentByTag("main_fragment");
             FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();

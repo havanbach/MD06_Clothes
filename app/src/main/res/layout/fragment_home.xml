@@ -183,14 +183,12 @@
                     </RelativeLayout>
                 </LinearLayout>
             </LinearLayout>
-
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rcv_loai_product"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
                 android:layout_marginStart="20dp"
-                android:layout_marginTop="10dp" />
-
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
             <ImageView
                 android:layout_marginTop="10dp"
                 android:layout_width="match_parent"
@@ -218,6 +216,13 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"/>
 
+            <ImageView
+                android:layout_marginTop="10dp"
+                android:layout_width="match_parent"
+                android:layout_height="130dp"
+                android:layout_marginStart="20dp"
+                android:layout_margin="20dp"
+                android:background="@drawable/posterhome1"/>
             <TextView
                 android:layout_marginTop="10dp"
                 android:layout_width="wrap_content"
@@ -254,6 +259,14 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
 
+            <ImageView
+                android:layout_marginTop="10dp"
+                android:layout_width="match_parent"
+                android:layout_height="130dp"
+                android:layout_marginStart="20dp"
+                android:layout_margin="20dp"
+                android:background="@drawable/sale" />
+
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -271,13 +284,21 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
 
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="130dp"
+                android:layout_margin="20dp"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/posterhome3" />
+
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="20dp"
                 android:layout_marginTop="10dp"
                 android:fontFamily="@font/akronim"
-                android:text="Thể thao bền vững tự tin"
+                android:text="Bán chạy nhất | Thể thao"
                 android:textColor="#228b22"
                 android:textSize="16sp"
                 android:textStyle="bold" />
@@ -294,7 +315,7 @@
                 android:layout_marginTop="10dp"
                 android:layout_marginStart="20dp"
                 android:fontFamily="@font/akronim"
-                android:text="Lựa chọn thả ga, tha hồ mua sắm"
+                android:text="Bán chạy nhất | Áo thun"
                 android:textColor="#FF5722"
                 android:textSize="16sp"
                 android:textStyle="bold"/>
@@ -311,7 +332,7 @@
                 android:layout_height="130dp"
                 android:layout_marginStart="20dp"
                 android:layout_margin="20dp"
-                android:background="@drawable/posterhome5"/>
+                android:background="@drawable/posterhome7"/>
 
             <TextView
                 android:layout_marginTop="10dp"

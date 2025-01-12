@@ -36,13 +36,16 @@ public class LoaiProductAdapter extends RecyclerView.Adapter<LoaiProductAdapter.
     }
 
 
+
     @Override
     public void onBindViewHolder(@NonNull @NotNull ViewHolder holder, int position) {
+
 
         LoaiProduct loaiProduct = mList.get(position);
         if (loaiProduct == null){
             return;
         }
+
 
 
         holder.tvLoaiProduct.setText(loaiProduct.getTenloai());

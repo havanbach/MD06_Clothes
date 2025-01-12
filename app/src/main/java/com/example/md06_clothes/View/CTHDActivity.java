@@ -56,6 +56,8 @@ public class CTHDActivity extends AppCompatActivity implements GioHangView, HoaD
     boolean cm;
     String danhgia = "";
     String r="5";
+    private TextView tvPhuongthucCTHD;
+
 
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
 
@@ -141,6 +143,8 @@ public class CTHDActivity extends AppCompatActivity implements GioHangView, HoaD
         tvDiachiCTHD.setText(hoaDon.getDiachi());
         tvSdtCTHD.setText(hoaDon.getSdt());
         tvTongtienCTHD.setText(hoaDon.getTongtien());
+        tvPhuongthucCTHD.setText(hoaDon.getPhuongthuc());
+
         switch ((int) hoaDon.getType()){
             case  1:
                 tvTrangthaiCTHD.setText("Đang xử lý");
@@ -176,6 +180,8 @@ public class CTHDActivity extends AppCompatActivity implements GioHangView, HoaD
         rcvCTHD = findViewById(R.id.rcv_cthd);
         btnCapnhat = findViewById(R.id.btn_capnhat_cthd);
         hoaDonDaGiaoAdapter = new HoaDonDaGiaoAdapter();
+        tvPhuongthucCTHD = findViewById(R.id.tv_phuongthuc_cthd);
+
     }
 
     @Override

@@ -24,7 +24,6 @@ import org.jetbrains.annotations.NotNull;
 import java.util.ArrayList;
 
 import de.hdodenhof.circleimageview.CircleImageView;
-//Bách Comittt
 public class AllCommentAdapter extends RecyclerView.Adapter<AllCommentAdapter.ViewHolder>{
     //
     private Context context;

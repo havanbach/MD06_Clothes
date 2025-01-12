@@ -25,9 +25,9 @@
         android:fontFamily="@font/poppins_semibold"
         android:text="@string/screen1"
         android:textAlignment="center"
-        android:textColor="@color/lavender"
-        android:textSize="25sp"
-        android:textStyle="bold" />
+        android:textColor="#7FC7AF"
+        android:textSize="27sp"
+        android:textStyle="bold|italic" />
 
     <TextView
         android:id="@+id/sliderDesc"
@@ -37,7 +37,7 @@
         android:fontFamily="@font/poppins_semibold"
         android:text="@string/screen1desc"
         android:textAlignment="center"
-        android:textColor="@color/lavender"
+        android:textColor="#7FC7AF"
         android:textSize="16sp" />
 
 </LinearLayout>

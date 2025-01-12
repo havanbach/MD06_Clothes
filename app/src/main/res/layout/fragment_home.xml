@@ -137,11 +137,11 @@
                         android:fontFamily="@font/akronim"
                         android:textStyle="bold"
                         android:text="Clothes xin chào !"
-                        android:textColor="#228b22"
+                        android:textColor="#7FC7AF"
                         android:textSize="12dp" />
 
                     <TextView
-                        android:textColor="#228b22"
+                        android:textColor="#7FC7AF"
                         android:id="@+id/tv_name_home"
                         android:layout_width="150dp"
                         android:maxLines="1"
@@ -165,7 +165,7 @@
                                 android:layout_height="wrap_content"
                                 android:textSize="10sp"
                                 android:textStyle="italic"
-                                android:textColor="#228b22"
+                                android:textColor="#7FC7AF"
                                 android:text="Email: "/>
 
                             <TextView
@@ -176,7 +176,7 @@
                                 android:maxLines="1"
                                 android:singleLine="true"
                                 android:text="xxx.com"
-                                android:textColor="#228b22"
+                                android:textColor="#7FC7AF"
                                 android:textSize="10sp"
                                 android:textStyle="italic" />
                         </LinearLayout>
@@ -206,7 +206,7 @@
                 android:elevation="5dp"
                 android:fontFamily="@font/akronim"
                 android:text="Bán chạy nhất thời trang bên Clothes chúng tôi"
-                android:textColor="#228b22"
+                android:textColor="#7FC7AF"
                 android:textSize="16sp"
                 android:textStyle="bold" />
 
@@ -231,7 +231,7 @@
                 android:elevation="5dp"
                 android:fontFamily="@font/akronim"
                 android:text="Chọn đúng gu, tỏa sáng đúng chất"
-                android:textColor="#D9A051"
+                android:textColor="#7FC7AF"
                 android:textSize="16sp"
                 android:textStyle="bold" />
 
@@ -248,7 +248,7 @@
                 android:layout_marginTop="10dp"
                 android:fontFamily="@font/akronim"
                 android:text="Khẳng định cá tính Mix x Match, sẵn sàng nổi bật!"
-                android:textColor="#CE1D58"
+                android:textColor="#7FC7AF"
                 android:textSize="16sp"
                 android:textStyle="bold" />
 
@@ -274,7 +274,7 @@
                 android:layout_marginTop="10dp"
                 android:fontFamily="@font/akronim"
                 android:text="Mặc tự tin, sống hết mình"
-                android:textColor="#455DE4"
+                android:textColor="#7FC7AF"
                 android:textSize="16sp"
                 android:textStyle="bold" />
 
@@ -299,7 +299,7 @@
                 android:layout_marginTop="10dp"
                 android:fontFamily="@font/akronim"
                 android:text="Bán chạy nhất | Thể thao"
-                android:textColor="#228b22"
+                android:textColor="#7FC7AF"
                 android:textSize="16sp"
                 android:textStyle="bold" />
 
@@ -316,7 +316,7 @@
                 android:layout_marginStart="20dp"
                 android:fontFamily="@font/akronim"
                 android:text="Bán chạy nhất | Áo thun"
-                android:textColor="#FF5722"
+                android:textColor="#7FC7AF"
                 android:textSize="16sp"
                 android:textStyle="bold"/>
 
@@ -341,7 +341,7 @@
                 android:layout_height="wrap_content"
                 android:text="Phong cách của bạn, đam mê của chúng tôi "
                 android:fontFamily="@font/akronim"
-                android:textColor="#228b22"
+                android:textColor="#7FC7AF"
                 android:textSize="16sp"
                 android:textStyle="bold" />
 
@@ -366,7 +366,7 @@
                 android:layout_marginStart="20dp"
                 android:text="Hành trình thời trang, đậm dấu ấn riêng"
                 android:fontFamily="@font/akronim"
-                android:textColor="#228b22"
+                android:textColor="#7FC7AF"
                 android:textSize="16sp"
                 android:textStyle="bold" />
 

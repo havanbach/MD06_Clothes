@@ -9,28 +9,27 @@
     android:layout_marginEnd="10dp"
     android:layout_marginBottom="8dp"
     android:background="@drawable/cart_background"
-    android:elevation="3dp"
-    android:id="@+id/constraint_item_gio_hang">
+    android:elevation="3dp">
 
     <ImageView
-        android:scaleType="centerCrop"
         android:id="@+id/img_giohang"
         android:layout_width="80dp"
         android:layout_height="70dp"
         android:layout_margin="7dp"
+        android:scaleType="centerCrop"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/ao3"/>
+        app:srcCompat="@drawable/ao3" />
 
     <TextView
-        android:maxLines="1"
-        android:singleLine="true"
         android:id="@+id/tv_ten_giohang"
         android:layout_width="160dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="6dp"
-        android:text="title"
+        android:maxLines="1"
+        android:singleLine="true"
+        android:text="Product Name"
         android:textColor="#373b54"
         android:textSize="14sp"
         android:textStyle="bold"
@@ -38,113 +37,48 @@
         app:layout_constraintTop_toTopOf="@+id/img_giohang" />
 
     <TextView
-        android:layout_marginTop="2dp"
-        android:id="@+id/textView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="6dp"
-        android:text="Mô tả: "
-        android:textSize="12sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/img_giohang"
-        app:layout_constraintTop_toBottomOf="@+id/tv_ten_giohang"
-        app:layout_constraintVertical_bias="0.0" />
-
-    <TextView
-        android:layout_marginTop="2dp"
         android:id="@+id/tv_chatlieu_giohang"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="abc"
+        android:layout_marginStart="6dp"
+        android:text="Material Info"
         android:textSize="12sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/textView"
-        app:layout_constraintTop_toBottomOf="@+id/tv_ten_giohang"
-        app:layout_constraintVertical_bias="0.0" />
+        app:layout_constraintStart_toEndOf="@+id/img_giohang"
+        app:layout_constraintTop_toBottomOf="@+id/tv_ten_giohang" />
 
-    <ImageView
-        android:layout_marginTop="10dp"
-        android:id="@+id/btn_minus_giohang"
-        android:layout_width="20dp"
-        android:layout_height="20dp"
-        app:layout_constraintStart_toStartOf="@+id/textView"
-        app:layout_constraintTop_toBottomOf="@+id/textView"
-        app:srcCompat="@drawable/minus" />
-
-    <TextView
-        android:id="@+id/tv_number_giohang"
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:id="@+id/size_container"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="30dp"
-        android:layout_marginTop="7dp"
-        android:text="1"
-        android:textColor="#373b54"
-        android:textSize="18sp"
-        android:textStyle="bold"
-        app:layout_constraintStart_toStartOf="@+id/textView"
-        app:layout_constraintTop_toBottomOf="@+id/textView" />
-
-    <ImageView
-        android:id="@+id/btn_plus_giohang"
-        android:layout_width="20dp"
-        android:layout_height="20dp"
-        android:layout_marginStart="10dp"
-        android:layout_marginTop="10dp"
-        app:layout_constraintStart_toEndOf="@+id/tv_number_giohang"
-        app:layout_constraintTop_toBottomOf="@+id/textView"
-        app:srcCompat="@drawable/plus" />
+        android:layout_marginTop="8dp"
+        android:orientation="vertical"
+        app:layout_constraintStart_toEndOf="@+id/img_giohang"
+        app:layout_constraintTop_toBottomOf="@+id/tv_chatlieu_giohang"
+        app:layout_constraintEnd_toEndOf="parent" />
 
     <TextView
         android:id="@+id/tv_giatien_giohang"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="32dp"
-        android:text="0"
+        android:layout_marginEnd="16dp"
+        android:text="0 VNĐ"
         android:textColor="#373b54"
         android:textSize="12sp"
-
         app:layout_constraintBottom_toBottomOf="@+id/tv_ten_giohang"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/tv_ten_giohang"
-        app:layout_constraintVertical_bias="1.0" />
-
-    <TextView
-        android:id="@+id/textView19"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="2dp"
-        android:text="VNĐ"
-        android:textColor="#ff3d00"
-        android:textSize="8sp"
-        app:layout_constraintBottom_toBottomOf="@+id/tv_giatien_giohang"
-        app:layout_constraintStart_toEndOf="@+id/tv_giatien_giohang"
-        app:layout_constraintTop_toTopOf="@+id/tv_giatien_giohang"
-        app:layout_constraintVertical_bias="0.0" />
+        app:layout_constraintTop_toTopOf="@+id/tv_ten_giohang" />
 
     <TextView
         android:id="@+id/tv_total_giohang"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="4dp"
-        android:text="0"
+        android:text="0 VNĐ"
         android:textColor="#373b54"
         android:textSize="18sp"
         android:textStyle="bold"
-        app:layout_constraintBottom_toBottomOf="@+id/btn_plus_giohang"
-        app:layout_constraintEnd_toEndOf="@+id/tv_giatien_giohang"
-        app:layout_constraintTop_toTopOf="@+id/btn_plus_giohang"
-        app:layout_constraintVertical_bias="1.0" />
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/size_container" />
 
-    <TextView
-        android:id="@+id/textView21"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="2dp"
-        android:text="VNĐ"
-        android:textColor="#ff3d00"
-        android:textSize="10sp"
-        app:layout_constraintBottom_toBottomOf="@+id/tv_total_giohang"
-        app:layout_constraintStart_toEndOf="@+id/tv_total_giohang"
-        app:layout_constraintTop_toTopOf="@+id/tv_total_giohang"
-        app:layout_constraintVertical_bias="0.0" />
 </androidx.constraintlayout.widget.ConstraintLayout>

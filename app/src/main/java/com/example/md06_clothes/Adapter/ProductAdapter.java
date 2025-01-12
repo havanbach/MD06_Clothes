@@ -78,8 +78,15 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ViewHold
         Picasso.get().load(product.getHinhanh()).into(holder.imgProduct);
 
         if(type==0){
-            holder.tvchatlieuProduct.setText(product.getchatlieu());
-            holder.tvSoluongProduct.setText(product.getSoluong()+"");
+            holder.tvchatlieuProduct.setText(product.getChatlieu());
+            for (int i = 0; i < product.getSizes().size(); i++) {
+                if (product.getSizes().get(i).getSoluong() > 0) {
+                    holder.tvSoluongProduct.setText("Còn hàng");
+                    break;
+                } else {
+                    holder.tvSoluongProduct.setText("Hết hàng");
+                }
+            }
         }
 
         holder.layoutProduct.setOnClickListener(new View.OnClickListener() {
@@ -111,7 +118,6 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ViewHold
             imgProduct = itemView.findViewById(R.id.img_product);
 
             tvchatlieuProduct = itemView.findViewById(R.id.tv_chatlieu_giohang);
-            tvSoluongProduct = itemView.findViewById(R.id.tv_number_giohang);
 
             layoutProduct = itemView.findViewById(R.id.layout_product);
         }

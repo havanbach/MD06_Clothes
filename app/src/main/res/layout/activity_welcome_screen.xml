@@ -58,6 +58,7 @@
         android:text="@string/the_fashion_app_that_makes_you_look_your_best"
         android:textSize="26sp"
         android:textColor="#000"
+        android:textStyle="italic"
         android:textAlignment="center"
         android:gravity="center"
         android:layout_marginTop="26dp"
@@ -79,7 +80,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Bắt đầu thôi!"
-        android:backgroundTint="#795548"
+        android:backgroundTint="#7FC7AF"
         android:textColor="#fff"
         android:layout_margin="16dp" />
     <LinearLayout

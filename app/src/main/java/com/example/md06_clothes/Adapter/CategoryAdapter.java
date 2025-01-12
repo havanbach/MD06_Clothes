@@ -48,7 +48,7 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.ViewHo
         Product product = mListCategory.get(position);
         holder.tvTenCategory.setText(product.getTensp());
         holder.tvGiaCategory.setText(NumberFormat.getInstance().format(product.getGiatien())+"");
-        holder.tvchatlieuCategory.setText(product.getchatlieu());
+        holder.tvchatlieuCategory.setText(product.getChatlieu());
         Picasso.get().load(product.getHinhanh()).into(holder.imgCategory);
 
         holder.layoutCategory.setOnClickListener(new View.OnClickListener() {

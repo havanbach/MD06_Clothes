@@ -19,6 +19,7 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import com.example.md06_clothes.Adapter.LichSuSearchAdapter;
 import com.example.md06_clothes.Adapter.SearchAdapter;
 import com.example.md06_clothes.Models.Product;
+import com.example.md06_clothes.Models.SizeQuantity;
 import com.example.md06_clothes.Presenter.ProductPresenter;
 import com.example.md06_clothes.Presenter.StoryPresenter;
 import com.example.md06_clothes.R;
@@ -31,6 +32,7 @@ import com.google.firebase.firestore.QueryDocumentSnapshot;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Locale;
 
 public class SearchActivity extends AppCompatActivity implements ProductView, StoryView {
@@ -95,15 +97,17 @@ public class SearchActivity extends AppCompatActivity implements ProductView, St
         });
 
         // Làm mới lịch sử tìm kiếm khi người dùng kéo xuống
+        // Cập nhật phương thức setdata thành setData
         swipeSearch.setOnRefreshListener(() -> new Handler().postDelayed(() -> {
             mlistStory.clear(); // Xóa danh sách lịch sử cũ
             storyPresenter.HandleGetStory(FirebaseAuth.getInstance().getCurrentUser().getUid()); // Lấy lại lịch sử từ Firestore
-            lichSuSearchAdapter.setdata(SearchActivity.this, mlistStory, pos -> {
+            lichSuSearchAdapter.setData(SearchActivity.this, mlistStory, pos -> {
                 String s = mlistStory.get(pos); // Tự động điền từ khóa vào thanh tìm kiếm khi chọn
                 searchView.setQuery(s, false);
             });
             swipeSearch.setRefreshing(false); // Dừng hiệu ứng làm mới
         }, 1000));
+
     }
 
     // Lưu lịch sử tìm kiếm , lọc trùng từ khóa
@@ -199,10 +203,9 @@ public class SearchActivity extends AppCompatActivity implements ProductView, St
     public void OnFail() {
     }
 
-    // Nhận dữ liệu sản phẩm từ Firestore
     @Override
-    public void getDataProduct(String id, String ten, Long gia, String hinhanh, String loaisp, String mota, Long soluong, String size, Long type, String chatlieu) {
-        mlistsearch.add(new Product(id, ten, gia, hinhanh, loaisp, mota, soluong, size, type, chatlieu)); // Thêm sản phẩm vào danh sách
+    public void getDataProduct(String id, String ten, Long gia, String hinhanh, String loaisp, String mota, List<SizeQuantity> sizes, Long type, String chatlieu) {
+        mlistsearch.add(new Product(id, ten, gia, hinhanh, loaisp, mota, sizes, type, chatlieu)); // Thêm sản phẩm vào danh sách
         mlistAuto.add(new Product(ten)); // Thêm sản phẩm vào danh sách tự động hoàn thành
 
         // Khởi tạo adapter và gán cho RecyclerView
@@ -233,13 +236,16 @@ public class SearchActivity extends AppCompatActivity implements ProductView, St
         });
     }
 
+
+
+
     // Nhận dữ liệu lịch sử tìm kiếm từ Firestore, Lọc trùng khi hiển thị danh sách lịch sử tìm kiếm
     @Override
     public void getDataStory(String noidung) {
         if (!mlistStory.contains(noidung)) { // Chỉ thêm từ khóa nếu chưa tồn tại trong danh sách
             mlistStory.add(noidung);
         }
-        lichSuSearchAdapter.setdata(SearchActivity.this, mlistStory, pos -> {
+        lichSuSearchAdapter.setData(SearchActivity.this, mlistStory, pos -> {
             String s = mlistStory.get(pos); // Lấy từ khóa được chọn
             searchView.setQuery(s, false); // Tự động điền vào thanh tìm kiếm
         });
@@ -249,6 +255,7 @@ public class SearchActivity extends AppCompatActivity implements ProductView, St
         rcvLichSuSearch.setLayoutManager(manager);
         rcvLichSuSearch.setAdapter(lichSuSearchAdapter);
     }
+
 
 
     // Xử lý kết quả trả về từ mic (giọng nói)

@@ -313,6 +313,7 @@ public class HomeFragment extends Fragment {
     }
 
 
+
     private void updateCartCount(int totalQuantity) {
         tvNumberCart.setVisibility(totalQuantity > 0 ? View.VISIBLE : View.GONE);
     }

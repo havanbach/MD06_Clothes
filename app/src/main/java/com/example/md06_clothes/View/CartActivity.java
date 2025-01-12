@@ -32,7 +32,6 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
-import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.text.NumberFormat;
@@ -258,6 +257,63 @@ public class CartActivity extends AppCompatActivity implements GioHangView {
     }
 
 
+    private void requestPaymentMoMo(Dialog dialog) {
+        AppMoMoLib.getInstance().setEnvironment(AppMoMoLib.ENVIRONMENT.DEVELOPMENT); // Chuyển sang môi trường phát triển, Môi trường sản xuất (PRODUCTION):
+        AppMoMoLib.getInstance().setAction(AppMoMoLib.ACTION.PAYMENT);                          //Thực hiện giao dịch thật
+        AppMoMoLib.getInstance().setActionType(AppMoMoLib.ACTION_TYPE.GET_TOKEN);
+
+        HashMap<String, Object> eventValue = new HashMap<>();
+        long currentTimestamp = System.currentTimeMillis();
+
+        try {
+            // Lấy số tiền từ chuỗi và chuyển sang số
+            Number number = NumberFormat.getInstance().parse(tienthanhtoan.replace(",", ""));
+            eventValue.put("amount", number.intValue()); // Số tiền thanh toán
+        } catch (Exception e) {
+            e.printStackTrace();
+            Toast.makeText(this, "Số tiền không hợp lệ!", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        // Thông tin yêu cầu từ phía merchant (bắt buộc)
+        eventValue.put("merchantname", "MD06 Clothes"); // Tên merchant
+        eventValue.put("merchantcode", "MOMOBKUN20180529"); // Mã merchant MoMo
+        eventValue.put("orderId", "order" + currentTimestamp); // Mã đơn hàng duy nhất
+        eventValue.put("orderLabel", "Mã đơn hàng");
+
+        // Các trường tùy chọn
+        eventValue.put("merchantnamelabel", "MD06_ClothesStore"); // Nhãn merchant
+        eventValue.put("fee", 0); // Phí thanh toán
+        eventValue.put("description", "Thanh toán đơn hàng tại MD06 Clothes");
+
+        // Dữ liệu bổ sung (extraData)
+        JSONObject objExtraData = new JSONObject();
+        try {
+            objExtraData.put("site_code", "008");
+            objExtraData.put("site_name", "Thanh Toán Clothes");
+            objExtraData.put("screen_code", 0);
+            objExtraData.put("screen_name", "Đặc Biệt");
+
+            // Gửi thông tin sản phẩm trong giỏ hàng
+            StringBuilder productNames = new StringBuilder();
+            for (Product product : listGiohang) {
+                productNames.append(product.getTensp()).append(",");
+            }
+            objExtraData.put("movie_name", productNames.toString());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        eventValue.put("extraData", objExtraData.toString());
+
+        // Gọi hàm thanh toán MoMo
+        AppMoMoLib.getInstance().requestMoMoCallBack(CartActivity.this, eventValue);
+
+        dialog.dismiss(); // Đóng dialog
+    }
+
+
+
+
     private void clearCart() {
         db.collection("GioHang").document(FirebaseAuth.getInstance().getCurrentUser().getUid())
                 .collection("ALL").get()
@@ -273,165 +329,18 @@ public class CartActivity extends AppCompatActivity implements GioHangView {
                 });
     }
 
-
-    private void requestPaymentMoMo(Dialog dialog) {
-        AppMoMoLib.getInstance().setEnvironment(AppMoMoLib.ENVIRONMENT.DEVELOPMENT);
-        AppMoMoLib.getInstance().setAction(AppMoMoLib.ACTION.PAYMENT);
-        AppMoMoLib.getInstance().setActionType(AppMoMoLib.ACTION_TYPE.GET_TOKEN);
-
-        HashMap<String, Object> eventValue = new HashMap<>();
-        long currentTimestamp = System.currentTimeMillis();
-
-        try {
-            Number number = NumberFormat.getInstance().parse(tienthanhtoan.replace(",", ""));
-            eventValue.put("amount", number.intValue()); // Số tiền thanh toán
-        } catch (Exception e) {
-            e.printStackTrace();
-            Toast.makeText(this, "Số tiền không hợp lệ!", Toast.LENGTH_SHORT).show();
-            return;
-        }
-
-        // client Required
-        eventValue.put("merchantname", "MD06 Clothes");
-        eventValue.put("merchantcode", "MOMOBKUN20180529");
-        eventValue.put("orderId", "order" + currentTimestamp);
-        eventValue.put("orderLabel", "Mã đơn hàng");
-
-        // Optional fields
-        eventValue.put("merchantnamelabel", " MD06_ClothesStore");
-        eventValue.put("fee", 0); // Phí thanh toán
-        eventValue.put("description", "Thanh toán đơn hàng tại MD06 Clothes");
-
-        // extraData
-        JSONObject objExtraData = new JSONObject();
-        try {
-            objExtraData.put("site_code", "008");
-            objExtraData.put("site_name", "Thanh Toán Clothes");
-            objExtraData.put("screen_code", 0);
-            objExtraData.put("screen_name", "Đặc Biệt");
-
-            // Gửi thông tin sản phẩm trong giỏ hàng
-            String name = "";
-            for (Product sanPham : listGiohang) {
-                name += sanPham.getTensp() + ",";
-            }
-            objExtraData.put("movie_name", name);
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-        eventValue.put("extraData", objExtraData.toString());
-
-        AppMoMoLib.getInstance().requestMoMoCallBack(CartActivity.this, eventValue);
-
-        dialog.dismiss();
-    }
-
-
-    private void ProcessPayment(Dialog dialog) {
-        // Tạo HashMap lưu thông tin hóa đơn
-        HashMap<String, Object> orderData = new HashMap<>();
-        orderData.put("hoten", hoten);
-        orderData.put("diachi", diachi);
-        orderData.put("sdt", sdt);
-        orderData.put("ghichu", ghichu);
-        orderData.put("phuongthuc", phuongthuc);
-        orderData.put("tongtien", tienthanhtoan);
-        orderData.put("ngaydat", ngaydat);
-        orderData.put("UID", FirebaseAuth.getInstance().getCurrentUser().getUid());
-        orderData.put("trangthai", 1); // Đơn hàng mới
-
-        // Lưu vào Firestore
-        db.collection("HoaDon")
-                .add(orderData)
-                .addOnCompleteListener(task -> {
-                    if (task.isSuccessful()) {
-                        String orderId = task.getResult().getId();
-
-                        // Xử lý thêm chi tiết sản phẩm vào hóa đơn
-                        for (Product product : listGiohang) {
-                            HashMap<String, Object> orderDetail = new HashMap<>();
-                            orderDetail.put("id_hoadon", orderId);
-                            orderDetail.put("id_product", product.getIdsp());
-                            orderDetail.put("sizes", product.getSizes());
-
-                            db.collection("ChitietHoaDon").document(FirebaseAuth.getInstance().getCurrentUser().getUid())
-                                    .collection("ALL").add(orderDetail);
-                        }
-
-                        // Thông báo thành công
-                        Toast.makeText(this, "Đặt hàng thành công!", Toast.LENGTH_SHORT).show();
-                        dialog.dismiss();
-
-                        // Chuyển đến màn hình thành công
-                        Intent intent = new Intent(CartActivity.this, OrderSuccessActivity.class);
-                        intent.putExtra("ngaydat", ngaydat);
-                        intent.putExtra("phuongthuc", phuongthuc);
-                        startActivity(intent);
-                    } else {
-                        Toast.makeText(this, "Đặt hàng thất bại!", Toast.LENGTH_SHORT).show();
-                    }
-                });
-    }
-
-
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        if (requestCode == AppMoMoLib.getInstance().REQUEST_CODE_MOMO && resultCode == -1) {
+        if (requestCode == AppMoMoLib.getInstance().REQUEST_CODE_MOMO && resultCode == RESULT_OK) {
             if (data != null) {
                 int status = data.getIntExtra("status", -1);
                 String message = data.getStringExtra("message");
 
                 if (status == 0) { // Thanh toán thành công
                     Toast.makeText(this, "Thanh toán MoMo thành công!", Toast.LENGTH_SHORT).show();
-
-                    HashMap<String, Object> orderData = new HashMap<>();
-                    orderData.put("hoten", hoten);
-                    orderData.put("diachi", diachi);
-                    orderData.put("sdt", sdt);
-                    orderData.put("ghichu", ghichu);
-                    orderData.put("phuongthuc", "Thanh toán MoMo");
-                    orderData.put("tongtien", tienthanhtoan);
-                    orderData.put("ngaydat", ngaydat);
-                    orderData.put("UID", FirebaseAuth.getInstance().getCurrentUser().getUid());
-                    orderData.put("trangthai", 1);
-
-                    db.collection("HoaDon")
-                            .add(orderData)
-                            .addOnCompleteListener(task -> {
-                                if (task.isSuccessful()) {
-                                    String orderId = task.getResult().getId();
-
-                                    for (Product product : listGiohang) {
-                                        HashMap<String, Object> orderDetail = new HashMap<>();
-                                        orderDetail.put("id_hoadon", orderId);
-                                        orderDetail.put("id_product", product.getIdsp());
-                                        orderDetail.put("sizes", product.getSizes());
-
-                                        db.collection("ChiTietHoaDon").document(FirebaseAuth.getInstance().getCurrentUser().getUid())
-                                                .collection("ALL").add(orderDetail);
-                                    }
-
-                                    clearCart();
-
-                                    Intent intent = new Intent(CartActivity.this, OrderSuccessActivity.class);
-                                    intent.putExtra("idhoadon", orderId);
-                                    intent.putExtra("ngaydat", ngaydat);
-                                    intent.putExtra("hoten", hoten);
-                                    intent.putExtra("diachi", diachi);
-                                    intent.putExtra("sdt", sdt);
-                                    intent.putExtra("phuongthuc", "Thanh toán MoMo");
-                                    intent.putExtra("ghichu", ghichu);
-                                    intent.putExtra("tienthanhtoan", tienthanhtoan);
-                                    intent.putExtra("sanpham", listGiohang);
-                                    startActivity(intent);
-
-                                    finish(); // Kết thúc CartActivity
-                                } else {
-                                    Toast.makeText(this, "Lưu hóa đơn thất bại!", Toast.LENGTH_SHORT).show();
-                                }
-                            });
+                    requestPaymentMoMoSuccess(); // Gọi phương thức để lưu hóa đơn
                 } else {
                     Toast.makeText(this, "Thanh toán thất bại: " + message, Toast.LENGTH_SHORT).show();
                 }
@@ -439,30 +348,95 @@ public class CartActivity extends AppCompatActivity implements GioHangView {
         }
     }
 
+
+
+    private void requestPaymentMoMoSuccess() {
+        HashMap<String, Object> orderData = new HashMap<>();
+        orderData.put("hoten", hoten);
+        orderData.put("diachi", diachi);
+        orderData.put("sdt", sdt);
+        orderData.put("ghichu", ghichu);
+        orderData.put("phuongthuc", "Thanh toán MoMo");
+        orderData.put("tongtien", tienthanhtoan);
+        orderData.put("ngaydat", ngaydat);
+        orderData.put("UID", FirebaseAuth.getInstance().getCurrentUser().getUid());
+        orderData.put("trangthai", 1); // Trạng thái đơn hàng
+
+        // Lưu hóa đơn vào Firestore
+        db.collection("HoaDon")
+                .add(orderData)
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        String orderId = task.getResult().getId();
+                        // Lưu chi tiết sản phẩm
+                        for (Product product : listGiohang) {
+                            // Lưu thông tin kích thước và số lượng
+                            HashMap<String, Object> orderDetail = new HashMap<>();
+                            orderDetail.put("id_hoadon", orderId);
+                            orderDetail.put("id_product", product.getIdsp());
+                            orderDetail.put("sizes", product.getSizes());
+                            // Lưu chi tiết sản phẩm vào Firestore
+                            db.collection("ChitietHoaDon").document(FirebaseAuth.getInstance().getCurrentUser().getUid())
+                                    .collection("ALL").add(orderDetail);
+                        }
+                        // Xóa giỏ hàng sau khi lưu hóa đơn thành công
+                        clearCart();
+
+                        Intent intent = new Intent(CartActivity.this, OrderSuccessActivity.class);
+                        intent.putExtra("idhoadon", orderId);
+                        intent.putExtra("ngaydat", ngaydat);
+                        intent.putExtra("hoten", hoten);
+                        intent.putExtra("diachi", diachi);
+                        intent.putExtra("sdt", sdt);
+                        intent.putExtra("phuongthuc", "Thanh toán MoMo");
+                        intent.putExtra("ghichu", ghichu);
+                        intent.putExtra("tienthanhtoan", tienthanhtoan);
+                        intent.putExtra("sanpham", listGiohang);
+                        startActivity(intent);
+
+                        finish(); // Kết thúc CartActivity
+                    } else {
+                        Toast.makeText(this, "Đặt hàng thất bại!", Toast.LENGTH_SHORT).show();
+                    }
+                });
+    }
+
+
+
+
+
+
     // phí ship là 1000 vnd
     public void UpdateCartSummary() {
-        int total = 0;
+        int total = 0;// Biến lưu tổng tiền hàng
         int shippingFee = 1000;
+
+        // Duyệt qua danh sách sản phẩm trong giỏ hàng
         for (Product product : listGiohang) {
             for (SizeQuantity size : product.getSizes()) {
                 total += product.getGiatien() * size.getSoluong();
             }
         }
         tvDongia.setText(NumberFormat.getInstance().format(total));
+
         tvPhiVanChuyen.setText(NumberFormat.getInstance().format(shippingFee));
+        // Cập nhật tổng tiền (tổng giá hàng hóa + phí vận chuyển) lên TextView
         tvTongTien.setText(NumberFormat.getInstance().format(total + shippingFee));
     }
 
 
     private void CheckCartVisibility() {
+        // Kiểm tra nếu danh sách giỏ hàng trống
         if (listGiohang.isEmpty()) {
             scrollViewCart.setVisibility(View.GONE);
             tvNullCart.setVisibility(View.VISIBLE);
+            // Hiển thị nút quay lại khi giỏ hàng trống
             if (imgBackEmptyCart != null) imgBackEmptyCart.setVisibility(View.VISIBLE);
             if (imgBackCart != null) imgBackCart.setVisibility(View.GONE);
         } else {
             scrollViewCart.setVisibility(View.VISIBLE);
             tvNullCart.setVisibility(View.GONE);
+            // Hiển thị nút quay lại khi giỏ hàng có sp
             if (imgBackEmptyCart != null) imgBackEmptyCart.setVisibility(View.GONE);
             if (imgBackCart != null) imgBackCart.setVisibility(View.VISIBLE);
         }

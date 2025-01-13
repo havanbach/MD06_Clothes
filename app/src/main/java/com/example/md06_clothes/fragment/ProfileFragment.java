@@ -405,13 +405,13 @@ public class ProfileFragment extends Fragment {
                         }
                     }
                 });
-
                 Map<String, Object> chinh = new HashMap<>();
                 chinh.put("hoten", strFullName);
                 chinh.put("diachi", strAddress);
                 chinh.put("sdt", strSDT);
                 chinh.put("ngaysinh", strDate);
                 chinh.put("gioitinh", strSex);
+
 
                 firestore.collection("User").document(FirebaseAuth.getInstance().getCurrentUser().getUid())
                         .collection("Profile").document(key)

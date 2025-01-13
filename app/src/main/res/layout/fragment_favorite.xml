@@ -6,7 +6,7 @@
     tools:context=".fragment.FavoriteFragment">
 
     <TextView
-        android:background="#FF5722"
+        android:background="#7FC7AF"
         android:id="@+id/titlefavorite"
         android:gravity="center"
         android:layout_width="match_parent"
@@ -39,13 +39,13 @@
     </RelativeLayout>
     <TextView
         android:layout_marginTop="12dp"
-        android:text=" Yêu thích của bạn"
+        android:text=" Sản phẩm yêu thích"
         android:gravity="center"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textSize="22dp"
         android:fontFamily="@font/poppins_semibold"
-        android:textColor="@color/white"
+        android:textColor="@color/purple_500"
         android:textStyle="bold"
         android:layout_centerHorizontal="true"/>
 

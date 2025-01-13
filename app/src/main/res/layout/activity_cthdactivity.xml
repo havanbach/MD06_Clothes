@@ -10,7 +10,7 @@
         android:layout_centerHorizontal="true"
         android:layout_alignParentBottom="true"
         android:background="@drawable/border3"
-        app:backgroundTint="#FF5722"
+        app:backgroundTint="#7FC7AF"
         android:id="@+id/btn_capnhat_cthd"
         android:layout_width="170dp"
         android:layout_height="50dp"
@@ -41,9 +41,9 @@
                     android:layout_centerInParent="true"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Chi tiết hóa đơn"
+                    android:text="Chi tiết hóa đơn của ban"
                     android:textSize="20sp"
-                    android:textColor="#FF5722"
+                    android:textColor="#7FC7AF"
                     android:textStyle="bold"/>
             </RelativeLayout>
 

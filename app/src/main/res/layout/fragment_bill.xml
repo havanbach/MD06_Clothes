@@ -13,7 +13,7 @@
         android:orientation="vertical">
         <TextView
             android:layout_marginTop="15dp"
-            android:textColor="#FF5722"
+            android:textColor="#7FC7AF"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Đơn hàng của bạn"
@@ -27,11 +27,11 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="15dp"
             android:id="@+id/tab_Layout"
-            app:tabSelectedTextColor="#FF5722"
+            app:tabSelectedTextColor="#3F51B5"
             app:tabBackground="@color/white"
             app:tabTextColor="@android:color/darker_gray"
             app:tabIndicatorHeight="2dp"
-            app:tabIndicatorColor="#FF5722"
+            app:tabIndicatorColor="#3F51B5"
             app:tabMode="scrollable"
         />
         <androidx.viewpager.widget.ViewPager

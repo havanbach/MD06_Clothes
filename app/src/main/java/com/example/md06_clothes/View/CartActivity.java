@@ -225,14 +225,13 @@ public class CartActivity extends AppCompatActivity implements GioHangView {
                         String orderId = task.getResult().getId();
 
                         for (Product product : listGiohang) {
-                            for (SizeQuantity size : product.getSizes()) {
-                                HashMap<String, Object> orderDetail = new HashMap<>();
-                                orderDetail.put("id_hoadon", orderId);
-                                orderDetail.put("id_product", product.getIdsp());
-                                orderDetail.put("size", size.getSize());
-                                orderDetail.put("soluong", size.getSoluong());
-                                db.collection("ChitietHoaDon").add(orderDetail);
-                            }
+                            HashMap<String, Object> orderDetail = new HashMap<>();
+                            orderDetail.put("id_hoadon", orderId);
+                            orderDetail.put("id_product", product.getIdsp());
+                            orderDetail.put("sizes", product.getSizes());
+
+                            db.collection("ChitietHoaDon").document(FirebaseAuth.getInstance().getCurrentUser().getUid())
+                                    .collection("ALL").add(orderDetail);
                         }
 
                         clearCart();
@@ -250,7 +249,7 @@ public class CartActivity extends AppCompatActivity implements GioHangView {
                         startActivity(intent);
 
                         dialog.dismiss();
-                        finish();
+                        finish(); // Kết thúc CartActivity
                     } else {
                         Toast.makeText(this, "Đặt hàng thất bại!", Toast.LENGTH_SHORT).show();
                     }
@@ -409,16 +408,19 @@ public class CartActivity extends AppCompatActivity implements GioHangView {
 
     // phí ship là 1000 vnd
     public void UpdateCartSummary() {
-        int total = 0;
+        int total = 0;// Biến lưu tổng tiền hàng
         int shippingFee = 1000;
 
+        // Duyệt qua danh sách sản phẩm trong giỏ hàng
         for (Product product : listGiohang) {
             for (SizeQuantity size : product.getSizes()) {
                 total += product.getGiatien() * size.getSoluong();
             }
         }
         tvDongia.setText(NumberFormat.getInstance().format(total));
+
         tvPhiVanChuyen.setText(NumberFormat.getInstance().format(shippingFee));
+        // Cập nhật tổng tiền (tổng giá hàng hóa + phí vận chuyển) lên TextView
         tvTongTien.setText(NumberFormat.getInstance().format(total + shippingFee));
     }
 

@@ -18,16 +18,16 @@
             android:layout_width="32dp"
             android:layout_height="32dp"
             android:layout_gravity="end"
-            android:background="#FF5722"
+            android:background="#7FC7AF"
             android:src="@android:drawable/ic_menu_close_clear_cancel" />
 
         <TextView
-            android:textColor="#FF5722"
+            android:textColor="#7FC7AF"
             android:textStyle="bold"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Thanh toán"
-            android:textSize="30sp"
+            android:text="Thanh toán MD6_Clothes"
+            android:textSize="20dp"
             android:layout_gravity="center"/>
         <com.google.android.material.textfield.TextInputLayout
             android:layout_marginTop="20dp"
@@ -134,7 +134,7 @@
 
 
         <Button
-            app:backgroundTint="#FF5722"
+            app:backgroundTint="#7FC7AF"
             android:id="@+id/btn_xacnhan"
             android:layout_width="match_parent"
             android:layout_height="55dp"
@@ -143,7 +143,7 @@
             android:layout_marginRight="50dp"
             android:layout_marginBottom="15dp"
             android:background="@drawable/button"
-            android:text="Xác nhận mua"/>
+            android:text="Xác nhận đặt hàng"/>
     </LinearLayout>
 
 </androidx.cardview.widget.CardView>

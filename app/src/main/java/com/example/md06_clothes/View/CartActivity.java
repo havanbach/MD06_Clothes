@@ -192,6 +192,17 @@ public class CartActivity extends AppCompatActivity implements GioHangView {
                 Toast.makeText(this, "Vui lòng điền đầy đủ thông tin!", Toast.LENGTH_SHORT).show();
                 return;
             }
+            //sdt phaải là số
+            if (!sdt.matches("\\d+")) {
+                Toast.makeText(this, "Số điện thoại không hợp lệ!", Toast.LENGTH_SHORT).show();
+                return;
+            }
+            // sdt phai la 10 so
+            if (!sdt.matches("\\d{10}")) {
+                Toast.makeText(this, "Số điện thoại không hợp lệ! Số điện thoại phải có đúng 10 chữ số.", Toast.LENGTH_SHORT).show();
+                return;
+            }
+
 
             if (spinnerPhuongthuc.getSelectedItemPosition() == 0) {
                 // Nếu chọn "Thanh toán khi nhận hàng"

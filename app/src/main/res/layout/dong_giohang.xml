@@ -22,6 +22,8 @@
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/ao3" />
 
+
+
     <TextView
         android:id="@+id/tv_ten_giohang"
         android:layout_width="160dp"

@@ -117,16 +117,24 @@ public class OrderSuccessActivity extends AppCompatActivity {
             TextView tvProductQuantity = productView.findViewById(R.id.tv_product_quantity);
             TextView tvProductPrice = productView.findViewById(R.id.tv_product_price);
 
+            // Hiển thị tên sản phẩm
             tvProductName.setText(product.getTensp());
-            for (int i = 0; i < product.getSizes().size(); i++) {
-                num += product.getSizes().get(i).getSoluong();
-            }
-            tvProductQuantity.setText("x" + num);
-            tvProductPrice.setText(NumberFormat.getInstance().format(product.getGiatien()) + " đ");
 
+            // Tính tổng số lượng sản phẩm (của tất cả các kích thước)
+            int totalQuantity = 0;
+            for (int i = 0; i < product.getSizes().size(); i++) {
+                totalQuantity += product.getSizes().get(i).getSoluong();
+            }
+
+            // Hiển thị số lượng và giá tiền
+            tvProductQuantity.setText("x" + totalQuantity);
+            tvProductPrice.setText(NumberFormat.getInstance().format(product.getGiatien() * totalQuantity) + " đ");
+
+            // Đặt lại giá trị tổng số lượng để không bị cộng dồn
             productContainer.addView(productView);
         }
     }
+
 
 
     private void InitWidget() {

@@ -19,6 +19,7 @@ public class GioHangPresenter implements IGioHang {
         giohang = new Giohang(this);
     }
 
+
     public  void AddCart(String idsp,String size, Long soluong){
         giohang.AddCart(idsp, size,soluong);
     }

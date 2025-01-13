@@ -358,6 +358,8 @@ public class ProfileFragment extends Fragment {
             @Override
             public void onClick(View view) {
 
+
+
                 String strFullName = edtFullName.getText().toString().trim();
                 String strAddress = edtAddress.getText().toString().trim();
                 String strSDT = edtPhoneNumber.getText().toString().trim();
@@ -367,6 +369,21 @@ public class ProfileFragment extends Fragment {
                     strSex = "Nam";
                 } else {
                     strSex = "Nữ";
+                }
+                // Kiểm tra các trường không được để trống
+                if (strFullName.isEmpty() || strAddress.isEmpty() || strSDT.isEmpty() || strDate.isEmpty()) {
+                    Toast.makeText(getActivity(), "Vui lòng nhập đầy đủ thông tin!", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                // Kiểm tra số điện thoại hợp lệ
+                if (!strSDT.matches("\\d{10}")) {
+                    Toast.makeText(getActivity(), "Số điện thoại không hợp lệ! Phải có đúng 10 chữ số.", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                // Kiểm tra định dạng ngày tháng (nếu cần)
+                if (!strDate.matches("\\d{2}/\\d{2}/\\d{4}")) {
+                    Toast.makeText(getActivity(), "Ngày không hợp lệ! Định dạng phải là dd/MM/yyyy.", Toast.LENGTH_SHORT).show();
+                    return;
                 }
 
                 FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();

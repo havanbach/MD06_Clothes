@@ -117,7 +117,7 @@
             android:layout_gravity="center"
             android:layout_marginTop="10dp"
             android:background="@drawable/border5"
-            android:backgroundTint="#D4EFE5"
+            android:backgroundTint="#45D0E7"
             android:gravity="top|left"
             android:hint="Đánh giá sản phẩm MD6_Clothes ..."
             android:inputType="textMultiLine"

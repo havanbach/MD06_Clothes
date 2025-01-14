@@ -1,5 +1,6 @@
 package com.example.md06_clothes.View;
 
+import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Intent;
 import android.graphics.Color;
@@ -31,7 +32,6 @@ import com.example.md06_clothes.Presenter.HoaDonPreSenter;
 import com.example.md06_clothes.R;
 import com.example.md06_clothes.my_interface.GioHangView;
 import com.example.md06_clothes.my_interface.HoaDonView;
-import com.example.md06_clothes.my_interface.IClickCTHD;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;
@@ -186,30 +186,48 @@ public class CTHDActivity extends AppCompatActivity implements GioHangView, HoaD
 
     @Override
     public void getDataSanPham(String id, String id_product, String tensp, Long giatien, String hinhanh, String loaisp, String mota, List<SizeQuantity> sizes, Long type, String chatlieu) {
-        mlist.add(new Product(id, id_product, tensp, giatien, hinhanh, loaisp, mota, sizes, type, chatlieu));
-
-        Log.d("cm", "cm: " + cm+"");
-        if (cm){
-            hoaDonDaGiaoAdapter.setDataHoaDonDaGiao(this, mlist, 1, new IClickCTHD() {
-                @Override
-                public void onClickCTHD(int pos) {
-                    if (cm){
-                        ShowDialog(pos);
+        db.collection("SanPham").document(id_product).get()
+                .addOnSuccessListener(documentSnapshot -> {
+                    if (!documentSnapshot.exists()) {
+                        // Hiển thị AlertDialog khi sản phẩm không tồn tại
+                        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+                        builder.setTitle("Thông báo")
+                                .setMessage("Sản phẩm \"" + tensp + "\" đã bị xóa khỏi hệ thống.")
+                                .setPositiveButton("OK", (dialog, which) -> dialog.dismiss())
+                                .create()
+                                .show();
+                        return; // Không thêm sản phẩm này vào danh sách
                     }
-                }
-            });
-        } else {
-            hoaDonDaGiaoAdapter.setDataHoaDonDaGiao(this, mlist, 0, new IClickCTHD() {
-                @Override
-                public void onClickCTHD(int pos) {
-                }
-            });
-        }
 
-        rcvCTHD.setLayoutManager(new LinearLayoutManager(this));
-        rcvCTHD.setAdapter(hoaDonDaGiaoAdapter);
+                    // Nếu sản phẩm tồn tại, thêm vào danh sách
+                    mlist.add(new Product(id, id_product, tensp, giatien, hinhanh, loaisp, mota, sizes, type, chatlieu));
 
+                    // Cập nhật RecyclerView
+                    if (cm) {
+                        hoaDonDaGiaoAdapter.setDataHoaDonDaGiao(this, mlist, 1, pos -> {
+                            if (cm) {
+                                ShowDialog(pos);
+                            }
+                        });
+                    } else {
+                        hoaDonDaGiaoAdapter.setDataHoaDonDaGiao(this, mlist, 0, pos -> {});
+                    }
+
+                    rcvCTHD.setLayoutManager(new LinearLayoutManager(this));
+                    rcvCTHD.setAdapter(hoaDonDaGiaoAdapter);
+                })
+                .addOnFailureListener(e -> {
+                    Log.e("getDataSanPham", "Lỗi khi kiểm tra sản phẩm: " + id_product, e);
+                    AlertDialog.Builder builder = new AlertDialog.Builder(this);
+                    builder.setTitle("Lỗi")
+                            .setMessage("Lỗi khi kiểm tra sản phẩm từ hệ thống. Vui lòng thử lại sau.")
+                            .setPositiveButton("OK", (dialog, which) -> dialog.dismiss())
+                            .create()
+                            .show();
+                });
     }
+
+
 
 
     private void ShowDialog(int pos){

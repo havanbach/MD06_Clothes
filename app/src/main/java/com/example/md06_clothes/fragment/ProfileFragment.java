@@ -3,7 +3,6 @@ package com.example.md06_clothes.fragment;
 import android.Manifest;
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
-import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -16,7 +15,6 @@ import android.location.Location;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.Looper;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -24,7 +22,6 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
@@ -44,9 +41,6 @@ import com.example.md06_clothes.R;
 import com.example.md06_clothes.SignInActivity;
 import com.example.md06_clothes.ultil.NetworkUtil;
 import com.google.android.gms.location.FusedLocationProviderClient;
-import com.google.android.gms.location.LocationCallback;
-import com.google.android.gms.location.LocationRequest;
-import com.google.android.gms.location.LocationResult;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -441,48 +435,6 @@ public class ProfileFragment extends Fragment {
                 });
                 buidler.show();
 
-            }
-        });
-
-        tvEmail.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-                Dialog dialog = new Dialog(getContext());
-                dialog.setContentView(R.layout.dialog_profile);
-                dialog.show();
-                EditText edtNewEmail = dialog.findViewById(R.id.edt_new_email_dialog);
-                ImageView imgCancelDialog = dialog.findViewById(R.id.img_cancel_dialog);
-                Button btnCapnhatDialog = dialog.findViewById(R.id.btn_capnhat_dialog);
-
-                edtNewEmail.setText(user.getEmail());
-                imgCancelDialog.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        dialog.cancel();
-                    }
-                });
-
-                btnCapnhatDialog.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        String strNewEmail = edtNewEmail.getText().toString().trim();
-                        progressDialog.show();
-                        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-                        user.updateEmail(strNewEmail)
-                                .addOnCompleteListener(new OnCompleteListener<Void>() {
-                                    @Override
-                                    public void onComplete(Task<Void> task) {
-                                        if (task.isSuccessful()) {
-                                            progressDialog.dismiss();
-                                            dialog.cancel();
-                                            Toast.makeText(getActivity(), "User Email Address Updated", Toast.LENGTH_SHORT).show();
-                                            mMainActivity.setProFile();
-                                        }
-                                    }
-                                });
-                    }
-                });
             }
         });
 

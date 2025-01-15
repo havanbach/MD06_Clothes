@@ -72,19 +72,7 @@
                 android:textSize="18dp" />
         </com.google.android.material.textfield.TextInputLayout>
 
-        <com.google.android.material.textfield.TextInputLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="10dp">
 
-            <EditText
-                android:id="@+id/edt_ghichu"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@drawable/button"
-                android:hint="Nhập ghi chú "
-                android:textSize="18dp" />
-        </com.google.android.material.textfield.TextInputLayout>
         <Spinner
             android:id="@+id/spinner_phuongthuc"
             android:layout_width="match_parent"

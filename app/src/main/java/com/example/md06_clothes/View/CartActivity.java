@@ -154,7 +154,7 @@ public class CartActivity extends AppCompatActivity implements GioHangView {
         EditText edthoten = dialog.findViewById(R.id.edt_hoten);
         EditText edtdiachi = dialog.findViewById(R.id.edt_diachi);
         EditText edtsdt = dialog.findViewById(R.id.edt_sdt);
-        EditText edtghichu = dialog.findViewById(R.id.edt_ghichu);
+//        EditText edtghichu = dialog.findViewById(R.id.edt_ghichu);
         TextView tvtongtien = dialog.findViewById(R.id.tv_tongtien);
         Button btnxacnhan = dialog.findViewById(R.id.btn_xacnhan);
         ImageView btnCancel = dialog.findViewById(R.id.btn_cancel);
@@ -180,7 +180,7 @@ public class CartActivity extends AppCompatActivity implements GioHangView {
             hoten = edthoten.getText().toString().trim();
             diachi = edtdiachi.getText().toString().trim();
             sdt = edtsdt.getText().toString().trim();
-            ghichu = edtghichu.getText().toString().trim();
+//            ghichu = edtghichu.getText().toString().trim();
             phuongthuc = spinnerPhuongthuc.getSelectedItem().toString();
             tienthanhtoan = tvtongtien.getText().toString();
 
@@ -211,7 +211,7 @@ public class CartActivity extends AppCompatActivity implements GioHangView {
         orderData.put("hoten", hoten);
         orderData.put("diachi", diachi);
         orderData.put("sdt", sdt);
-        orderData.put("ghichu", ghichu);
+//        orderData.put("ghichu", ghichu);
         orderData.put("phuongthuc", "Thanh toán khi nhận hàng");
         orderData.put("tongtien", tienthanhtoan);
         orderData.put("ngaydat", ngaydat);
@@ -243,7 +243,7 @@ public class CartActivity extends AppCompatActivity implements GioHangView {
                         intent.putExtra("diachi", diachi);
                         intent.putExtra("sdt", sdt);
                         intent.putExtra("phuongthuc", "Thanh toán khi nhận hàng");
-                        intent.putExtra("ghichu", ghichu);
+//                        intent.putExtra("ghichu", ghichu);
                         intent.putExtra("tienthanhtoan", tienthanhtoan);
                         intent.putExtra("sanpham", listGiohang);
                         startActivity(intent);
@@ -355,7 +355,7 @@ public class CartActivity extends AppCompatActivity implements GioHangView {
         orderData.put("hoten", hoten);
         orderData.put("diachi", diachi);
         orderData.put("sdt", sdt);
-        orderData.put("ghichu", ghichu);
+//        orderData.put("ghichu", ghichu);
         orderData.put("phuongthuc", "Thanh toán MoMo");
         orderData.put("tongtien", tienthanhtoan);
         orderData.put("ngaydat", ngaydat);
@@ -389,7 +389,7 @@ public class CartActivity extends AppCompatActivity implements GioHangView {
                         intent.putExtra("diachi", diachi);
                         intent.putExtra("sdt", sdt);
                         intent.putExtra("phuongthuc", "Thanh toán MoMo");
-                        intent.putExtra("ghichu", ghichu);
+//                        intent.putExtra("ghichu", ghichu);
                         intent.putExtra("tienthanhtoan", tienthanhtoan);
                         intent.putExtra("sanpham", listGiohang);
                         startActivity(intent);

@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -102,10 +103,25 @@ public class GiohangAdapter extends RecyclerView.Adapter<GiohangAdapter.ViewHold
     }
 
     private void updateQuantity(Product product, SizeQuantity size, TextView tvQuantity, int delta) {
-        int newQuantity = Math.max(1, size.getSoluong() + delta); // Cập nhật số lượng size sản phẩm, đảm bảo >= 1
+        // Tính số lượng tạm thời
+        int tempQuantity = size.getSoluong() + delta;
+
+        // Tính tổng giá trị dự kiến
+        long totalCartValue = calculateTotalCartValue() + (long) (product.getGiatien() * delta);
+
+        // Kiểm tra nếu đang tăng số lượng và tổng giá trị vượt ngưỡng
+        if (delta > 0 && totalCartValue > 2000000) {
+            Toast.makeText(context, "Tổng giá trị giỏ hàng không được vượt quá 2 triệu VNĐ!", Toast.LENGTH_SHORT).show();
+            return; // Không cho phép thêm
+        }
+
+        // Đảm bảo số lượng không nhỏ hơn 1
+        final int newQuantity = Math.max(1, tempQuantity);
+
+        // Cập nhật số lượng trong đối tượng `SizeQuantity`
         size.setSoluong(newQuantity);
 
-        // Update Firestore
+        // Cập nhật dữ liệu lên Firestore
         db.collection("GioHang").document(FirebaseAuth.getInstance().getCurrentUser().getUid())
                 .collection("ALL")
                 .whereEqualTo("id_product", product.getIdsp())
@@ -116,25 +132,39 @@ public class GiohangAdapter extends RecyclerView.Adapter<GiohangAdapter.ViewHold
                         if (existingSizes != null) {
                             for (HashMap<String, Object> sizeData : existingSizes) {
                                 if (sizeData.get("size").equals(size.getSize())) {
-                                    sizeData.put("soluong", newQuantity);// Cập nhật số lượng
+                                    sizeData.put("soluong", newQuantity); // Cập nhật số lượng
                                     break;
                                 }
                             }
 
-                            // Update Firestore document
+                            // Cập nhật Firestore
                             db.collection("GioHang").document(FirebaseAuth.getInstance().getCurrentUser().getUid())
                                     .collection("ALL").document(doc.getId())
                                     .update("sizes", existingSizes)
                                     .addOnSuccessListener(aVoid -> {
-                                        // Cập nhật giao diện sau khi lưu thành công
+                                        // Cập nhật giao diện
                                         tvQuantity.setText(String.valueOf(newQuantity));
-                                        cartActivity.UpdateCartSummary();// Cập nhật tổng giá giỏ hàng
-                                        notifyDataSetChanged();// Làm mới danh sách
+                                        cartActivity.UpdateCartSummary(); // Cập nhật tổng giá trị
+                                        notifyDataSetChanged(); // Làm mới danh sách
                                     });
                         }
                     }
                 });
     }
+
+
+
+    private long calculateTotalCartValue() {
+        long total = 0;
+        for (Product product : mListGiohang) {
+            for (SizeQuantity size : product.getSizes()) {
+                total += (long) product.getGiatien() * size.getSoluong(); // Tổng giá trị giỏ hàng
+            }
+        }
+        return total;
+    }
+
+
 
     private void updateTotal(ViewHolder holder, Product product) {
         // Tính tổng giá tiền cho sản phẩm (dựa trên giá và số lượng)

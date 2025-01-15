@@ -74,7 +74,7 @@ public class OrderSuccessActivity extends AppCompatActivity {
         diachi = intent.getStringExtra("diachi");
         sdt = intent.getStringExtra("sdt");
         phuongthuc = intent.getStringExtra("phuongthuc");
-        ghichu = intent.getStringExtra("ghichu");
+//        ghichu = intent.getStringExtra("ghichu");
         tienthanhtoan = intent.getStringExtra("tienthanhtoan");
 
 
@@ -86,7 +86,7 @@ public class OrderSuccessActivity extends AppCompatActivity {
         tvDiachiHoadon.setText(diachi);
         tvSDTHoadon.setText(sdt);
         tvPhuongthucHoadon.setText(phuongthuc);
-        tvGhichuHoadon.setText(ghichu);
+//        tvGhichuHoadon.setText(ghichu);
         tvTongtienHoadon.setText(tienthanhtoan);
 
 
@@ -144,7 +144,7 @@ public class OrderSuccessActivity extends AppCompatActivity {
         tvDiachiHoadon = findViewById(R.id.tv_diachi_hoadon);
         tvSDTHoadon = findViewById(R.id.tv_sdt_hoadon);
         tvPhuongthucHoadon = findViewById(R.id.tv_phuongthuc_hoadon);
-        tvGhichuHoadon = findViewById(R.id.tv_ghichu_hoadon);
+//        tvGhichuHoadon = findViewById(R.id.tv_ghichu_hoadon);
         btnHoanthanhHoadon = findViewById(R.id.btn_hoanthanh_hoadon);
         tvTongtienHoadon = findViewById(R.id.tv_tongtien_hoadon);
     }
